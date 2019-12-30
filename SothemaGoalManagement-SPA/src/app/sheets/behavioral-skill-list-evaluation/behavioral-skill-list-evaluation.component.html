@@ -25,7 +25,7 @@
           <div *ngIf="!areBehavioralSkillsEvaluable">
             <span (click)="levelSelected(behavioralSkillInstance.levelOneDescription)" style="cursor: pointer">
               <fa-icon class="icon-background2" [icon]="faCheckCircle" *ngIf="behavioralSkillInstance.behavioralSkillGrade==behavioralSkillInstance.levelOneGrade"></fa-icon>
-              <fa-icon class="icon-background1" [icon]="faTimesCircle" *ngIf="behavioralSkillInstance.behavioralSkillGrade!=behavioralSkillInstance.levelOneGrade"></fa-icon>
+              <fa-icon class="icon-background1" [icon]="faTimesCircle" *ngIf="behavioralSkillInstance.behavioralSkillGrade && behavioralSkillInstance.behavioralSkillGrade!=behavioralSkillInstance.levelOneGrade"></fa-icon>
             </span>
           </div>
         </td>
@@ -38,7 +38,7 @@
           <div *ngIf="!areBehavioralSkillsEvaluable">
             <span (click)="levelSelected(behavioralSkillInstance.levelTwoDescription)" style="cursor: pointer">
               <fa-icon class="icon-background2" [icon]="faCheckCircle" *ngIf="behavioralSkillInstance.behavioralSkillGrade==behavioralSkillInstance.levelTwoGrade"></fa-icon>
-              <fa-icon class="icon-background1" [icon]="faTimesCircle" *ngIf="behavioralSkillInstance.behavioralSkillGrade!=behavioralSkillInstance.levelTwoGrade"></fa-icon>
+              <fa-icon class="icon-background1" [icon]="faTimesCircle" *ngIf="behavioralSkillInstance.behavioralSkillGrade && behavioralSkillInstance.behavioralSkillGrade!=behavioralSkillInstance.levelTwoGrade"></fa-icon>
             </span>
           </div>
         </td>
@@ -52,7 +52,7 @@
           <div *ngIf="!areBehavioralSkillsEvaluable">
             <span (click)="levelSelected(behavioralSkillInstance.levelThreeDescription)" style="cursor: pointer">
               <fa-icon class="icon-background2" [icon]="faCheckCircle" *ngIf="behavioralSkillInstance.behavioralSkillGrade==behavioralSkillInstance.levelThreeGrade"></fa-icon>
-              <fa-icon class="icon-background1" [icon]="faTimesCircle" *ngIf="behavioralSkillInstance.behavioralSkillGrade!=behavioralSkillInstance.levelThreeGrade"></fa-icon>
+              <fa-icon class="icon-background1" [icon]="faTimesCircle" *ngIf="behavioralSkillInstance.behavioralSkillGrade && behavioralSkillInstance.behavioralSkillGrade!=behavioralSkillInstance.levelThreeGrade"></fa-icon>
             </span>
           </div>
         </td>
@@ -65,7 +65,7 @@
           <div *ngIf="!areBehavioralSkillsEvaluable">
             <span (click)="levelSelected(behavioralSkillInstance.levelFourDescription)" style="cursor: pointer">
               <fa-icon class="icon-background2" [icon]="faCheckCircle" *ngIf="behavioralSkillInstance.behavioralSkillGrade==behavioralSkillInstance.levelFourGrade"></fa-icon>
-              <fa-icon class="icon-background1" [icon]="faTimesCircle" *ngIf="behavioralSkillInstance.behavioralSkillGrade!=behavioralSkillInstance.levelFourGrade"></fa-icon>
+              <fa-icon class="icon-background1" [icon]="faTimesCircle" *ngIf="behavioralSkillInstance.behavioralSkillGrade && behavioralSkillInstance.behavioralSkillGrade!=behavioralSkillInstance.levelFourGrade"></fa-icon>
             </span>
           </div>
         </td>

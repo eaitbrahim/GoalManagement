@@ -1,3 +1,4 @@
+import { HrService } from './../../_services/hr.service';
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { TabsetComponent } from 'ngx-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -7,6 +8,7 @@ import { EvaluationFileInstance } from '../../_models/evaluationFileInstance';
 import { Goal } from '../../_models/goal';
 import { GoalType } from '../../_models/goalType';
 import { UserService } from '../../_services/user.service';
+import { AdminService } from '../../_services/admin.service';
 import { AuthService } from '../../_services/auth.service';
 import { AlertifyService } from '../../_services/alertify.service';
 import { GoalByAxisInstance } from '../../_models/goalsByAxisInstance';
@@ -40,7 +42,7 @@ export class SheetDetailComponent implements OnInit {
   showDetail: boolean;
   faArrowLeft = faArrowLeft;
 
-  constructor(private route: ActivatedRoute, private router: Router, private userService: UserService, private authService: AuthService, private alertify: AlertifyService) { }
+  constructor(private route: ActivatedRoute, private router: Router, private userService: UserService, private adminService: AdminService, private authService: AuthService, private alertify: AlertifyService) { }
 
   ngOnInit() {
     if (this.sheetToValidate) {
@@ -175,7 +177,16 @@ export class SheetDetailComponent implements OnInit {
 
   CanBehavioralSkillBeEvaluated() {
     if (this.sheetDetail.ownerId == this.authService.decodedToken.nameid) {
-      this.areBehavioralSkillsEvaluable = false;
+      this.adminService.loadEvaluators(this.sheetDetail.ownerId).subscribe(result => {
+        var indx = result.findIndex(e => e.id === this.sheetDetail.ownerId);
+        if (indx != -1) this.areBehavioralSkillsEvaluable = true;
+        else this.areBehavioralSkillsEvaluable = false;
+      },
+        error => {
+          console.log('error in CanBehavioralSkillBeEvaluated: ', error);
+          this.areBehavioralSkillsEvaluable = false;
+        }
+      );
     } else {
       this.areBehavioralSkillsEvaluable = true;
     }

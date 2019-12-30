@@ -118,7 +118,6 @@ namespace SothemaGoalManagement.API.Controllers
             try
             {
                 if (!await IsItAllowed(userId)) return Unauthorized();
-
                 var goalsGroupedByAxisInstanceList = await GetAxisInstancesWithGoals(axisInstanceIds);
 
                 return Ok(goalsGroupedByAxisInstanceList);
@@ -442,45 +441,50 @@ namespace SothemaGoalManagement.API.Controllers
 
             // Add goals for each axis instance
             var goalsFromRepo = await _repo.Goal.GetGoalsByAxisInstanceIds(axisInstanceIds);
-            foreach (var goal in goalsFromRepo)
+            if (goalsFromRepo != null)
             {
-                var goalToReturn = await BuildGoalToReturn(goal);
+                var ownerId = goalsFromRepo.First().AxisInstance.EvaluationFileInstance.OwnerId;
+                var goalOwnerSelfEvaluator = await IsGoalOwnerSelfEvaluator(ownerId);
 
-                if (goalsGroupedByAxisInstanceList.Exists(a => a.axisInstanceId == goal.AxisInstanceId))
+                foreach (var goal in goalsFromRepo)
                 {
-                    goalsGroupedByAxisInstanceList.Find(a => a.axisInstanceId == goal.AxisInstanceId).Goals.Add(goalToReturn);
+                    var goalToReturn = await BuildGoalToReturn(goal);
+
+                    if (goalsGroupedByAxisInstanceList.Exists(a => a.axisInstanceId == goal.AxisInstanceId))
+                    {
+                        goalsGroupedByAxisInstanceList.Find(a => a.axisInstanceId == goal.AxisInstanceId).Goals.Add(goalToReturn);
+                    }
+                }
+
+                // Count and summup goals
+                Decimal percentTotalGrade = 0.00m;
+                foreach (var el in goalsGroupedByAxisInstanceList)
+                {
+                    el.TotalGoals = el.Goals.Count;
+                    el.TotalGoalWeight = el.Goals.Count == 0 ? 0 : el.Goals.Sum(g => g.Weight);
+                    el.GoalsStatus = el.Goals.Count == 0 ? Constants.NOTSTARTED : el.Goals.First().Status;
+
+                    Decimal axisGrade = el.Goals.Select(g =>
+                   {
+                       var CompletionRate = GetCompletionRate(g, goalOwnerSelfEvaluator);
+                       return g.Weight * el.UserWeight * CompletionRate;
+                   }).Sum();
+                    Decimal percentAxisGrade = axisGrade / 10000.00m;
+                    percentTotalGrade += percentAxisGrade;
+                    el.AxisGrade = percentAxisGrade.ToString("N2");
+                    foreach (var goal in el.Goals)
+                    {
+                        var CompletionRate = GetCompletionRate(goal, goalOwnerSelfEvaluator);
+                        Decimal percentGoalGrade = (goal.Weight * el.UserWeight * CompletionRate) / 10000.00m;
+                        goal.GoalGrade = percentGoalGrade.ToString("N2");
+                    }
+                }
+
+                foreach (var el in goalsGroupedByAxisInstanceList)
+                {
+                    el.TotalGrade = percentTotalGrade.ToString("N2");
                 }
             }
-
-            // Count and summup goals
-            Decimal percentTotalGrade = 0.00m;
-            foreach (var el in goalsGroupedByAxisInstanceList)
-            {
-                el.TotalGoals = el.Goals.Count;
-                el.TotalGoalWeight = el.Goals.Count == 0 ? 0 : el.Goals.Sum(g => g.Weight);
-                el.GoalsStatus = el.Goals.Count == 0 ? Constants.NOTSTARTED : el.Goals.First().Status;
-
-                Decimal axisGrade = el.Goals.Select(g =>
-                {
-                    var CompletionRate = GetCompletionRate(g);
-                    return g.Weight * el.UserWeight * CompletionRate;
-                }).Sum();
-                Decimal percentAxisGrade = axisGrade / 10000.00m;
-                percentTotalGrade += percentAxisGrade;
-                el.AxisGrade = percentAxisGrade.ToString("N2");
-                foreach (var goal in el.Goals)
-                {
-                    var CompletionRate = GetCompletionRate(goal);
-                    Decimal percentGoalGrade = (goal.Weight * el.UserWeight * CompletionRate) / 10000.00m;
-                    goal.GoalGrade = percentGoalGrade.ToString("N2");
-                }
-            }
-
-            foreach (var el in goalsGroupedByAxisInstanceList)
-            {
-                el.TotalGrade = percentTotalGrade.ToString("N2");
-            }
-
             return goalsGroupedByAxisInstanceList;
         }
 
@@ -504,11 +508,19 @@ namespace SothemaGoalManagement.API.Controllers
             return goalToReturn;
         }
 
-        private int GetCompletionRate(GoalToReturnDto goal)
+        private int GetCompletionRate(GoalToReturnDto goal, bool goalOwnerSelfEvaluator)
         {
-            return goal.GoalEvaluations.OrderByDescending(e => e.Created).Where(ge => ge.SelfEvaluation == false).FirstOrDefault() == null ?
-                    0 :
-                    goal.GoalEvaluations.OrderByDescending(e => e.Created).Where(ge => ge.SelfEvaluation == false).FirstOrDefault().CompletionRate;
+            var lastGoalEvaluation = goal.GoalEvaluations.OrderByDescending(e => e.Created).FirstOrDefault();
+            if (lastGoalEvaluation == null) return 0;
+            else
+            {
+                if (lastGoalEvaluation.SelfEvaluation == false) return lastGoalEvaluation.CompletionRate;
+                else
+                {
+                    if (goalOwnerSelfEvaluator) return lastGoalEvaluation.CompletionRate;
+                }
+                return 0;
+            }
         }
 
         private bool IsTotalWeightOfObjectivesOver100(List<AxisInstanceWithGoalsToReturnDto> goalsGroupedByAxisInstanceList, int weight, int goalId = 0)
@@ -622,6 +634,14 @@ namespace SothemaGoalManagement.API.Controllers
                     }
                 }
             }
+            return true;
+        }
+
+        private async Task<bool> IsGoalOwnerSelfEvaluator(int goalOwnerId)
+        {
+            var evaluators = await _repo.User.LoadEvaluators(goalOwnerId);
+            var evaluator = evaluators.FirstOrDefault(e => e.Id == goalOwnerId);
+            if (evaluator == null) return false;
             return true;
         }
     }

@@ -41,6 +41,8 @@ export class BehavioralSkillListEvaluationComponent implements OnInit {
       evaluateeId: this.sheetOwnerId,
       evaluationFileInstanceId: this.sheetId
     }));
+
+    this.totalGrade = this.evals.reduce((acc, curr) => acc + curr.grade, 0);
   }
 
   changeEventInRadioButton(behavioralSkillInstance: BehavioralSkillInstance, newGrade: string) {
