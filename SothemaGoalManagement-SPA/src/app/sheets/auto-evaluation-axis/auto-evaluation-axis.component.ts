@@ -1,12 +1,11 @@
 import { filter } from 'rxjs/operators';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { faCaretDown, faCaretUp, faHistory, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faCaretDown, faCaretUp, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap';
 
 import { GoalByAxisInstance } from '../../_models/goalsByAxisInstance';
 import { Goal } from '../../_models/goal';
 import { GoalEvaluationModalComponent } from '../goal-evaluation-modal/goal-evaluation-modal.component';
-import { HistoricalEvaluationModalComponent } from '../historical-evaluation-modal/historical-evaluation-modal.component';
 
 @Component({
   selector: 'app-auto-evaluation-axis',
@@ -20,7 +19,6 @@ export class AutoEvaluationAxisComponent implements OnInit {
   isCollapsed: boolean;
   faCaretDown = faCaretDown;
   faCaretUp = faCaretUp;
-  faHistory = faHistory;
   faPlus = faPlus;
   bsModalRef: BsModalRef;
 
@@ -34,21 +32,13 @@ export class AutoEvaluationAxisComponent implements OnInit {
     this.addGoalEvaluationEvent.emit(newEval);
   }
 
-  showEvaluations(goal) {
-    const initialState = {
-      goal: goal
-    };
-
-    this.bsModalRef = this.modalService.show(HistoricalEvaluationModalComponent, { initialState, class: 'modal-lg' });
-  }
-
   addEvaluation(goal) {
     const initialState = {
       goal: goal,
       evaluateeId: this.sheetOwnerId
     };
 
-    this.bsModalRef = this.modalService.show(GoalEvaluationModalComponent, { initialState });
+    this.bsModalRef = this.modalService.show(GoalEvaluationModalComponent, { initialState, class: 'modal-lg' });
     this.bsModalRef.content.addGoalEvaluationEvent.subscribe((newEval) => {
       this.addGoalEvaluationEvent.emit(newEval);
     });

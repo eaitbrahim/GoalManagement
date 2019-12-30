@@ -110,7 +110,7 @@ import { AutoEvaluationAxisComponent } from './sheets/auto-evaluation-axis/auto-
 import { BehavioralSkillListEvaluationComponent } from './sheets/behavioral-skill-list-evaluation/behavioral-skill-list-evaluation.component';
 import { EvaluationHrParametersComponent } from './hr/evaluations/evaluation-hr-parameters/evaluation-hr-parameters.component';
 import { SheetMetaDataComponent } from './sheets/sheet-meta-data/sheet-meta-data.component';
-import { HistoricalEvaluationModalComponent } from './sheets/historical-evaluation-modal/historical-evaluation-modal.component';
+import { TruncateTextPipe } from './_pipes/truncate-text.pipe';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -188,7 +188,7 @@ export function tokenGetter() {
     GoalEvaluationModalComponent,
     CascadeMyGoalsModalComponent,
     BehavioralSkillListEvaluationComponent,
-    HistoricalEvaluationModalComponent
+    TruncateTextPipe
   ],
   imports: [
     BrowserModule,
@@ -251,8 +251,7 @@ export function tokenGetter() {
     GoalEditModalComponent,
     PromptModalComponent,
     GoalEvaluationModalComponent,
-    CascadeMyGoalsModalComponent,
-    HistoricalEvaluationModalComponent
+    CascadeMyGoalsModalComponent
   ],
   bootstrap: [AppComponent]
 })

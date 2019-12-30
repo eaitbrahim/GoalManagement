@@ -67,12 +67,14 @@
           <img src="{{ goal.cascaderPhotoUrl || '../../../assets/user.png'}}" class="img-circle rounded-circle" title="{{goal.cascaderFullName}}"
           />
         </td>
-        <td>{{ goal.description }}</td>
+        <td>
+          <span popover="{{goal.description}}" style="cursor: pointer">{{ goal.description | truncateText:120}}</span>
+        </td>
         <td>
           {{ goal.projectName == '' ? goal.goalType.name : '' }}
-          <button type="button" class="btn btn-primary" popover="{{goal.projectName}}" *ngIf="goal.projectName != ''">
+          <span style="cursor: pointer" popover="{{goal.projectName}}" *ngIf="goal.projectName != ''">
             {{goal.goalType.name}}
-          </button>
+          </span>
         </td>
         <td>{{ goal.weight }}%</td>
         <td>

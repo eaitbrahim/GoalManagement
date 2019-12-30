@@ -36,19 +36,20 @@
     <table class="table table-hover">
       <tr>
         <th style="width: 60%">Objectif</th>
-        <th style="width: 20%">Type</th>
+        <th style="width: 25%">Type</th>
         <th style="width: 5%">Poids</th>
         <th style="width: 5%">Note</th>
         <th style="width: 5%"></th>
-        <th style="width: 5%"></th>
       </tr>
       <tr *ngFor="let goal of goalsByAxisInstance.goals">
-        <td>{{ goal.description }}</td>
+        <td>
+          <span popover="{{goal.description}}" style="cursor: pointer">{{ goal.description | truncateText:120}}</span>
+        </td>
         <td>
           {{ goal.projectName == '' ? goal.goalType.name : '' }}
-          <button type="button" class="btn btn-primary" popover="{{goal.projectName}}" *ngIf="goal.projectName != ''">
+          <span style="cursor: pointer" popover="{{goal.projectName}}" *ngIf="goal.projectName != ''">
             {{goal.goalType.name}}
-          </button>
+          </span>
         </td>
         <td align="center">
           <span class="badge badge-pill badge-info" title="Poids d'objectif">
@@ -63,11 +64,6 @@
         <td>
           <button class="btn btn-outline-primary rounded-circle" (click)="addEvaluation(goal)" title="Ajouter une évaluation">
             <fa-icon [icon]="faPlus"></fa-icon>
-          </button>
-        </td>
-        <td>
-          <button class="btn btn-outline-secondary rounded-circle" (click)="showEvaluations(goal)" title="Historique des évaluations">
-            <fa-icon [icon]="faHistory"></fa-icon>
           </button>
         </td>
       </tr>
