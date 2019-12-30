@@ -55,7 +55,8 @@
           </tab>
           <tab heading="Pôles et Pondération">
             <div class="container">
-              <app-axis-poles-weights-list [isReadOnly]="isReadOnly" [axisList]="axisList" [messages]="messages" (updateAxisPoleEvent)="handleUpdateAxisPole($event)"></app-axis-poles-weights-list>
+              <app-axis-poles-weights-list [isReadOnly]="isReadOnly" [axisList]="axisList" [messages]="messages" [updatedAxisId]="updatedAxisId"
+                (updateAxisPoleEvent)="handleUpdateAxisPole($event)"></app-axis-poles-weights-list>
             </div>
           </tab>
           <tab heading="Documentation">

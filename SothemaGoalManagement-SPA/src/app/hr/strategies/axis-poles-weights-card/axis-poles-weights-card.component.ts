@@ -13,9 +13,10 @@ import { Axis } from '../../../_models/axis';
 export class AxisPolesWeightsCardComponent implements OnInit {
   @Input() axis: Axis;
   @Input() isReadOnly: boolean;
+  @Input() updatedAxisId: number;
   @Output() updateAxisPoleEvent = new EventEmitter<AxisPole>();
   axisPoleList: AxisPole[];
-  isCollapsed: boolean = false;
+  isCollapsed: boolean;
   faCaretDown = faCaretDown;
   faCaretUp = faCaretUp;
 
@@ -23,9 +24,17 @@ export class AxisPolesWeightsCardComponent implements OnInit {
 
   ngOnInit() {
     this.axisPoleList = this.axis.axisPoles;
+
+    if (this.axis.id === this.updatedAxisId) this.isCollapsed = true;
+    else this.isCollapsed = false;
   }
 
   handleUpdateAxisPole(axisPole: AxisPole) {
     this.updateAxisPoleEvent.emit(axisPole);
+  }
+
+  toggleAxis() {
+    this.isCollapsed = !this.isCollapsed;
+    this.updatedAxisId = this.axis.id;
   }
 }

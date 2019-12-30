@@ -27,8 +27,9 @@ export class StrategyDetailComponent implements OnInit {
   isReadOnly: boolean;
   faTrash = faTrash;
   tallyWeights: any = {};
-  messages: string[] = [];
+  messages: any[] = [];
   axisPoles: AxisPole[] = [];
+  updatedAxisId: number;
 
   constructor(private hrService: HrService, private authService: AuthService, private alertify: AlertifyService, private route: ActivatedRoute, private router: Router) { }
 
@@ -127,7 +128,7 @@ export class StrategyDetailComponent implements OnInit {
 
     if (this.messages.length > 0) this.messages = [];
     for (let key in this.tallyWeights) {
-      this.messages.push(`Pondération total du ${key} est ${this.tallyWeights[key]}%.`);
+      this.messages.push({ poleName: key, totalWeight: this.tallyWeights[key] });
     }
   }
 
@@ -139,6 +140,7 @@ export class StrategyDetailComponent implements OnInit {
         next => {
           this.loading = false;
           this.loadAxisList(this.strategy.id);
+          this.updatedAxisId = axisPole.axisId;
           this.alertify.success('Mise à jour du pondération est réussie');
         },
         error => {

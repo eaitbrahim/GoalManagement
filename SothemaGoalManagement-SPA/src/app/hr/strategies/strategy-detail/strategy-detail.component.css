@@ -1,0 +1,4 @@
+.tab-panel {
+  overflow-y: scroll;
+  height: 800px;
+}

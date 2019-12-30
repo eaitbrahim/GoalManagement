@@ -3,11 +3,14 @@
 </div>
 
 <div class="alert alert-info mt-3" role="alert" *ngIf="messages.length > 0">
-  <p *ngFor="let message of messages">{{message}}</p>
+  <ul>
+    <li *ngFor="let message of messages">Pondération total du {{message.poleName}} est
+      <strong>{{message.totalWeight}} %</strong>.</li>
+  </ul>
 </div>
 
-<div *ngIf="axisList?.length > 0" class="row" class="body">
+<div *ngIf="axisList?.length > 0">
   <div *ngFor="let axis of axisList">
-    <app-axis-poles-weights-card [isReadOnly]="isReadOnly" [axis]="axis" (updateAxisPoleEvent)="handleUpdateAxisPole($event)"></app-axis-poles-weights-card>
+    <app-axis-poles-weights-card [isReadOnly]="isReadOnly" [axis]="axis" [updatedAxisId]="updatedAxisId" (updateAxisPoleEvent)="handleUpdateAxisPole($event)"></app-axis-poles-weights-card>
   </div>
 </div>

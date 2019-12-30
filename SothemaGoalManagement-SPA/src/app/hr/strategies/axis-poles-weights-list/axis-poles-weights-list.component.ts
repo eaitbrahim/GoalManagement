@@ -11,7 +11,8 @@ import { AxisPole } from './../../../_models/axisPole';
 export class AxisPolesWeightsListComponent implements OnInit {
   @Input() axisList: Axis[];
   @Input() isReadOnly: boolean;
-  @Input() messages: string[];
+  @Input() messages: any[];
+  @Input() updatedAxisId: number;
   @Output() updateAxisPoleEvent = new EventEmitter<AxisPole>();
 
   constructor() { }

@@ -15,8 +15,8 @@
     </div>
   </div>
 
-  <div class="row" *ngIf="messages.length == 0">
-    <h3>Pas de messages</h3>
+  <div class="row alert alert-info mt-3" role="info" *ngIf="messages.length == 0">
+    <p>Pas de messages...</p>
   </div>
 
   <div class="row" *ngIf="messages.length > 0">
