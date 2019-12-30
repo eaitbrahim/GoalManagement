@@ -46,7 +46,7 @@ export class GoalCardComponent implements OnInit {
       goalsByAxisInstance: this.goalsByAxisInstance
     };
 
-    this.bsModalRef = this.modalService.show(GoalEditModalComponent, { initialState });
+    this.bsModalRef = this.modalService.show(GoalEditModalComponent, { initialState, ignoreBackdropClick: true });
     this.bsModalRef.content.editGoalEvent.subscribe((updatedGoal) => {
       this.editGoalEvent.emit(updatedGoal);
     });
@@ -62,7 +62,7 @@ export class GoalCardComponent implements OnInit {
       axisInstanceTitle: this.goalsByAxisInstance.title
     };
 
-    this.bsModalRef = this.modalService.show(CascadeMyGoalsModalComponent, { initialState, class: 'modal-lg' });
+    this.bsModalRef = this.modalService.show(CascadeMyGoalsModalComponent, { initialState, ignoreBackdropClick: true, class: 'modal-lg' });
     this.bsModalRef.content.cascadeMyGoalEvent.subscribe((golasForCascade) => {
       this.cascadeMyGoalEvent.emit(golasForCascade);
     });

@@ -98,7 +98,7 @@ export class EvaluationHrDetailComponent implements OnInit {
       userStatusList: this.userStatusList,
       actionLabel: 'Générer une fiche d\'évaluation'
     };
-    this.bsModalRef = this.modalService.show(CollaboratorSearchComponent, { initialState, class: 'modal-lg' });
+    this.bsModalRef = this.modalService.show(CollaboratorSearchComponent, { initialState, ignoreBackdropClick: true, class: 'modal-lg' });
     this.bsModalRef.content.actionEvent.subscribe((users) => {
       this.loading = true;
       this.hrService

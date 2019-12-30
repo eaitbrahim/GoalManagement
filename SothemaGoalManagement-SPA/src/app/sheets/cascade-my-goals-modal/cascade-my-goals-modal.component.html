@@ -1,7 +1,7 @@
 <ngx-loading [show]="loading"></ngx-loading>
 <div class="modal-header">
   <strong>Cascader l'objectif:</strong>
-  <span>{{myGoal.description}}</span>
+  <span>{{myGoal.description | truncateText:20}}</span>
   <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
     <span aria-hidden="true">&times;</span>
   </button>
@@ -24,7 +24,7 @@
             />
           </td>
           <td>{{ goal.axisInstanceTitle }}</td>
-          <td>{{ goal.description }}</td>
+          <td>{{ goal.description | truncateText:120}}</td>
           <td>{{ goal.weight }}%</td>
           <td>
             <button class="btn btn-outline-danger rounded-circle ml-1" (click)="$event.stopPropagation()" (click)="deleteGoal(goal)"
@@ -70,7 +70,7 @@
               </td>
               <td>{{ sb.fullName }}</td>
               <td>
-                <span *ngIf="!sb.selected">{{ sb.description}}</span>
+                <span *ngIf="!sb.selected">{{ sb.description | truncateText:120}}</span>
                 <span *ngIf="sb.selected">
                   <input type="text" name="description" (change)="setDescriptionOrWeight(idx, $event)" [value]="sb.description" placeholder="Sous object"
                     style="width:100%;">

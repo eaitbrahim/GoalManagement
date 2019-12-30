@@ -55,7 +55,7 @@ export class EvaluatorAssignmentComponent implements OnInit {
       userStatusList: this.userStatusList,
       actionLabel: 'Assigner comme évaluateur'
     };
-    this.bsModalRef = this.modalService.show(CollaboratorSearchComponent, { initialState, class: 'modal-lg' });
+    this.bsModalRef = this.modalService.show(CollaboratorSearchComponent, { initialState, ignoreBackdropClick: true, class: 'modal-lg' });
     this.bsModalRef.content.actionEvent.subscribe((users) => {
       this.loading = true;
       let userIds = users.map(u => u.id);
@@ -79,7 +79,7 @@ export class EvaluatorAssignmentComponent implements OnInit {
       userStatusList: this.userStatusList,
       actionLabel: 'Assigner comme évalué'
     };
-    this.bsModalRef = this.modalService.show(CollaboratorSearchComponent, { initialState, class: 'modal-lg' });
+    this.bsModalRef = this.modalService.show(CollaboratorSearchComponent, { initialState, ignoreBackdropClick: true, class: 'modal-lg' });
     this.bsModalRef.content.actionEvent.subscribe((users) => {
       this.loading = true;
       let userIds = users.map(u => u.id);

@@ -64,7 +64,7 @@ export class StrategyAxisComponent implements OnInit {
       axis
     };
 
-    this.bsModalRef = this.modalService.show(AxisModalComponent, { initialState });
+    this.bsModalRef = this.modalService.show(AxisModalComponent, { initialState, ignoreBackdropClick: true });
     this.bsModalRef.content.updateSelectedAxis.subscribe((updatedAxis) => {
       this.loading = true;
       this.hrService.updateAxis(axis.id, updatedAxis).subscribe(() => {

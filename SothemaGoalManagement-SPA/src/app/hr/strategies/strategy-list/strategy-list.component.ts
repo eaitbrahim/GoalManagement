@@ -62,7 +62,7 @@ export class StrategyListComponent implements OnInit {
       statusList: this.statusList
     };
 
-    this.bsModalRef = this.modalService.show(StrategyEditModalComponent, { initialState });
+    this.bsModalRef = this.modalService.show(StrategyEditModalComponent, { initialState, ignoreBackdropClick: true });
     this.bsModalRef.content.updateSelectedStrategy.subscribe((updatedStrategy) => {
       let updateParams = { updatedStrategy, filters: this.filters }
       this.editStrategyEvent.emit(updateParams);

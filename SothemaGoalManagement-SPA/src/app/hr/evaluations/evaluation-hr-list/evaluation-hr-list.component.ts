@@ -76,7 +76,7 @@ export class EvaluationHrListComponent implements OnInit {
       statusList: this.statusList
     };
 
-    this.bsModalRef = this.modalService.show(EvaluationHrEditModalComponent, { initialState });
+    this.bsModalRef = this.modalService.show(EvaluationHrEditModalComponent, { initialState, ignoreBackdropClick: true });
     this.bsModalRef.content.updateSelectedEvaluationFile.subscribe((updatedEvaluationFile) => {
       let updateParams = { updatedEvaluationFile: updatedEvaluationFile, filters: this.filters }
       this.editEvaluationFileEvent.emit(updateParams);

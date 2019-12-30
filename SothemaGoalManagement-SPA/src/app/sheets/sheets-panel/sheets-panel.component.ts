@@ -118,7 +118,7 @@ export class SheetsPanelComponent implements OnInit {
       goal
     };
 
-    this.bsModalRef = this.modalService.show(GoalEditModalComponent, { initialState });
+    this.bsModalRef = this.modalService.show(GoalEditModalComponent, { initialState, ignoreBackdropClick: true });
     this.bsModalRef.content.updateSelectedGoal.subscribe((updatedGoal) => {
       this.loading = true;
       this.userService.updateGoal(goal.id, this.authService.decodedToken.nameid, updatedGoal).subscribe(() => {

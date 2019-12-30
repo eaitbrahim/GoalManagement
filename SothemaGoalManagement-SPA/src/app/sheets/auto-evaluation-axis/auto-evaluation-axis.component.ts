@@ -38,7 +38,7 @@ export class AutoEvaluationAxisComponent implements OnInit {
       evaluateeId: this.sheetOwnerId
     };
 
-    this.bsModalRef = this.modalService.show(GoalEvaluationModalComponent, { initialState, class: 'modal-lg' });
+    this.bsModalRef = this.modalService.show(GoalEvaluationModalComponent, { initialState, ignoreBackdropClick: true, class: 'modal-lg' });
     this.bsModalRef.content.addGoalEvaluationEvent.subscribe((newEval) => {
       this.addGoalEvaluationEvent.emit(newEval);
     });

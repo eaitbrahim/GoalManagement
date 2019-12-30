@@ -64,7 +64,7 @@ export class BehavioralSkillListComponent implements OnInit {
       statusList: this.statusList
     };
 
-    this.bsModalRef = this.modalService.show(BehavioralSkillEditModalComponent, { initialState });
+    this.bsModalRef = this.modalService.show(BehavioralSkillEditModalComponent, { initialState, ignoreBackdropClick: true });
     this.bsModalRef.content.updateSelectedBehavioralSkill.subscribe((updatedBehavioralSkill) => {
       let updateParams = { updatedBehavioralSkill, filters: this.filters }
       this.editBehavioralSkillEvent.emit(updateParams);
