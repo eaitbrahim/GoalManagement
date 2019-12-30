@@ -176,6 +176,10 @@ namespace SothemaGoalManagement.API.Data
 
             });
 
+            builder.Entity<GoalType>().Property(p => p.Name).IsRequired();
+            builder.Entity<Project>().Property(p => p.Name).IsRequired();
+            builder.Entity<Project>().Property(p => p.Closed).HasDefaultValue(false);
+
             builder.Entity<Goal>(g =>
             {
                 g.HasOne<AxisInstance>(o => o.AxisInstance)

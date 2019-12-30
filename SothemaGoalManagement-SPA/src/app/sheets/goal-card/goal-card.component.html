@@ -68,7 +68,12 @@
           />
         </td>
         <td>{{ goal.description }}</td>
-        <td>{{ goal.goalType.name }}</td>
+        <td>
+          {{ goal.projectName == '' ? goal.goalType.name : '' }}
+          <button type="button" class="btn btn-primary" popover="{{goal.projectName}}" *ngIf="goal.projectName != ''">
+            {{goal.goalType.name}}
+          </button>
+        </td>
         <td>{{ goal.weight }}%</td>
         <td>
           <span *ngIf="!areGoalsReadOnly" class="d-flex justify-content-center">

@@ -10,7 +10,8 @@ import {
   ButtonsModule,
   ModalModule,
   CarouselModule,
-  AccordionModule
+  AccordionModule,
+  PopoverModule
 } from 'ngx-bootstrap';
 import { NgxLoadingModule } from 'ngx-loading';
 import { RouterModule } from '@angular/router';
@@ -201,6 +202,7 @@ export function tokenGetter() {
     CarouselModule.forRoot(),
     AccordionModule.forRoot(),
     NgxLoadingModule.forRoot({}),
+    PopoverModule.forRoot(),
     RouterModule.forRoot(appRoutes),
     NgxGalleryModule,
     BrowserAnimationsModule,

@@ -6,5 +6,7 @@ namespace SothemaGoalManagement.API.Models
         public string Name { get; set; }
 
         public int GoalTypeId { get; set; }
+
+        public bool Closed { get; set; }
     }
 }

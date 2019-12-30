@@ -44,7 +44,12 @@
       </tr>
       <tr *ngFor="let goal of goalsByAxisInstance.goals">
         <td>{{ goal.description }}</td>
-        <td>{{ goal.goalType.name }} {{ goal.projectName != '' ? '-' : ''}} {{ goal.projectName }}</td>
+        <td>
+          {{ goal.projectName == '' ? goal.goalType.name : '' }}
+          <button type="button" class="btn btn-primary" popover="{{goal.projectName}}" *ngIf="goal.projectName != ''">
+            {{goal.goalType.name}}
+          </button>
+        </td>
         <td align="center">
           <span class="badge badge-pill badge-info" title="Poids d'objectif">
             {{ goal.weight }} %

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SothemaGoalManagement.API.Data;
@@ -20,7 +21,7 @@ namespace SothemaGoalManagement.API.Repositories
 
         public async Task<IEnumerable<Project>> GetProjects()
         {
-            return await RepositoryContext.Projects.ToListAsync();
+            return await RepositoryContext.Projects.Where(p => p.Closed == true).ToListAsync();
         }
     }
 }
