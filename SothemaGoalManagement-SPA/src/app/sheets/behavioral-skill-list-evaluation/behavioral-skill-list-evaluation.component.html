@@ -73,8 +73,11 @@
     </table>
 
   </div>
-  <div class="card-footer" *ngIf="areBehavioralSkillsEvaluable">
-    <div class="float-right">
+  <div class="card-footer">
+    <div class="float-left">
+      <strong>Note Totale: {{totalGrade}}</strong>
+    </div>
+    <div class="float-right" *ngIf="areBehavioralSkillsEvaluable">
       <button class="btn btn-primary" (click)="save()" [disabled]="evals.length <= 4">Enregistrer</button>
     </div>
   </div>

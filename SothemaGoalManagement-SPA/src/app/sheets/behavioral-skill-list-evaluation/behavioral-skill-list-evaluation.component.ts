@@ -29,6 +29,7 @@ export class BehavioralSkillListEvaluationComponent implements OnInit {
   faCheckCircle = faCheckCircle;
   faTimesCircle = faTimesCircle;
   dirty: boolean;
+  totalGrade: number;
 
   constructor(private alertify: AlertifyService) { }
 
@@ -52,6 +53,7 @@ export class BehavioralSkillListEvaluationComponent implements OnInit {
     };
 
     this.evals.splice(this.evals.findIndex(e => e.behavioralSkillInstanceId === behavioralSkillInstance.id), 1, newEval);
+    this.totalGrade = this.evals.reduce((acc, curr) => acc + curr.grade, 0);
     this.dirty = true;
     this.behavioralSkillEvaluationUpdatedEvent.emit(true);
   }

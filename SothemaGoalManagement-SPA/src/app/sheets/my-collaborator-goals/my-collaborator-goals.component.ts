@@ -41,7 +41,7 @@ export class MyCollaboratorGoalsComponent implements OnInit {
       promptMessage: `Quelle est la raison de votre renvoi des objectifs de ${this.sheetToValidate.ownerName}?`
     };
 
-    this.bsModalRef = this.modalService.show(PromptModalComponent, { initialState, ignoreBackdropClick: true });
+    this.bsModalRef = this.modalService.show(PromptModalComponent, { initialState, ignoreBackdropClick: true, class: 'modal-lg' });
     this.bsModalRef.content.sendPromptValueEvent.subscribe((promptValue) => {
       var goals: any[] = [];
       this.goalsByAxisInstanceList.forEach(a => {
