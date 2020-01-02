@@ -290,7 +290,7 @@ export class SheetDetailComponent implements OnInit {
     this.userService.casvadeGoal(this.authService.decodedToken.nameid, golasForCascade, this.sheetDetail.evaluationFileId).subscribe(
       () => {
         this.loading = false;
-        this.alertify.success('L\'objectif est evoyé avec succès pour être cascader.');
+        this.alertify.success('Votre demande de création de sous-objectifs a été envoyée avec succès. Veuillez vérifier vos messages pour les résultats.');
       },
       error => {
         this.loading = false;

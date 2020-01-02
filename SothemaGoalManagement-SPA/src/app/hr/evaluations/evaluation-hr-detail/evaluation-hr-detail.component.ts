@@ -106,7 +106,7 @@ export class EvaluationHrDetailComponent implements OnInit {
         .subscribe(
           next => {
             this.loading = false;
-            this.alertify.success('La fiche d\'évaluation a été envoyée pour être générée avec succèes');
+            this.alertify.success('Votre demande de générer une fiche d\'évaluation pour les utilisateurs selectionés a été envoyée avec succès. Veuillez vérifier vos messages pour les résultats.');
             this.evaluationFileInstanceList = [];
             this.loadEvaluationFileInstances();
           },
