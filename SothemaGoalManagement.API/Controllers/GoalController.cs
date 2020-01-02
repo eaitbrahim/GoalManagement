@@ -129,18 +129,29 @@ namespace SothemaGoalManagement.API.Controllers
             }
         }
 
-        [HttpPost("{model}/cascadeGoal")]
-        public async Task<IActionResult> CascadeGoal(int userId, int model, IEnumerable<GoalForCascadeDto> goalsCascadeDto)
+        [HttpPost("{sheetId}/cascadeGoal")]
+        public async Task<IActionResult> CascadeGoal(int userId, int sheetId, IEnumerable<GoalForCascadeDto> goalsCascadeDto)
         {
             try
             {
                 if (goalsCascadeDto.Count() > 0)
                 {
-                    if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)) return Unauthorized();
+                    var sheet = await _repo.EvaluationFileInstance.GetEvaluationFileInstance(sheetId);
+                    if (sheet.OwnerId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)) return Unauthorized();
+                    // Make sure evaluatees are evaluated by the claimed evaluator 
+                    var evaluateesFromRepo = await _repo.User.LoadEvaluatees(sheet.OwnerId);
+                    foreach (var goalCascadeDto in goalsCascadeDto)
+                    {
+                        if (!evaluateesFromRepo.Any(e => e.Id == goalCascadeDto.EvaluateeId))
+                        {
+                            return BadRequest("Un des utilisateurs sélectionnés ne figure pas dans votre liste pour évaluer!");
+                        }
+                    }
+
                     // Set not published or archived axis instance id foreach evaluatee
                     foreach (var goalCascadeDto in goalsCascadeDto)
                     {
-                        var axisInstanceId = _repo.EvaluationFileInstance.GetAxisInstanceByUserIdAndAxisTitle(goalCascadeDto.EvaluateeId, model, goalCascadeDto.AxisInstanceTitle, goalCascadeDto.ParentGoalId).Result;
+                        var axisInstanceId = _repo.EvaluationFileInstance.GetAxisInstanceByUserIdAndAxisTitle(goalCascadeDto.EvaluateeId, sheetId, goalCascadeDto.AxisInstanceTitle, goalCascadeDto.ParentGoalId).Result;
                         goalCascadeDto.GoalForCreationDto.AxisInstanceId = axisInstanceId;
                     }
 
@@ -160,19 +171,18 @@ namespace SothemaGoalManagement.API.Controllers
                     // Log new goal has been assigned by the evaluator
                     var evaluateeIds = new List<int>();
                     var efilList = new List<EvaluationFileInstanceLog>();
+                    var evaluator = await _repo.User.GetUser(userId, true);
                     foreach (var goalCascadeDto in goalsCascadeDto)
                     {
                         if (goalCascadeDto.GoalForCreationDto.AxisInstanceId != 0)
                         {
                             evaluateeIds.Add(goalCascadeDto.EvaluateeId);
-
-                            var sheet = _repo.EvaluationFileInstance.GetEvaluationFileInstanceByUserId(goalCascadeDto.EvaluateeId, model).Result;
-                            var evaluator = _repo.User.GetUser(userId, true).Result;
+                            var evaluateeSheet = _repo.EvaluationFileInstance.GetEvaluationFileInstanceByUserId(goalCascadeDto.EvaluateeId, sheetId).Result;
                             var efil = new EvaluationFileInstanceLog
                             {
-                                Title = sheet.Title,
+                                Title = evaluateeSheet.Title,
                                 Created = DateTime.Now,
-                                Log = $"L'objectif: '{goalCascadeDto.GoalForCreationDto.Description}', a été ajouté à la fiche '{sheet.Title}' par l'évaluateur {evaluator.FirstName} {evaluator.LastName}."
+                                Log = $"L'objectif: '{goalCascadeDto.GoalForCreationDto.Description}', a été ajouté à la fiche '{evaluateeSheet.Title}' par l'évaluateur {evaluator.FirstName} {evaluator.LastName}."
                             };
                             efilList.Add(efil);
                         }

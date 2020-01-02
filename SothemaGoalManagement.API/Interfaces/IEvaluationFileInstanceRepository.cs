@@ -15,11 +15,11 @@ namespace SothemaGoalManagement.API.Interfaces
 
         Task<EvaluationFileInstance> GetEvaluationFileInstance(int id);
 
-        Task<EvaluationFileInstance> GetEvaluationFileInstanceByUserId(int userId, int model);
+        Task<EvaluationFileInstance> GetEvaluationFileInstanceByUserId(int userId, int sheetId);
 
         Task<PagedList<EvaluationFileInstance>> GetEvaluationFileInstancesForUser(CommunParams communParams);
 
-        Task<int> GetAxisInstanceByUserIdAndAxisTitle(int evaluateeId, int model, string axisInstanceTitle, int parentGoalId);
+        Task<int> GetAxisInstanceByUserIdAndAxisTitle(int evaluateeId, int sheetId, string axisInstanceTitle, int parentGoalId);
 
         void AddEvaluationFileInstance(EvaluationFileInstance evaluationFileInstance);
 

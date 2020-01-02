@@ -15,6 +15,7 @@ import { GoalByAxisInstance } from '../../_models/goalsByAxisInstance';
 import { GoalEvaluation } from '../../_models/goalEvaluation';
 import { BehavioralSkillInstance } from '../../_models/behavioralSkillInstance';
 import { Project } from '../../_models/project';
+import { Evaluator } from '../../_models/evaluator';
 
 @Component({
   selector: 'app-sheet-detail',
@@ -41,6 +42,7 @@ export class SheetDetailComponent implements OnInit {
   behavioralSkillEvaluationUpdated: boolean;
   showDetail: boolean;
   faArrowLeft = faArrowLeft;
+  evaluators: Evaluator[] = [];
 
   constructor(private route: ActivatedRoute, private router: Router, private userService: UserService, private adminService: AdminService, private authService: AuthService, private alertify: AlertifyService) { }
 
@@ -48,14 +50,16 @@ export class SheetDetailComponent implements OnInit {
     if (this.sheetToValidate) {
       this.sheetDetail = this.sheetToValidate;
       this.sheetTabs.tabs[this.tabIndex].active = true;
+      this.fetchEvaluators();
       this.getGoalsForAxis();
       this.getBehavioralSkillEvaluations();
     } else {
       this.route.data.subscribe(data => {
         const resolvedData = data['resolvedData'];
         this.sheetDetail = resolvedData['sheetDetail'];
-        this.goalTypeList = resolvedData['goalTypeList']
-        this.projectList = resolvedData['projectList']
+        this.goalTypeList = resolvedData['goalTypeList'];
+        this.projectList = resolvedData['projectList'];
+        this.fetchEvaluators();;
         this.getGoalsForAxis();
         this.getBehavioralSkillEvaluations();
       });
@@ -100,10 +104,16 @@ export class SheetDetailComponent implements OnInit {
   }
 
   CheckReadOnly() {
-    if (this.goalsByAxisInstanceList.filter(g => g.goalsStatus === 'Pas encore créé' || g.goalsStatus == 'Rédaction').length == 0) {
+    var goalsInInitialStatus = this.goalsByAxisInstanceList.filter(g => g.goalsStatus === 'Pas encore créé' || g.goalsStatus == 'Rédaction');
+    if (goalsInInitialStatus.length == 0) {
       this.areGoalsReadOnly = true;
     } else {
-      this.areGoalsReadOnly = false;
+      var indx = this.evaluators.findIndex(e => e.id == this.authService.decodedToken.nameid);
+      if (this.sheetDetail.ownerId != this.authService.decodedToken.nameid && indx === -1) {
+        this.areGoalsReadOnly = true;
+      } else {
+        this.areGoalsReadOnly = false;
+      }
     }
     return this.areGoalsReadOnly;
   }
@@ -114,7 +124,7 @@ export class SheetDetailComponent implements OnInit {
       () => {
         this.loading = false;
         this.getGoalsForAxis();
-        this.alertify.success('Objectif est créé avec succèes');
+        this.alertify.success('Objectif créé avec succès.');
       },
       error => {
         this.loading = false;
@@ -176,20 +186,22 @@ export class SheetDetailComponent implements OnInit {
   }
 
   CanBehavioralSkillBeEvaluated() {
-    if (this.sheetDetail.ownerId == this.authService.decodedToken.nameid) {
-      this.adminService.loadEvaluators(this.sheetDetail.ownerId).subscribe(result => {
-        var indx = result.findIndex(e => e.id === this.sheetDetail.ownerId);
-        if (indx != -1) this.areBehavioralSkillsEvaluable = true;
-        else this.areBehavioralSkillsEvaluable = false;
-      },
-        error => {
-          console.log('error in CanBehavioralSkillBeEvaluated: ', error);
-          this.areBehavioralSkillsEvaluable = false;
-        }
-      );
+    var indx = this.evaluators.findIndex(e => e.id == this.authService.decodedToken.nameid);
+    if (indx === -1) {
+      this.areBehavioralSkillsEvaluable = false;
     } else {
       this.areBehavioralSkillsEvaluable = true;
     }
+  }
+
+  fetchEvaluators() {
+    this.adminService.loadEvaluators(this.sheetDetail.ownerId).subscribe(result => {
+      this.evaluators = result;
+    },
+      error => {
+        console.log('error in CanBehavioralSkillBeEvaluated: ', error);
+      }
+    );
   }
 
   handleValidateGoals() {
@@ -287,7 +299,7 @@ export class SheetDetailComponent implements OnInit {
 
   handleCascadeMyGoal(golasForCascade: any) {
     this.loading = true;
-    this.userService.casvadeGoal(this.authService.decodedToken.nameid, golasForCascade, this.sheetDetail.evaluationFileId).subscribe(
+    this.userService.casvadeGoal(this.authService.decodedToken.nameid, golasForCascade, this.sheetDetail.id).subscribe(
       () => {
         this.loading = false;
         this.alertify.success('Votre demande de création de sous-objectifs a été envoyée avec succès. Veuillez vérifier vos messages pour les résultats.');
