@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { BehavioralSkillInstance } from '../../_models/behavioralSkillInstance';
 import { AlertifyService } from '../../_services/alertify.service';
 
@@ -27,7 +27,6 @@ export class BehavioralSkillListEvaluationComponent implements OnInit {
   description: string;
   evals: any[] = [];
   faCheckCircle = faCheckCircle;
-  faTimesCircle = faTimesCircle;
   dirty: boolean;
   totalGrade: number;
 

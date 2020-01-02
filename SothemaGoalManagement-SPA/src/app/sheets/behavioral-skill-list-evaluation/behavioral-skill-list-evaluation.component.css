@@ -1,7 +1,7 @@
-.icon-background1 {
-  color: red;
+.icon-backgroundNotEvaluated {
+  color: gray;
 }
 
-.icon-background2 {
+.icon-backgroundEvaluated {
   color: green;
 }
