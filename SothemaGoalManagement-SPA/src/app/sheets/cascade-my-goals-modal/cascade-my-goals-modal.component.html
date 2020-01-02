@@ -47,6 +47,9 @@
           <div class="text-muted">
             Veuillez sélectionner un ou plusieurs évalués pour leur cascader votre objectif.
           </div>
+          <div class="float-right">
+            <button type="button" class="btn btn-success" (click)="cascadeGoal()" [disabled]="disableAction()">Cascader Objectif</button>
+          </div>
           <div>
             <input type="text" placeholder="Filtrer par évalués" [(value)]="values" (keyup)="onKeyUp($event)" style="width:50%; display: bloack;"
             />
@@ -72,8 +75,10 @@
               <td>
                 <span *ngIf="!sb.selected">{{ sb.description | truncateText:120}}</span>
                 <span *ngIf="sb.selected">
-                  <input type="text" name="description" (change)="setDescriptionOrWeight(idx, $event)" [value]="sb.description" placeholder="Sous object"
-                    style="width:100%;">
+                  <textarea name="description" (change)="setDescriptionOrWeight(idx, $event)" [value]="sb.description" placeholder="Sous object"
+                    cols="50"></textarea>
+                  <!-- <input type="text" name="description" (change)="setDescriptionOrWeight(idx, $event)" [value]="sb.description" placeholder="Sous object"
+                    style="width:100%;"> -->
                 </span>
               </td>
               <td align="center">
@@ -101,10 +106,6 @@
         </div>
       </div>
 
-      <div class="alert alert-info mt-3" role="alert" *ngIf="filteredSubGoals.length === 0">
-        Aucun évalué n'a été encore affecté à vous!
-      </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" (click)="bsModalRef.hide()">Annuler</button>
-        <button type="button" class="btn btn-success" (click)="cascadeGoal()" [disabled]="disableAction()">Cascader Objectif</button>
       </div>

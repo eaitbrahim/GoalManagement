@@ -11,6 +11,8 @@ namespace SothemaGoalManagement.API.Interfaces
 
         Task<EvaluationFile> GetEvaluationFile(int id);
 
+        Task<EvaluationFile> GetModelWithAxisPoles(int modelId);
+
         Task<EvaluationFile> GetEvaluationFileByStratgeyId(int strategyId);
 
         Task<IEnumerable<int>> GetEvaluationFileBehavioralSkillIds(int evaluationFileId);

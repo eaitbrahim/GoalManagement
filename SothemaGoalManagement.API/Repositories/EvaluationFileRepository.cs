@@ -65,6 +65,12 @@ namespace SothemaGoalManagement.API.Repositories
             return await RepositoryContext.EvaluationFiles.Include(ef => ef.Strategy).SingleOrDefaultAsync(ef => ef.Id == id);
         }
 
+        public async Task<EvaluationFile> GetModelWithAxisPoles(int modelId)
+        {
+            return await RepositoryContext.EvaluationFiles.Include(m => m.Strategy).ThenInclude(s => s.AxisList)
+                                                           .ThenInclude(a => a.AxisPoles).SingleOrDefaultAsync(m => m.Id == modelId);
+        }
+
         public async Task<EvaluationFile> GetEvaluationFileByStratgeyId(int strategyId)
         {
             return await RepositoryContext.EvaluationFiles.SingleOrDefaultAsync(ef => ef.StrategyId == strategyId);

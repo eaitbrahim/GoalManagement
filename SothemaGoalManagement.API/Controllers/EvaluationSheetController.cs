@@ -135,6 +135,23 @@ namespace SothemaGoalManagement.API.Controllers
                     }
                 }
 
+                // Escape users whose pole do not belong to the model
+                var usersToProcess = new List<User>();
+                var model = await _repo.EvaluationFile.GetModelWithAxisPoles(evaluationFileId);
+                foreach (var user in usersWithoutInstance)
+                {
+                    var userFromRepo = await _repo.User.GetUser(user.Id, true);
+                    var poleIdOfUser = userFromRepo.Department.Pole.Id;
+                    foreach (var axis in model.Strategy.AxisList)
+                    {
+                        if (axis.AxisPoles.Any(p => p.PoleId == poleIdOfUser))
+                        {
+                            usersToProcess.Add(user);
+                            break;
+                        }
+                    }
+
+                }
                 // Create behavioral skill instances if they don't exist
                 var skillIds = await _repo.EvaluationFile.GetEvaluationFileBehavioralSkillIds(evaluationFileId);
                 var behavioralSkillInstancesFromRepo = await _repo.BehavioralSkillInstance.GetBehavioralSkillInstancesByBSIds(skillIds);
@@ -168,7 +185,7 @@ namespace SothemaGoalManagement.API.Controllers
 
                 // Create for them evaluation file instance foreach user
                 var evaluationFileFromRepo = await _repo.EvaluationFile.GetEvaluationFile(evaluationFileId);
-                foreach (var user in usersWithoutInstance)
+                foreach (var user in usersToProcess)
                 {
                     var evaluationFileInstance = new EvaluationFileInstance()
                     {
@@ -243,6 +260,18 @@ namespace SothemaGoalManagement.API.Controllers
                 }
                 await _repo.EvaluationFileInstance.SaveAllAsync();
 
+                // Send Notification
+                var emailContent = "Les utilisateurs suivants ont déjà une fiche d'évaluation pour cette année ou leur pôle n'est pas ajouté dans le modèle: ";
+                foreach (var user in users)
+                {
+                    if (!usersToProcess.Any(up => up.Id == user.Id))
+                    {
+                        emailContent += user.FirstName + " " + user.LastName + ", ";
+                    }
+                }
+                emailContent = emailContent.TrimEnd(',');
+                await SendNotification(int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value), emailContent);
+
                 return NoContent();
             }
             catch (Exception ex)
@@ -252,6 +281,19 @@ namespace SothemaGoalManagement.API.Controllers
             }
         }
 
+        private async Task SendNotification(int userId, string emailContent)
+        {
+            var messageForCreationDto = new MessageForCreationDto()
+            {
+                RecipientId = userId,
+                SenderId = userId,
+                Content = emailContent
+            };
+            var message = _mapper.Map<Message>(messageForCreationDto);
+            _repo.Message.AddMessage(message);
+
+            await _repo.Message.SaveAllAsync();
+        }
 
     }
 }

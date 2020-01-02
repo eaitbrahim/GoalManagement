@@ -1,59 +1,62 @@
-<ngx-loading [show]="loading"></ngx-loading>
-<accordion>
-  <accordion-group heading="Évaluateurs" isOpen="true">
-    <button class="btn btn-secondary w-60 mr-1" (click)="openModalForEvaluators()">
-      Assigner évaluateurs
-    </button>
-    <div class="alert alert-danger mt-3" role="alert" *ngIf="evaluators?.length === 0">
-      Aucun évaluateur n'a été affecté à {{evaluated.firstName}} {{evaluated.lastName}}!
-    </div>
+<div class="panel-body">
 
-    <div class="card mt-3" *ngIf="evaluators?.length > 0">
-      <div class="card-header">
-        Les évaluateurs assignés à {{evaluated.firstName}} {{evaluated.lastName}}:
-      </div>
-      <div class="card-body">
-        <ul>
-          <li class="list-inline-item" *ngFor="let evaluator of evaluators">
-            <app-evaluator [evaluator]="evaluator" (deleteEvaluatorEvent)="handleDeleteEvaluator($event)" (updateRankOfEvaluatorEvent)="handleUpdateRankOfEvaluator($event)"></app-evaluator>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </accordion-group>
-  <accordion-group heading="Évalués">
-    <button class="btn btn-secondary w-60 mr-1" (click)="openModalForEvaluatees()">
-      Assigner évalués
-    </button>
-    <div class="alert alert-info mt-3" role="alert" *ngIf="evaluatees?.length === 0">
-      Aucun évalué n'a été affecté à {{evaluated.firstName}} {{evaluated.lastName}}!
-    </div>
+  <ngx-loading [show]="loading"></ngx-loading>
 
-    <div class="card mt-3" *ngIf="evaluatees?.length > 0">
-      <div class="card-header">
-        Les évalués assignés à {{evaluated.firstName}} {{evaluated.lastName}}:
+  <div class="card mt-2">
+    <div class="card-header">
+      <strong>Les évaluateurs assignés à {{evaluated.firstName}} {{evaluated.lastName}}:</strong>
+      <div class="float-right">
+        <button class="btn btn-secondary w-60 mr-1" (click)="openModalForEvaluators()">
+          Assigner évaluateurs
+        </button>
       </div>
-      <div class="card-body">
-        <table class="table table-hover" style="cursor: pointer">
-          <tr>
-            <th style="width: 30%">Nom</th>
-            <th style="width: 35%">Fonction</th>
-            <th style="width: 30%">Direction</th>
-            <th style="width: 5%"></th>
-          </tr>
-          <tr *ngFor="let evaluatee of evaluatees">
-            <td>{{ evaluatee.fullName }}</td>
-            <td>{{ evaluatee.title }}</td>
-            <td>{{ evaluatee.departmentName }}</td>
-            <td>
-              <button class="btn btn-danger" (click)="$event.stopPropagation()" (click)="deleteEvaluatee(evaluatee)">
-                <fa-icon [icon]="faTrash"></fa-icon>
-              </button>
-            </td>
-          </tr>
-        </table>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-danger mt-3" role="alert" *ngIf="evaluators?.length === 0">
+        Aucun évaluateur n'a été affecté à {{evaluated.firstName}} {{evaluated.lastName}}!
+      </div>
+
+      <ul *ngIf="evaluators?.length > 0">
+        <li class="list-inline-item" *ngFor="let evaluator of evaluators">
+          <app-evaluator [evaluator]="evaluator" (deleteEvaluatorEvent)="handleDeleteEvaluator($event)" (updateRankOfEvaluatorEvent)="handleUpdateRankOfEvaluator($event)"></app-evaluator>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card mt-3">
+    <div class="card-header">
+      <strong>Les évalués assignés à {{evaluated.firstName}} {{evaluated.lastName}}:</strong>
+      <div class="float-right">
+        <button class="btn btn-secondary w-60 mr-1" (click)="openModalForEvaluatees()">
+          Assigner évalués
+        </button>
       </div>
     </div>
 
-  </accordion-group>
-</accordion>
+    <div class="card-body">
+      <div class="alert alert-info mt-3" role="alert" *ngIf="evaluatees?.length === 0">
+        Aucun évalué n'a été affecté à {{evaluated.firstName}} {{evaluated.lastName}}!
+      </div>
+      <table class="table table-hover" style="cursor: pointer" *ngIf="evaluatees?.length > 0">
+        <tr>
+          <th style="width: 30%">Nom</th>
+          <th style="width: 35%">Fonction</th>
+          <th style="width: 30%">Direction</th>
+          <th style="width: 5%"></th>
+        </tr>
+        <tr *ngFor="let evaluatee of evaluatees">
+          <td>{{ evaluatee.fullName }}</td>
+          <td>{{ evaluatee.title }}</td>
+          <td>{{ evaluatee.departmentName }}</td>
+          <td>
+            <button class="btn btn-danger" (click)="$event.stopPropagation()" (click)="deleteEvaluatee(evaluatee)">
+              <fa-icon [icon]="faTrash"></fa-icon>
+            </button>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+</div>
