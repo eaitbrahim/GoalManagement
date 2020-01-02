@@ -1,14 +1,16 @@
 <ngx-loading [show]="loading"></ngx-loading>
 <div class="modal-header">
   <strong>Cascader l'objectif:</strong>
-  <span>{{myGoal.description | truncateText:20}}</span>
   <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
 <div class="modal-body">
-  <div class="card" *ngIf="goalChildren.length > 0">
-    <div class="card-body">
+  <div class="card">
+    <div class="card-header">
+      <span popover="{{myGoal.description}}" style="cursor: pointer">{{ myGoal.description | truncateText:120}}</span>
+    </div>
+    <div class="card-body" *ngIf="goalChildren.length > 0">
       <table class="table table-hover">
         <tr>
           <!-- <th style="width: 2%"></th> -->
@@ -38,76 +40,76 @@
       </table>
     </div>
   </div>
-  <div class="card mt-1">
+
+  <div class="alert alert-info mt-3" role="alert" *ngIf="filteredSubGoals.length === 0">
+    Aucun évalué n'a été encore affecté à vous!
+  </div>
+
+  <div class="card mt-1" *ngIf="filteredSubGoals.length > 0">
+    <div class="card-header">
+      <div class="text-muted">
+        Veuillez sélectionner un ou plusieurs évalués pour leur cascader votre objectif.
+      </div>
+      <div class="float-right">
+        <button type="button" class="btn btn-success" (click)="cascadeGoal()" [disabled]="disableAction()">Cascader Objectif</button>
+      </div>
+      <div>
+        <input type="text" placeholder="Filtrer par évalués" [(value)]="values" (keyup)="onKeyUp($event)" style="width:50%; display: bloack;"
+        />
+      </div>
+    </div>
     <div class="card-body">
-      <div class="alert alert-info mt-3" role="alert" *ngIf="filteredSubGoals.length === 0">
-        Aucun évalué n'a été encore affecté à vous!
-      </div>
-
-      <div class="card mt-1" *ngIf="filteredSubGoals.length > 0">
-        <div class="card-header">
-          <div class="text-muted">
-            Veuillez sélectionner un ou plusieurs évalués pour leur cascader votre objectif.
-          </div>
-          <div class="float-right">
-            <button type="button" class="btn btn-success" (click)="cascadeGoal()" [disabled]="disableAction()">Cascader Objectif</button>
-          </div>
-          <div>
-            <input type="text" placeholder="Filtrer par évalués" [(value)]="values" (keyup)="onKeyUp($event)" style="width:50%; display: bloack;"
-            />
-          </div>
-        </div>
-        <div class="card-body">
-          <table class="table table-hover" style="cursor: pointer">
-            <tr>
-              <th style="width: 5%">
-                <input class="form-check-input" type="checkbox" (change)="selectAll()" [checked]="selectedAll" data-toggle="tooltip" data-placement="top"
-                  title="Tout sélectionner/désélectionner">
-              </th>
-              <th style="width: 15%">Nom</th>
-              <th style="width: 50%">Sous-objectif</th>
-              <th style="width: 20%">Poids %</th>
-              <th style="width: 15%"></th>
-            </tr>
-            <tr *ngFor="let sb of filteredSubGoals; let idx = index">
-              <td>
-                <input class="form-check-input" type="checkbox" value="{{sb.evaluateeId}}" [(ngModel)]="sb.selected" (change)="checkIfAllSelected()">
-              </td>
-              <td>{{ sb.fullName }}</td>
-              <td>
-                <span *ngIf="!sb.selected">{{ sb.description | truncateText:120}}</span>
-                <span *ngIf="sb.selected">
-                  <textarea name="description" (change)="setDescriptionOrWeight(idx, $event)" [value]="sb.description" placeholder="Sous object"
-                    cols="40"></textarea>
-                  <!-- <input type="text" name="description" (change)="setDescriptionOrWeight(idx, $event)" [value]="sb.description" placeholder="Sous object"
+      <table class="table table-hover" style="cursor: pointer">
+        <tr>
+          <th style="width: 5%">
+            <input class="form-check-input" type="checkbox" (change)="selectAll()" [checked]="selectedAll" data-toggle="tooltip" data-placement="top"
+              title="Tout sélectionner/désélectionner">
+          </th>
+          <th style="width: 15%">Nom</th>
+          <th style="width: 50%">Sous-objectif</th>
+          <th style="width: 20%">Poids %</th>
+          <th style="width: 15%"></th>
+        </tr>
+        <tr *ngFor="let sb of filteredSubGoals; let idx = index">
+          <td>
+            <input class="form-check-input" type="checkbox" value="{{sb.evaluateeId}}" [(ngModel)]="sb.selected" (change)="checkIfAllSelected()">
+          </td>
+          <td>{{ sb.fullName }}</td>
+          <td>
+            <span *ngIf="!sb.selected">{{ sb.description | truncateText:120}}</span>
+            <span *ngIf="sb.selected">
+              <textarea name="description" (change)="setDescriptionOrWeight(idx, $event)" [value]="sb.description" placeholder="Sous object"
+                cols="40"></textarea>
+              <!-- <input type="text" name="description" (change)="setDescriptionOrWeight(idx, $event)" [value]="sb.description" placeholder="Sous object"
                     style="width:100%;"> -->
-                </span>
-              </td>
-              <td align="center">
-                <span *ngIf="!sb.selected">
-                  0
-                </span>
-                <span *ngIf="sb.selected">
-                  <input type="number" name="weight" (change)="setDescriptionOrWeight(idx, $event)" [value]="sb.weight" maxlength="3" size="3"
-                    style="width:50px;">
-                </span>
-              </td>
-              <td align="center">
-                <span class="d-flex" *ngIf="sb.selected">
-                  <button class="btn btn-outline-success rounded-circle mr-1" (click)="addSubGoal(idx, sb)" title="Ajouter plus de sous-objectif">
-                    <fa-icon [icon]="faPlus"></fa-icon>
-                  </button>
-                  <button class="btn btn-outline-danger rounded-circle" title="Supprimer sous-objectif" (click)="removeSubGoal(idx, sb.evaluateeId)"
-                    [disabled]="disableRemoveSubGoal(sb.evaluateeId)">
-                    <fa-icon [icon]="faMinus"></fa-icon>
-                  </button>
-                </span>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </div>
+            </span>
+          </td>
+          <td align="center">
+            <span *ngIf="!sb.selected">
+              0
+            </span>
+            <span *ngIf="sb.selected">
+              <input type="number" name="weight" (change)="setDescriptionOrWeight(idx, $event)" [value]="sb.weight" maxlength="3" size="3"
+                style="width:50px;">
+            </span>
+          </td>
+          <td align="center">
+            <span class="d-flex" *ngIf="sb.selected">
+              <button class="btn btn-outline-success rounded-circle mr-1" (click)="addSubGoal(idx, sb)" title="Ajouter plus de sous-objectif">
+                <fa-icon [icon]="faPlus"></fa-icon>
+              </button>
+              <button class="btn btn-outline-danger rounded-circle" title="Supprimer sous-objectif" (click)="removeSubGoal(idx, sb.evaluateeId)"
+                [disabled]="disableRemoveSubGoal(sb.evaluateeId)">
+                <fa-icon [icon]="faMinus"></fa-icon>
+              </button>
+            </span>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
 
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" (click)="bsModalRef.hide()">Annuler</button>
-      </div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-primary" (click)="bsModalRef.hide()">Annuler</button>
+</div>

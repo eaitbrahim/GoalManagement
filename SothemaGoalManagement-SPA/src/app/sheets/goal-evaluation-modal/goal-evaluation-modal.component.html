@@ -1,11 +1,14 @@
 <div class="modal-header">
-  <h4 class="modal-title pull-left">Evalué l'objectif: {{goal.description | truncateText:20}}</h4>
+  <h4 class="modal-title pull-left">Evalué l'objectif:</h4>
   <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
 
 <div class="modal-body">
+  <div class="card-header">
+    <span popover="{{goal.description}}" style="cursor: pointer">{{ goal.description | truncateText:120}}</span>
+  </div>
   <form #evalForm="ngForm">
     <table class="table table-hover" style="width: 100%;">
       <tr>
