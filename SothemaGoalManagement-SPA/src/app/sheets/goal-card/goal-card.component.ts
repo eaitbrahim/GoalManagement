@@ -8,6 +8,7 @@ import { GoalType } from '../../_models/goalType';
 import { AxisInstance } from '../../_models/axisInstance';
 import { GoalEditModalComponent } from '../goal-edit-modal/goal-edit-modal.component';
 import { CascadeMyGoalsModalComponent } from '../cascade-my-goals-modal/cascade-my-goals-modal.component';
+import { Project } from '../../_models/project';
 
 @Component({
   selector: 'app-goal-card',
@@ -20,6 +21,7 @@ export class GoalCardComponent implements OnInit {
   @Input() sheetId: number;
   @Input() axisInstances: AxisInstance[];
   @Input() goalTypeList: GoalType[];
+  @Input() projectList: Project[];
   @Input() ownerName: string;
   @Output() editGoalEvent = new EventEmitter<any>();
   @Output() cascadeMyGoalEvent = new EventEmitter<any>();
@@ -42,6 +44,7 @@ export class GoalCardComponent implements OnInit {
     const initialState = {
       goal,
       goalTypeList: this.goalTypeList,
+      projectList: this.projectList,
       axisList: this.axisInstances,
       goalsByAxisInstance: this.goalsByAxisInstance
     };

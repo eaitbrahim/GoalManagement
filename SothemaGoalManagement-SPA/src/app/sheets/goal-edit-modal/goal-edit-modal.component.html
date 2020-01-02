@@ -18,21 +18,25 @@
     <textarea rows="2" [(ngModel)]="updatedGoal.description" name="goal" required type="text" class="form-control input-sm" placeholder="Ajouter un objectif"></textarea>
 
     <h4>Type d'objectif:</h4>
-    <select class="form-control mb-1" style="width: 200px" id="goalType" name="goalType" [(ngModel)]="updatedGoal.goalTypeId"
+    <select class="form-control mb-1" style="width: 200px" id="goalType" name="goalType" [(ngModel)]="updatedGoal.goalTypeId" (change)="onChangeGoalType()"
       required>
       <option *ngFor="let goalType of goalTypeList" [ngValue]="goalType.id">
         {{ goalType.name }}
       </option>
     </select>
 
-    <div *ngIf="updatedGoal.goalTypeId === 3">
+    <div *ngIf="filteredProjects.length > 0">
       <h4>Nom de projet:</h4>
-      <input [(ngModel)]="updatedGoal.projectName" name="projectName" type="text" class="form-control input-sm" placeholder="Nom de projet"
-      />
+      <select class="form-control input-sm" name="projectName" [(ngModel)]="updatedGoal.projectName">
+        <option *ngFor="let project of filteredProjects" [ngValue]="project.name">
+          {{ project.name }}
+        </option>
+      </select>
     </div>
 
     <h4>Poids d'objectif:</h4>
-    <input [(ngModel)]="updatedGoal.weight" (ngModelChange)="onChange($event)" name="goalWeight" required type="number" class="form-control input-sm" />
+    <input [(ngModel)]="updatedGoal.weight" (ngModelChange)="onChange($event)" name="goalWeight" required type="number" class="form-control input-sm"
+    />
 
     <h4>Statut:</h4>
     {{updatedGoal.status}}
