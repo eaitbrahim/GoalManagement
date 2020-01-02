@@ -48,7 +48,7 @@ namespace SothemaGoalEvaluationManagement.API.Controllers
             catch (Exception ex)
             {
                 _logger.LogError($"Something went wrong inside GetBehavioralSkillEvaluation endpoint: {ex.Message}");
-                return StatusCode(500, "Internal server error");
+                return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
 
@@ -73,7 +73,7 @@ namespace SothemaGoalEvaluationManagement.API.Controllers
             catch (Exception ex)
             {
                 _logger.LogError($"Something went wrong inside GetBehavioralSkillInstancesForSheet endpoint: {ex.Message}");
-                return StatusCode(500, "Internal server error");
+                return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
 
@@ -99,7 +99,7 @@ namespace SothemaGoalEvaluationManagement.API.Controllers
             catch (Exception ex)
             {
                 _logger.LogError($"Something went wrong inside createBehavioralSkillEvaluation endpoint: {ex.Message}");
-                return StatusCode(500, "Internal server error");
+                return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
         private async Task<bool> IsItAllowed(int userId, string action = "read")

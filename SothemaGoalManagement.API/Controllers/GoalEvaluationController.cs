@@ -47,7 +47,7 @@ namespace SothemaGoalEvaluationManagement.API.Controllers
             catch (Exception ex)
             {
                 _logger.LogError($"Something went wrong inside GetGoalEvaluation endpoint: {ex.Message}");
-                return StatusCode(500, "Internal server error");
+                return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
 
@@ -65,7 +65,7 @@ namespace SothemaGoalEvaluationManagement.API.Controllers
             catch (Exception ex)
             {
                 _logger.LogError($"Something went wrong inside GetGoalEvaluationsByGoalId endpoint: {ex.Message}");
-                return StatusCode(500, "Internal server error");
+                return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
 
@@ -89,7 +89,7 @@ namespace SothemaGoalEvaluationManagement.API.Controllers
             catch (Exception ex)
             {
                 _logger.LogError($"Something went wrong inside CreateEvaluationFile endpoint: {ex.Message}");
-                return StatusCode(500, "Internal server error");
+                return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
 

@@ -7,7 +7,7 @@ export class TruncateTextPipe implements PipeTransform {
 
   transform(value: string, length: number): string {
     const biggestWord = 50;
-    const elipses = `...(montre plus)`;
+    const elipses = `...(Afficher plus)`;
 
     if (typeof value === "undefined") return value;
     if (value.length <= length) return value;
