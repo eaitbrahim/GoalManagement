@@ -48,6 +48,24 @@ namespace SothemaGoalManagement.API.Controllers
             }
         }
 
+        [HttpGet("loadParameters/{evaluationModelId}")]
+        public async Task<IActionResult> LoadParameters(int evaluationModelId)
+        {
+            try
+            {
+                var evaluationFileFromRepo = await _repo.EvaluationFile.GetEvaluationFileDetail(evaluationModelId);
+
+                if (evaluationFileFromRepo == null) return NotFound();
+                var parametersToReturn = _mapper.Map<IEnumerable<ParametersToReturnDto>>(evaluationFileFromRepo.Parameters);
+                return Ok(parametersToReturn);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong inside LoadParameters endpoint: {ex.Message}");
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
         [Authorize(Policy = "RequireHRHRDRoles")]
         [HttpGet]
         public async Task<IActionResult> GetEvaluationModelList([FromQuery]CommunParams evaluationFileParams)
@@ -101,6 +119,30 @@ namespace SothemaGoalManagement.API.Controllers
         }
 
         [Authorize(Policy = "RequireHRHRDRoles")]
+        [HttpPost("addParameters/{userId}")]
+        public async Task<IActionResult> AddParameters(int userId, ParametersForCreationDto parametersForCreationDto)
+        {
+            try
+            {
+                var user = await _repo.User.GetUser(userId, false);
+                if (user.Id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)) return Unauthorized();
+
+                var parameters = _mapper.Map<Parameters>(parametersForCreationDto);
+
+                _repo.Parameters.AddParameters(parameters);
+
+                await _repo.Parameters.SaveAllAsync();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong inside AddParameters endpoint: {ex.Message}");
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
+        [Authorize(Policy = "RequireHRHRDRoles")]
         [HttpDelete("{id}/delete/{ownerId}")]
         public async Task<IActionResult> DeleteEvaluationModel(int id, int ownerId)
         {
@@ -127,6 +169,28 @@ namespace SothemaGoalManagement.API.Controllers
             }
         }
 
+        [Authorize(Policy = "RequireHRHRDRoles")]
+        [HttpDelete("{id}/deleteParameters/{userId}")]
+        public async Task<IActionResult> DeleteParameters(int id, int userId)
+        {
+            try
+            {
+                var user = await _repo.User.GetUser(userId, false);
+                if (user.Id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)) return Unauthorized();
+
+                var parametersFromRepo = await _repo.Parameters.GetParameters(id);
+                if (parametersFromRepo == null) return NotFound();
+
+                _repo.Parameters.DeleteParameters(parametersFromRepo);
+                await _repo.Parameters.SaveAllAsync();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong inside DeleteParameters endpoint: {ex.Message}");
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
 
         [Authorize(Policy = "RequireHRHRDRoles")]
         [HttpPut("edit/{ownerId}")]

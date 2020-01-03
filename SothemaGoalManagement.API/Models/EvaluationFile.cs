@@ -23,6 +23,7 @@ namespace SothemaGoalManagement.API.Models
         public int OwnerId { get; set; }
 
         public ICollection<EvaluationFileBehavioralSkill> BehavioralSkills { get; set; }
+        public ICollection<Parameters> Parameters { get; set; }
 
         public int StrategyId { get; set; }
 
@@ -36,6 +37,7 @@ namespace SothemaGoalManagement.API.Models
         public EvaluationFile()
         {
             BehavioralSkills = new Collection<EvaluationFileBehavioralSkill>();
+            Parameters = new Collection<Parameters>();
         }
     }
 }

@@ -13,22 +13,22 @@
           <input placeholder="Daterangepicker" type="text" class="form-control" id="datesRange" bsDaterangepicker [bsConfig]="bsConfig">
         </div>
         <div class="col-xs-12 col-12 col-sm-3 col-md-3 col-lg-2 form-group">
-          <button class="btn btn-success" type="button" (click)="addDateRange()">Ajouter</button>
+          <button class="btn btn-success" type="button" (click)="addParameters()">Ajouter</button>
         </div>
       </div>
     </div>
     <div class="card-body">
-      <table *ngIf="evaluationParameters.length > 0" class="table table-hover">
+      <table *ngIf="parameters.length > 0" class="table table-hover">
         <tr>
           <th style="width: 50%">Evénement</th>
           <th style="width: 45%">Plage de dates</th>
           <th style="width: 5%"></th>
         </tr>
-        <tr *ngFor="let evaluationParameter of evaluationParameters; let idx = index">
+        <tr *ngFor="let evaluationParameter of parameters; let idx = index">
           <td>{{ evaluationParameter.event }}</td>
-          <td>{{ evaluationParameter.datesRange }}</td>
+          <td>{{ evaluationParameter.startEvent | date:'mediumDate' }} - {{ evaluationParameter.endEvent | date:'mediumDate'}}</td>
           <td>
-            <button class="btn btn-outline-danger rounded-circle" (click)="deleteEvaluationParam(idx)">
+            <button class="btn btn-outline-danger rounded-circle" (click)="deleteParameters(evaluationParameter)">
               <fa-icon [icon]="faTrash"></fa-icon>
             </button>
           </td>

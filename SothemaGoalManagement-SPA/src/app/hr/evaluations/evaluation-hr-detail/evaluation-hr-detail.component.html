@@ -83,7 +83,7 @@
             </div>
           </tab>
           <tab heading="Paramétrages">
-            <app-evaluation-hr-parameters></app-evaluation-hr-parameters>
+            <app-evaluation-hr-parameters [parameters]="parameters" (deleteDateRangeEvent)="handleDeleteDateRange($event)" (addDateRangeEvent)="handleAddDateRange($event)"></app-evaluation-hr-parameters>
           </tab>
           <tab heading="Fiche d'évaluation">
             <div class="container">

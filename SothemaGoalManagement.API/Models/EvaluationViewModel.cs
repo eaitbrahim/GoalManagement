@@ -30,10 +30,13 @@ namespace SothemaGoalManagement.API.Models
 
         public DateTime SealedDate { get; set; }
 
+        public ICollection<Parameters> Parameters { get; set; }
+
         public EvaluationViewModel()
         {
             BehavioralSkills = new Collection<BehavioralSkill>();
             AxisList = new Collection<Axis>();
+            Parameters = new Collection<Parameters>();
         }
     }
 }

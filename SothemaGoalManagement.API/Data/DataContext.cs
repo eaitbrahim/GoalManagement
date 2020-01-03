@@ -36,6 +36,7 @@ namespace SothemaGoalManagement.API.Data
         public DbSet<BehavioralSkillInstance> BehavioralSkillInstances { get; set; }
 
         public DbSet<EvaluationFile> EvaluationFiles { get; set; }
+        public DbSet<Parameters> Parameters { get; set; }
 
         public DbSet<EvaluationFileInstance> EvaluationFileInstances { get; set; }
 
@@ -122,6 +123,15 @@ namespace SothemaGoalManagement.API.Data
             builder.Entity<Strategy>().HasOne(s => s.EvaluationFile).WithOne(ef => ef.Strategy)
                                                        .HasForeignKey<EvaluationFile>(ef => ef.StrategyId)
                                                        .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Parameters>(ai =>
+            {
+                ai.HasOne<EvaluationFile>(u => u.EvaluationFile)
+                    .WithMany(o => o.Parameters)
+                    .HasForeignKey(u => u.EvaluationFileId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+            });
 
             builder.Entity<EvaluationFileBehavioralSkill>(evaluationFileBehavioralSkill =>
             {

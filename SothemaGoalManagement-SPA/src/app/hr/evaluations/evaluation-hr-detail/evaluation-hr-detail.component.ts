@@ -12,6 +12,7 @@ import { AlertifyService } from '../../../_services/alertify.service';
 import { UserStatus } from '../../../_models/userStatus';
 import { AdminService } from '../../../_services/admin.service';
 import { CollaboratorSearchComponent } from '../../../collaborators/collaborator-search/collaborator-search.component';
+import { Parameters } from '../../../_models/parameters';
 
 @Component({
   selector: 'app-evaluation-hr-detail',
@@ -20,6 +21,7 @@ import { CollaboratorSearchComponent } from '../../../collaborators/collaborator
 })
 export class EvaluationHrDetailComponent implements OnInit {
   evaluationFile: EvaluationFile;
+  parameters: Parameters[] = [];
   evaluationFileInstanceList: EvaluationFileInstance[] = [];
   public loading: boolean;
   userStatusList: UserStatus[];
@@ -33,6 +35,7 @@ export class EvaluationHrDetailComponent implements OnInit {
     this.route.data.subscribe(data => {
       this.evaluationFile = data['evaluationFile'];
       this.loadEvaluationFileInstances();
+      this.parameters = this.evaluationFile.parameters;
       this.isReadOnly = this.evaluationFile.status == 'Publiée' || this.evaluationFile.status == 'Archivée';
     });
 
@@ -82,11 +85,11 @@ export class EvaluationHrDetailComponent implements OnInit {
               this.loading = false;
               this.evaluationFileInstanceList = [];
               this.loadEvaluationFileInstances();
-              this.alertify.success('La fiche d\'évaluation a été supprimée');
+              this.alertify.success('La fiche d\'évaluation a été supprimée.');
             },
             error => {
               this.loading = false;
-              this.alertify.error('Impossible de supprimer la fiche d\'évaluation');
+              this.alertify.error('Impossible de supprimer la fiche d\'évaluation.');
             }
           );
       }
@@ -139,5 +142,63 @@ export class EvaluationHrDetailComponent implements OnInit {
           );
       }
     );
+  }
+
+  handleAddDateRange(event: any) {
+    const newParameters = { ...event, evaluationFileId: this.evaluationFile.id };
+    this.loading = true;
+    this.hrService
+      .addParameters(newParameters, this.authService.decodedToken.nameid)
+      .subscribe(
+        () => {
+          this.loading = false;
+          this.parameters = [];
+          this.loadParameters();
+          this.alertify.success('L\'événement a été ajouté.');
+        },
+        error => {
+          this.loading = false;
+          this.alertify.error('Impossible d\'ajouter l\'événement.');
+        }
+      );
+  }
+
+  handleDeleteDateRange(parameters: Parameters) {
+    this.alertify.confirm('Supprimer',
+      `Êtes-vous sûr de vouloir supprimer l'événement: ${parameters.event} avec la plage des dates: ${parameters.startEvent.toString().substring(0, 10)} et ${parameters.endEvent.toString().substring(0, 10)}?`,
+      () => {
+        this.loading = true;
+        this.hrService
+          .deleteParameters(parameters.id, this.authService.decodedToken.nameid)
+          .subscribe(
+            () => {
+              this.loading = false;
+              this.parameters = [];
+              this.loadParameters();
+              this.alertify.success('L\'événement a été supprimé.');
+            },
+            error => {
+              this.loading = false;
+              this.alertify.error('Impossible de supprimer l\'événement.');
+            }
+          );
+      }
+    );
+  }
+
+  loadParameters() {
+    this.loading = true;
+    this.hrService
+      .loadParameters(this.evaluationFile.id)
+      .subscribe(
+        (result: Parameters[]) => {
+          this.loading = false;
+          this.parameters = result;
+        },
+        error => {
+          this.loading = false;
+          this.alertify.error('Impossible de charger les événements.');
+        }
+      );
   }
 }

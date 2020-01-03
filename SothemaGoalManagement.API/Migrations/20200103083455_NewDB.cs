@@ -72,7 +72,7 @@ namespace SothemaGoalManagement.API.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -132,8 +132,9 @@ namespace SothemaGoalManagement.API.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(nullable: true),
-                    GoalTypeId = table.Column<int>(nullable: false)
+                    Name = table.Column<string>(nullable: false),
+                    GoalTypeId = table.Column<int>(nullable: false),
+                    Closed = table.Column<bool>(nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
@@ -616,6 +617,28 @@ namespace SothemaGoalManagement.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Parameters",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Event = table.Column<string>(nullable: true),
+                    StartEvent = table.Column<DateTime>(nullable: false),
+                    EndEvent = table.Column<DateTime>(nullable: false),
+                    EvaluationFileId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Parameters", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Parameters_EvaluationFiles_EvaluationFileId",
+                        column: x => x.EvaluationFileId,
+                        principalTable: "EvaluationFiles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AxisInstances",
                 columns: table => new
                 {
@@ -877,6 +900,11 @@ namespace SothemaGoalManagement.API.Migrations
                 column: "SenderId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Parameters_EvaluationFileId",
+                table: "Parameters",
+                column: "EvaluationFileId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Photos_UserId",
                 table: "Photos",
                 column: "UserId");
@@ -932,6 +960,9 @@ namespace SothemaGoalManagement.API.Migrations
 
             migrationBuilder.DropTable(
                 name: "Messages");
+
+            migrationBuilder.DropTable(
+                name: "Parameters");
 
             migrationBuilder.DropTable(
                 name: "Photos");

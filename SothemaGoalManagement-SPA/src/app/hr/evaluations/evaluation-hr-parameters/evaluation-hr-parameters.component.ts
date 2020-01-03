@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { BsDatepickerConfig } from 'ngx-bootstrap';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { Parameters } from '../../../_models/parameters';
 
 @Component({
   selector: 'app-evaluation-hr-parameters',
@@ -8,8 +9,9 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./evaluation-hr-parameters.component.css']
 })
 export class EvaluationHrParametersComponent implements OnInit {
-  public loading = false;
-  evaluationParameters: any[] = [];
+  @Input() parameters: Parameters[] = [];
+  @Output() addDateRangeEvent = new EventEmitter<any>();
+  @Output() deleteDateRangeEvent = new EventEmitter<Parameters>();
   bsConfig: Partial<BsDatepickerConfig>;
   faTrash = faTrash;
 
@@ -22,12 +24,14 @@ export class EvaluationHrParametersComponent implements OnInit {
     };
   }
 
-  addDateRange() {
-    this.evaluationParameters.push({ event: (<HTMLInputElement>document.querySelector("#event")).value, datesRange: (<HTMLInputElement>document.querySelector("#datesRange")).value });
+  addParameters() {
+    const event = (<HTMLInputElement>document.querySelector("#event")).value;
+    const startEvent = (<HTMLInputElement>document.querySelector("#datesRange")).value.split('-')[0].trim();
+    const endEvent = (<HTMLInputElement>document.querySelector("#datesRange")).value.split('-')[1].trim();
+    this.addDateRangeEvent.emit({ event, startEvent, endEvent });
   }
 
-  deleteEvaluationParam(idx: number) {
-
-    this.evaluationParameters.splice(idx, 1);
+  deleteParameters(parameters: Parameters) {
+    this.deleteDateRangeEvent.emit(parameters);
   }
 }

@@ -14,6 +14,7 @@ import { EvaluationFile } from '../_models/evaluationFile';
 import { EvaluationFileInstance } from '../_models/evaluationFileInstance';
 import { AxisInstance } from '../_models/axisInstance';
 import { EvaluationFileInstanceLog } from '../_models/evaluationFileInstanceLog';
+import { Parameters } from '../_models/parameters';
 
 @Injectable({
   providedIn: 'root'
@@ -188,6 +189,18 @@ export class HrService {
 
   getEvaluationFileInstancesByEvaluationFileId(evaluationFileId: number) {
     return this.http.get<EvaluationFileInstance[]>(`${this.baseUrl}hr/evaluationSheet/${evaluationFileId}`);
+  }
+
+  loadParameters(evaluationFileId: number) {
+    return this.http.get<Parameters[]>(`${this.baseUrl}hr/evaluationModel/loadParameters/${evaluationFileId}`);
+  }
+
+  addParameters(newParameters: Parameters, userId: number) {
+    return this.http.post(`${this.baseUrl}hr/evaluationModel/addParameters/${userId}`, newParameters);
+  }
+
+  deleteParameters(id: number, userId: number) {
+    return this.http.delete(`${this.baseUrl}hr/evaluationModel/${id}/deleteParameters/${userId}`);
   }
 
   deleteEvaluationFileInstance(id: number, userId: number) {

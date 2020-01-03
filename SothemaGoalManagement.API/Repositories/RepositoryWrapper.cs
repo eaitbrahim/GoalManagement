@@ -25,6 +25,7 @@ namespace SothemaGoalManagement.API.Repositories
         private IGoalEvaluationRepository _goalEvaluation;
         private IBehavioralSkillEvaluationRepository _behavioralSkillEvaluation;
         private IEvaluationFileInstanceLogRepository _evaluationFileInstanceLog;
+        private IParametersRepository _parameters;
 
         public IAxisInstanceRepository AxisInstance
         {
@@ -250,6 +251,18 @@ namespace SothemaGoalManagement.API.Repositories
                     _evaluationFileInstanceLog = new EvaluationFileInstanceLogRepository(_repoContext);
                 }
                 return _evaluationFileInstanceLog;
+            }
+        }
+
+        public IParametersRepository Parameters
+        {
+            get
+            {
+                if (_parameters == null)
+                {
+                    _parameters = new ParametersRepository(_repoContext);
+                }
+                return _parameters;
             }
         }
 

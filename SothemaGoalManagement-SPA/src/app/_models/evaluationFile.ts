@@ -1,6 +1,7 @@
 import { BehavioralSkill } from './behavioralSkill';
 import { Strategy } from "./strategy";
 import { Axis } from './axis';
+import { Parameters } from './parameters';
 
 export interface EvaluationFile {
   id: number;
@@ -15,4 +16,5 @@ export interface EvaluationFile {
   created: Date;
   sealed?: boolean;
   sealedDate?: Date;
+  parameters: Parameters[];
 }

@@ -92,6 +92,9 @@ namespace SothemaGoalManagement.API.Helpers
 
             CreateMap<EvaluationFileForUpdateDto, EvaluationFile>().ForMember(x => x.BehavioralSkills, opt => opt.Ignore()); ;
 
+            CreateMap<ParametersForCreationDto, Parameters>();
+
+            CreateMap<Parameters, ParametersToReturnDto>();
 
             CreateMap<AxisInstance, AxisInstanceToReturnDto>();
 

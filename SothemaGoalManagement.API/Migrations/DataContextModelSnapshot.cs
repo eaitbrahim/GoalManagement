@@ -477,7 +477,8 @@ namespace SothemaGoalManagement.API.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -512,6 +513,26 @@ namespace SothemaGoalManagement.API.Migrations
                     b.HasIndex("SenderId");
 
                     b.ToTable("Messages");
+                });
+
+            modelBuilder.Entity("SothemaGoalManagement.API.Models.Parameters", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("EndEvent");
+
+                    b.Property<int>("EvaluationFileId");
+
+                    b.Property<string>("Event");
+
+                    b.Property<DateTime>("StartEvent");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EvaluationFileId");
+
+                    b.ToTable("Parameters");
                 });
 
             modelBuilder.Entity("SothemaGoalManagement.API.Models.Photo", b =>
@@ -558,9 +579,14 @@ namespace SothemaGoalManagement.API.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<bool>("Closed")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(false);
+
                     b.Property<int>("GoalTypeId");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -912,6 +938,14 @@ namespace SothemaGoalManagement.API.Migrations
                         .WithMany("MessagesSent")
                         .HasForeignKey("SenderId")
                         .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("SothemaGoalManagement.API.Models.Parameters", b =>
+                {
+                    b.HasOne("SothemaGoalManagement.API.Models.EvaluationFile", "EvaluationFile")
+                        .WithMany("Parameters")
+                        .HasForeignKey("EvaluationFileId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("SothemaGoalManagement.API.Models.Photo", b =>

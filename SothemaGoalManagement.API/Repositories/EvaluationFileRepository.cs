@@ -62,7 +62,7 @@ namespace SothemaGoalManagement.API.Repositories
 
         public async Task<EvaluationFile> GetEvaluationFile(int id)
         {
-            return await RepositoryContext.EvaluationFiles.Include(ef => ef.Strategy).SingleOrDefaultAsync(ef => ef.Id == id);
+            return await RepositoryContext.EvaluationFiles.Include(ef => ef.Strategy).Include(ef => ef.Parameters).SingleOrDefaultAsync(ef => ef.Id == id);
         }
 
         public async Task<EvaluationFile> GetModelWithAxisPoles(int modelId)
@@ -82,6 +82,7 @@ namespace SothemaGoalManagement.API.Repositories
                                                                          .ThenInclude(s => s.AxisList)
                                                                          .ThenInclude(a => a.AxisPoles)
                                                                          .Include(ef => ef.Owner)
+                                                                         .Include(ef => ef.Parameters)
                           select new EvaluationViewModel
                           {
                               Id = evaluationFile.Id,
@@ -97,7 +98,8 @@ namespace SothemaGoalManagement.API.Repositories
                               Created = evaluationFile.Created,
                               Status = evaluationFile.Status,
                               Sealed = evaluationFile.Sealed,
-                              SealedDate = evaluationFile.SealedDate
+                              SealedDate = evaluationFile.SealedDate,
+                              Parameters = evaluationFile.Parameters
                           }).SingleOrDefaultAsync(ef => ef.Id == id);
         }
 
