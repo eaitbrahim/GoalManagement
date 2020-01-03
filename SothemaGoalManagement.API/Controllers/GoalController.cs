@@ -47,7 +47,7 @@ namespace SothemaGoalManagement.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Something went wrong inside GetGoal endpoint: {ex.Message}");
+                _logger.LogError($"Something went wrong inside GetGoal endpoint: {ex.StackTrace}");
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
@@ -73,7 +73,7 @@ namespace SothemaGoalManagement.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Something went wrong inside GetGoal endpoint: {ex.Message}");
+                _logger.LogError($"Something went wrong inside GetGoal endpoint: {ex.StackTrace}");
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
@@ -90,7 +90,7 @@ namespace SothemaGoalManagement.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Something went wrong inside GetGoalType endpoint: {ex.Message}");
+                _logger.LogError($"Something went wrong inside GetGoalType endpoint: {ex.StackTrace}");
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
@@ -107,7 +107,7 @@ namespace SothemaGoalManagement.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Something went wrong inside GetGoalType endpoint: {ex.Message}");
+                _logger.LogError($"Something went wrong inside GetGoalType endpoint: {ex.StackTrace}");
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
@@ -124,7 +124,7 @@ namespace SothemaGoalManagement.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Something went wrong inside GetGoals endpoint: {ex.Message}");
+                _logger.LogError($"Something went wrong inside GetGoals endpoint: {ex.StackTrace}");
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
@@ -205,7 +205,7 @@ namespace SothemaGoalManagement.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Something went wrong inside CascadeGoal endpoint: {ex.Message}");
+                _logger.LogError($"Something went wrong inside CascadeGoal endpoint: {ex.StackTrace}");
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
@@ -233,7 +233,7 @@ namespace SothemaGoalManagement.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Something went wrong inside CreateGoal endpoint: {ex.Message}");
+                _logger.LogError($"Something went wrong inside CreateGoal endpoint: {ex.StackTrace}");
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
@@ -278,7 +278,7 @@ namespace SothemaGoalManagement.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Something went wrong inside UpdateGoal endpoint: {ex.Message}");
+                _logger.LogError($"Something went wrong inside UpdateGoal endpoint: {ex.StackTrace}");
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
@@ -374,7 +374,7 @@ namespace SothemaGoalManagement.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Something went wrong inside ValidateGoals endpoint: {ex.Message}");
+                _logger.LogError($"Something went wrong inside ValidateGoals endpoint: {ex.StackTrace}");
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
@@ -425,7 +425,7 @@ namespace SothemaGoalManagement.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Something went wrong inside DeleteGoal endpoint: {ex.Message}");
+                _logger.LogError($"Something went wrong inside DeleteGoal endpoint: {ex.StackTrace}");
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }

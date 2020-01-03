@@ -62,7 +62,7 @@ namespace SothemaGoalManagement.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Something went wrong inside Login endpoint: {ex.Message}");
+                _logger.LogError($"Something went wrong inside Login endpoint: {ex.StackTrace}");
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
@@ -93,7 +93,7 @@ namespace SothemaGoalManagement.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Something went wrong inside ResetPassword endpoint: {ex.Message}");
+                _logger.LogError($"Something went wrong inside ResetPassword endpoint: {ex.StackTrace}");
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
@@ -118,7 +118,7 @@ namespace SothemaGoalManagement.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Something went wrong inside GeneratePasswordResetToken endpoint: {ex.Message}");
+                _logger.LogError($"Something went wrong inside GeneratePasswordResetToken endpoint: {ex.StackTrace}");
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
