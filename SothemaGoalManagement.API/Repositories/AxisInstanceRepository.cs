@@ -22,7 +22,7 @@ namespace SothemaGoalManagement.API.Repositories
 
         public async Task<IEnumerable<AxisInstance>> GetAxisInstancesByIds(IEnumerable<int> axisInstanceIds)
         {
-            return await FindByCondition(u => axisInstanceIds.Contains(u.Id)).ToListAsync();
+            return await FindByCondition(u => axisInstanceIds.Contains(u.Id)).Include(ai => ai.EvaluationFileInstance).ToListAsync();
         }
 
         public void AddAxisInstance(AxisInstance axisInstance)

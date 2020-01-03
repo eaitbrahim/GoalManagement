@@ -435,6 +435,8 @@ namespace SothemaGoalManagement.API.Controllers
             var goalsGroupedByAxisInstanceList = new List<AxisInstanceWithGoalsToReturnDto>();
             // Add Axis Instances
             var axisInstanceList = await _repo.AxisInstance.GetAxisInstancesByIds(axisInstanceIds);
+            var ownerId = axisInstanceList.First().EvaluationFileInstance.OwnerId;
+            var goalOwnerSelfEvaluator = await IsGoalOwnerSelfEvaluator(ownerId);
             foreach (var axisInstance in axisInstanceList)
             {
                 var axisInstanceWithGoalsToReturnDto = new AxisInstanceWithGoalsToReturnDto()
@@ -451,11 +453,8 @@ namespace SothemaGoalManagement.API.Controllers
 
             // Add goals for each axis instance
             var goalsFromRepo = await _repo.Goal.GetGoalsByAxisInstanceIds(axisInstanceIds);
-            if (goalsFromRepo != null && goalsFromRepo.Count() > 0)
+            if (goalsFromRepo != null)
             {
-                var ownerId = goalsFromRepo.First().AxisInstance.EvaluationFileInstance.OwnerId;
-                var goalOwnerSelfEvaluator = await IsGoalOwnerSelfEvaluator(ownerId);
-
                 foreach (var goal in goalsFromRepo)
                 {
                     var goalToReturn = await BuildGoalToReturn(goal);
