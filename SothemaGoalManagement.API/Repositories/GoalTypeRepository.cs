@@ -21,7 +21,7 @@ namespace SothemaGoalManagement.API.Repositories
 
         public async Task<IEnumerable<Project>> GetProjects()
         {
-            return await RepositoryContext.Projects.Where(p => p.Closed == true).ToListAsync();
+            return await RepositoryContext.Projects.Where(p => p.Closed == false).ToListAsync();
         }
     }
 }
