@@ -451,7 +451,7 @@ namespace SothemaGoalManagement.API.Controllers
 
             // Add goals for each axis instance
             var goalsFromRepo = await _repo.Goal.GetGoalsByAxisInstanceIds(axisInstanceIds);
-            if (goalsFromRepo != null)
+            if (goalsFromRepo != null && goalsFromRepo.Count() > 0)
             {
                 var ownerId = goalsFromRepo.First().AxisInstance.EvaluationFileInstance.OwnerId;
                 var goalOwnerSelfEvaluator = await IsGoalOwnerSelfEvaluator(ownerId);
