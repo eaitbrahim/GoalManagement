@@ -299,7 +299,7 @@ export class SheetDetailComponent implements OnInit {
 
   handleCascadeMyGoal(golasForCascade: any) {
     this.loading = true;
-    this.userService.casvadeGoal(this.authService.decodedToken.nameid, golasForCascade, this.sheetDetail.id).subscribe(
+    this.userService.casvadeGoal(this.authService.decodedToken.nameid, golasForCascade, this.sheetDetail.id, this.sheetDetail.evaluationFileId).subscribe(
       () => {
         this.loading = false;
         this.alertify.success('Votre demande de création de sous-objectifs a été envoyée avec succès. Veuillez vérifier vos messages pour les résultats.');
