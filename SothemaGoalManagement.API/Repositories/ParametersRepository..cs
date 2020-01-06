@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SothemaGoalManagement.API.Data;
@@ -12,8 +13,12 @@ namespace SothemaGoalManagement.API.Repositories
 
         public async Task<Parameters> GetParameters(int id)
         {
-            var Parameters = await RepositoryContext.Parameters.IgnoreQueryFilters().FirstOrDefaultAsync(p => p.Id == id);
-            return Parameters;
+            return await FindByCondition(p => p.Id == id).FirstOrDefaultAsync();
+
+        }
+        public async Task<IEnumerable<Parameters>> GetParametersByModeId(int modelId)
+        {
+            return await FindByCondition(p => p.EvaluationFileId == modelId).ToListAsync();
         }
 
         public void AddParameters(Parameters Parameters)

@@ -53,10 +53,10 @@ namespace SothemaGoalManagement.API.Controllers
         {
             try
             {
-                var evaluationFileFromRepo = await _repo.EvaluationFile.GetEvaluationFileDetail(evaluationModelId);
+                var parametersFromRepo = await _repo.Parameters.GetParametersByModeId(evaluationModelId);
 
-                if (evaluationFileFromRepo == null) return NotFound();
-                var parametersToReturn = _mapper.Map<IEnumerable<ParametersToReturnDto>>(evaluationFileFromRepo.Parameters);
+                if (parametersFromRepo == null) return NotFound();
+                var parametersToReturn = _mapper.Map<IEnumerable<ParametersToReturnDto>>(parametersFromRepo);
                 return Ok(parametersToReturn);
             }
             catch (Exception ex)

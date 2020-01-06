@@ -33,6 +33,12 @@ namespace SothemaGoalManagement.API.Models
 
         public int EvaluationFileId { get; set; }
 
+        public string OwnerComment { get; set; }
+        public string ValidatorComment { get; set; }
+
+        public DateTime OwnerValidationDateTime { get; set; }
+        public DateTime ValidatorValidationDateTime { get; set; }
+
         public EvaluationFile EvaluationFile { get; set; }
         public EvaluationFileInstance()
         {

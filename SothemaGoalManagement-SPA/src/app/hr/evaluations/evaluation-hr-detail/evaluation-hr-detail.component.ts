@@ -35,7 +35,7 @@ export class EvaluationHrDetailComponent implements OnInit {
     this.route.data.subscribe(data => {
       this.evaluationFile = data['evaluationFile'];
       this.loadEvaluationFileInstances();
-      this.parameters = this.evaluationFile.parameters;
+      this.loadParameters();
       this.isReadOnly = this.evaluationFile.status == 'Publiée' || this.evaluationFile.status == 'Archivée';
     });
 
