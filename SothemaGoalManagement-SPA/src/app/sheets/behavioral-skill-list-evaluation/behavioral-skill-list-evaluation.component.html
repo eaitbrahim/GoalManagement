@@ -78,7 +78,7 @@
       <strong>Note Totale: {{totalGrade}}</strong>
     </div>
     <div class="float-right" *ngIf="areBehavioralSkillsEvaluable">
-      <button class="btn btn-primary" (click)="save()" [disabled]="evals.length <= 4">Enregistrer</button>
+      <button class="btn btn-primary" (click)="save()" [disabled]="enableSave()">Enregistrer</button>
     </div>
   </div>
 </div>

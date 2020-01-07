@@ -28,25 +28,25 @@ export class BehavioralSkillListEvaluationComponent implements OnInit {
   evals: any[] = [];
   faCheckCircle = faCheckCircle;
   dirty: boolean;
-  totalGrade: number;
+  totalGrade: string = "0.00";
 
   constructor(private alertify: AlertifyService) { }
 
   ngOnInit() {
     this.evals = this.behavioralSkillInstanceList.map(behavioralSkillInstance => ({
-      grade: behavioralSkillInstance.behavioralSkillGrade,
+      grade: behavioralSkillInstance.behavioralSkillGrade.toFixed(2),
       level: behavioralSkillInstance.behavioralSkillLevel,
       behavioralSkillInstanceId: behavioralSkillInstance.id,
       evaluateeId: this.sheetOwnerId,
       evaluationFileInstanceId: this.sheetId
     }));
 
-    this.totalGrade = this.evals.reduce((acc, curr) => acc + curr.grade, 0);
+    this.calculateTotalGrade();
   }
 
-  changeEventInRadioButton(behavioralSkillInstance: BehavioralSkillInstance, newGrade: string) {
+  changeEventInRadioButton(behavioralSkillInstance: BehavioralSkillInstance, newGrade: number) {
     let newEval = {
-      grade: parseInt(newGrade),
+      grade: newGrade,
       level: this.getLevel(behavioralSkillInstance, newGrade),
       behavioralSkillInstanceId: behavioralSkillInstance.id,
       evaluateeId: this.sheetOwnerId,
@@ -54,16 +54,29 @@ export class BehavioralSkillListEvaluationComponent implements OnInit {
     };
 
     this.evals.splice(this.evals.findIndex(e => e.behavioralSkillInstanceId === behavioralSkillInstance.id), 1, newEval);
-    this.totalGrade = this.evals.reduce((acc, curr) => acc + curr.grade, 0);
+    this.calculateTotalGrade();
+
     this.dirty = true;
     this.behavioralSkillEvaluationUpdatedEvent.emit(true);
   }
 
-  getLevel(behavioralSkillInstance: BehavioralSkillInstance, grade: string) {
-    if (grade == behavioralSkillInstance.levelOneGrade.toString()) return behavioralSkillInstance.levelOne;
-    if (grade == behavioralSkillInstance.levelTwoGrade.toString()) return behavioralSkillInstance.levelTwo;
-    if (grade == behavioralSkillInstance.levelThreeGrade.toString()) return behavioralSkillInstance.levelThree;
-    if (grade == behavioralSkillInstance.levelFourGrade.toString()) return behavioralSkillInstance.levelFour;
+  calculateTotalGrade() {
+    let totalGrade = 0;
+    for (let e of this.evals) {
+      totalGrade += Number(e.grade);
+    }
+    this.totalGrade = (totalGrade / this.evals.length).toFixed(2);
+  }
+
+  enableSave() {
+    return this.evals.filter(e => e.level === "").length > 0 ? true : false;
+  }
+
+  getLevel(behavioralSkillInstance: BehavioralSkillInstance, grade: number) {
+    if (grade == behavioralSkillInstance.levelOneGrade) return behavioralSkillInstance.levelOne;
+    if (grade == behavioralSkillInstance.levelTwoGrade) return behavioralSkillInstance.levelTwo;
+    if (grade == behavioralSkillInstance.levelThreeGrade) return behavioralSkillInstance.levelThree;
+    if (grade == behavioralSkillInstance.levelFourGrade) return behavioralSkillInstance.levelFour;
 
     return '';
   }
