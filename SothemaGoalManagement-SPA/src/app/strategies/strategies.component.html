@@ -19,21 +19,21 @@
         <p class="card-text">{{strategy.description}}</p>
       </div>
 
-      <div class="card-body" [ngStyle]="{'background-color':viewMode ? 'white' : 'grey' }">
+      <div class="card-body" >
         <carousel *ngIf="!viewMode">
           <slide *ngFor="let axis of strategy.axisList">
             <div class="text-center py-5">
-              <h2>{{axis.title}}</h2>
-              <p class="card-text text-info text-center">{{axis.description}}</p>
+              <h1>{{axis.title}}</h1>
+              <p class="card-text text-muted text-center">{{axis.description}}</p>
               <ul class="list-inline text-center">
-                <li class="list-inline-item" *ngFor="let ap of axis.axisPoles">
-                  <div class="card text-center" style="width: 15rem;">
+                <li class="list-inline-item" style="padding-top: 5px" *ngFor="let ap of axis.axisPoles">
+                  <div class="card border-primary text-center" style="width: 15rem;">
                     <div class="card-body">
-                      <h4 class="card-title text-center mb-1">
+                      <h5 class="card-title text-center mb-1">
                         {{ap.poleName}}
-                      </h4>
-                      <span class="badge badge-pill badge-danger">
-                        <h1>{{ap.weight}} %</h1>
+                      </h5>
+                      <span class="badge badge-pill badge-primary">
+                        <h5>{{ap.weight}} %</h5>
                       </span>
                     </div>
                   </div>
@@ -58,7 +58,7 @@
                 <tr *ngFor="let ap of axis.axisPoles">
                   <td>{{ap.poleName}}</td>
                   <td>
-                    <span class="badge badge-pill badge-danger">
+                    <span class="badge badge-pill badge-primary">
                       {{ap.weight}} %
                     </span>
                   </td>
