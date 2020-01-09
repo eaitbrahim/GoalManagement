@@ -37,7 +37,8 @@ export class HomeComponent implements OnInit {
       },
       error => {
         this.loading = false;
-        this.alertify.error(error);
+        console.log('Error when login: ', error);
+        this.alertify.error('L\'adresse email ou le mot de passe est incorrect.');
       },
       () => {
         this.router.navigate(['']);
