@@ -7,10 +7,10 @@
     <table class="table table-hover mt-1">
       <tr>
         <th style="width: 20%"></th>
-        <th style="width: 15%">{{behavioralSkillInstanceList[0].levelOne}}</th>
-        <th style="width: 15%">{{behavioralSkillInstanceList[0].levelTwo}}</th>
-        <th style="width: 25%">{{behavioralSkillInstanceList[0].levelThree}}</th>
-        <th style="width: 25%">{{behavioralSkillInstanceList[0].levelFour}}</th>
+        <th  style="width: 15%; text-align: center;">  <fa-icon class="fa-3x" style="color: red;" [icon]="faAngry" ></fa-icon><br/>{{behavioralSkillInstanceList[0].levelOne}}</th>
+        <th style="width: 15%; text-align: center;">  <fa-icon class="fa-3x" style="color:#2780E3;" [icon]="faFrown" ></fa-icon><br/>{{behavioralSkillInstanceList[0].levelTwo}}</th>
+        <th style="width: 25%; text-align: center;">  <fa-icon class="fa-3x" style="color:orange;" [icon]="faSmile" ></fa-icon><br/>{{behavioralSkillInstanceList[0].levelThree}}</th>
+        <th style="width: 25%; text-align: center;">  <fa-icon class="fa-3x" style="color:green;" [icon]="faGrin" ></fa-icon><br/>{{behavioralSkillInstanceList[0].levelFour}}</th>
       </tr>
       <tr *ngFor="let behavioralSkillInstance of behavioralSkillInstanceList">
         <td>
