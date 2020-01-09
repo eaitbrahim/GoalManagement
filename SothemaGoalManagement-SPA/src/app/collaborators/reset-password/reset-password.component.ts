@@ -70,7 +70,7 @@ export class ResetPasswordComponent implements OnInit {
       },
       error => {
         this.loading = false;
-        this.alertify.error(error);
+        this.alertify.error('Le mot de passe doit contenir au moins une lettre majuscule et une valeur numérique.');
       },
       () => {
         this.router.navigate(['/home']);
