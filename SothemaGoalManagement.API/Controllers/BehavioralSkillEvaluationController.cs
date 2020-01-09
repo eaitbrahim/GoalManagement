@@ -60,6 +60,17 @@ namespace SothemaGoalEvaluationManagement.API.Controllers
                 if (!await IsItAllowed(userId)) return Unauthorized();
 
                 var behavioralSkillInstancesFromRepo = await _repo.BehavioralSkillInstance.GetBehavioralSkillInstancesBySheetId(sheetId);
+                var behavioralSkillInstanceEvaluationsFromRepo = await _repo.BehavioralSkillEvaluation.GetBehavioralSkillEvaluationsBySheetId(sheetId);
+                foreach (var bsi in behavioralSkillInstancesFromRepo)
+                {
+                    foreach (var bse in behavioralSkillInstanceEvaluationsFromRepo)
+                    {
+                        if (bsi.Id == bse.BehavioralSkillInstanceId)
+                        {
+                            bsi.BehavioralSkillEvaluations.Add(bse);
+                        }
+                    }
+                }
                 var behavioralSkillInstancesToReturn = _mapper.Map<IEnumerable<BehavioralSkillToReturnDto>>(behavioralSkillInstancesFromRepo);
                 foreach (var behavioralSkillInstanceToReturn in behavioralSkillInstancesToReturn)
                 {

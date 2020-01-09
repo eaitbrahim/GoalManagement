@@ -1,3 +1,4 @@
+import { BehavioralSkillEvaluation } from './../../_models/behavioralSkillEvaluation';
 import { HrService } from './../../_services/hr.service';
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { TabsetComponent } from 'ngx-bootstrap';
@@ -52,7 +53,7 @@ export class SheetDetailComponent implements OnInit {
       this.sheetTabs.tabs[this.tabIndex].active = true;
       this.fetchEvaluators();
       this.getGoalsForAxis();
-      this.getBehavioralSkillEvaluations();
+      this.getBehavioralSkillInstances();
     } else {
       this.route.data.subscribe(data => {
         const resolvedData = data['resolvedData'];
@@ -61,7 +62,7 @@ export class SheetDetailComponent implements OnInit {
         this.projectList = resolvedData['projectList'];
         this.fetchEvaluators();;
         this.getGoalsForAxis();
-        this.getBehavioralSkillEvaluations();
+        this.getBehavioralSkillInstances();
       });
     }
   }
@@ -86,10 +87,10 @@ export class SheetDetailComponent implements OnInit {
       );
   }
 
-  getBehavioralSkillEvaluations() {
+  getBehavioralSkillInstances() {
     this.loading = true;
     this.userService
-      .getBehavioralSkillEvaluations(this.sheetDetail.ownerId, this.sheetDetail.id)
+      .getBehavioralSkillInstances(this.sheetDetail.ownerId, this.sheetDetail.id)
       .subscribe(
         (result: BehavioralSkillInstance[]) => {
           this.loading = false;

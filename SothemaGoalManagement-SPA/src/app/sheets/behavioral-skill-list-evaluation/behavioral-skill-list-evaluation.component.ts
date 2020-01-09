@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { BehavioralSkillInstance } from '../../_models/behavioralSkillInstance';
 import { AlertifyService } from '../../_services/alertify.service';
+import { BehavioralSkillEvaluation } from '../../_models/behavioralSkillEvaluation';
 
 @Component({
   selector: 'app-behavioral-skill-list-evaluation',
@@ -34,7 +35,7 @@ export class BehavioralSkillListEvaluationComponent implements OnInit {
 
   ngOnInit() {
     this.evals = this.behavioralSkillInstanceList.map(behavioralSkillInstance => ({
-      grade: behavioralSkillInstance.behavioralSkillGrade.toFixed(2),
+      grade: behavioralSkillInstance.behavioralSkillGrade,
       level: behavioralSkillInstance.behavioralSkillLevel,
       behavioralSkillInstanceId: behavioralSkillInstance.id,
       evaluateeId: this.sheetOwnerId,

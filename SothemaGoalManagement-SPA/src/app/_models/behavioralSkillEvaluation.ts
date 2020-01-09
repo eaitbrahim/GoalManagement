@@ -5,4 +5,5 @@ export interface BehavioralSkillEvaluation {
   grade: number;
   level: string;
   evaluatorName: string;
+  behavioralSkillInstanceId: number;
 }

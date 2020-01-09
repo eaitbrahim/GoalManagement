@@ -200,7 +200,7 @@ export class UserService {
     return this.http.post(`${this.baseUrl}users/${userId}/goalEvaluation/createGoalEvaluation`, goalEval);
   }
 
-  getBehavioralSkillEvaluations(userId: number, sheetId: number) {
+  getBehavioralSkillInstances(userId: number, sheetId: number) {
     return this.http.get(`${this.baseUrl}users/${userId}/behavioralSkillEvaluation/behavioralSkillInstancesForSheet/${sheetId}`);
   }
 

@@ -22,6 +22,8 @@ export class ResetPasswordComponent implements OnInit {
   public loading = false;
   faKey = faKey;
   faHandshake = faHandshake;
+  minLength: number = 8;
+  maxLength: number = 24;
 
   constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private authService: AuthService,
     private alertify: AlertifyService, ) { }
@@ -42,8 +44,8 @@ export class ResetPasswordComponent implements OnInit {
           '',
           [
             Validators.required,
-            Validators.minLength(8),
-            Validators.maxLength(24)
+            Validators.minLength(this.minLength),
+            Validators.maxLength(this.maxLength)
           ]
         ],
         confirmPassword: ['', Validators.required],
