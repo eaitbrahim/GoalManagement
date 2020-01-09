@@ -90,6 +90,7 @@ namespace SothemaGoalManagement.API.Controllers
                     }
                 }
 
+                if (uploadResult.Uri == null) return BadRequest("Impossible de communiquer avec votre compte en cloudinary!");
                 photoForCreationDto.Url = uploadResult.Uri.ToString();
                 photoForCreationDto.PublicId = uploadResult.PublicId;
 
