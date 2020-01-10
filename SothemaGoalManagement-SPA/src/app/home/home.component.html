@@ -36,7 +36,8 @@
       <div class="col offset-1 col-md-6">
         <div class="card border-primary bg-light mb-3">
           <div class="card-header text-primary">
-            <h1>Sothema <img src="../../assets/G-goal.png" class="img-valign" alt="">oal Management</h1>
+            <h1>Sothema
+              <img src="../../assets/G-goal.png" class="img-valign" alt="">oal Management</h1>
           </div>
           <div class="card-body">
             <p class="lead">
@@ -95,7 +96,12 @@
               <fa-icon [icon]="faKey"></fa-icon>
             </span>
           </div>
-          <input class="form-control input_pass" type="password" placeholder="Mot de Passe" [(ngModel)]="model.password" required name="password">
+          <input class="form-control input_pass" [type]="inputType" placeholder="Mot de Passe" [(ngModel)]="model.password" required
+            name="password">
+          <span class="field-icon" (click)="togglePasswordOnClick()">
+            <fa-icon [icon]="faEye" *ngIf="!togglePassword"></fa-icon>
+            <fa-icon [icon]="faEyeSlash" *ngIf="togglePassword"></fa-icon>
+          </span>
         </div>
         <div class="form-group">
           <button type="submit" [disabled]="!loginForm.valid" class="btn btn-primary btn-lg">Se Connecter</button>

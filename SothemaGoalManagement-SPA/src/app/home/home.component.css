@@ -16,7 +16,6 @@
 .img-valign {
   vertical-align: middle;
   width: 50px;
-
 }
 
 .login-form-1 {
@@ -53,4 +52,13 @@
   color: #fff;
   font-weight: 600;
   text-decoration: none;
+}
+
+.login-form-2 .field-icon {
+  float: right;
+  margin-left: -25px;
+  margin-top: 5px;
+  position: relative;
+  z-index: 2;
+  cursor: pointer;
 }

@@ -6,7 +6,7 @@ import {
   Validators,
   FormBuilder
 } from '@angular/forms';
-import { faKey, faHandshake } from '@fortawesome/free-solid-svg-icons';
+import { faKey, faHandshake, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 import { AlertifyService } from '../../_services/alertify.service';
 import { AuthService } from '../../_services/auth.service';
@@ -22,8 +22,12 @@ export class ResetPasswordComponent implements OnInit {
   public loading = false;
   faKey = faKey;
   faHandshake = faHandshake;
+  faEye = faEye;
+  faEyeSlash = faEyeSlash;
   minLength: number = 8;
   maxLength: number = 24;
+  togglePassword: boolean;
+  inputType: string = 'password';
 
   constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private authService: AuthService,
     private alertify: AlertifyService, ) { }
@@ -70,7 +74,7 @@ export class ResetPasswordComponent implements OnInit {
       },
       error => {
         this.loading = false;
-        this.alertify.error('Le mot de passe doit contenir au moins une lettre majuscule et une valeur numérique.');
+        this.alertify.error('Le mot de passe doit respecter les règles citées ci-dessus sinon votre token a expiré.');
       },
       () => {
         this.router.navigate(['/home']);
@@ -78,5 +82,12 @@ export class ResetPasswordComponent implements OnInit {
     );
   }
 
-
+  togglePasswordOnClick() {
+    this.togglePassword = !this.togglePassword;
+    if (this.togglePassword) {
+      this.inputType = 'text';
+    } else {
+      this.inputType = 'password';
+    }
+  }
 }

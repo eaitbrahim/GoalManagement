@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { faUser, faKey } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faKey, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 import { AlertifyService } from './../_services/alertify.service';
 import { UserService } from './../_services/user.service';
@@ -16,6 +16,10 @@ export class HomeComponent implements OnInit {
   public loading = false;
   faUser = faUser;
   faKey = faKey;
+  faEye = faEye;
+  faEyeSlash = faEyeSlash;
+  togglePassword: boolean;
+  inputType: string = 'password';
 
   constructor(private authService: AuthService, private alertify: AlertifyService,
     private router: Router,
@@ -44,6 +48,15 @@ export class HomeComponent implements OnInit {
         this.router.navigate(['']);
       }
     );
+  }
+
+  togglePasswordOnClick() {
+    this.togglePassword = !this.togglePassword;
+    if (this.togglePassword) {
+      this.inputType = 'text';
+    } else {
+      this.inputType = 'password';
+    }
   }
 
 }
