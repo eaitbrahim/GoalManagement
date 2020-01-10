@@ -53,6 +53,7 @@ export class GoalCardComponent implements OnInit {
     this.bsModalRef.content.editGoalEvent.subscribe((updatedGoal) => {
       this.editGoalEvent.emit(updatedGoal);
     });
+
   }
 
   deleteGoal(goal: Goal) {

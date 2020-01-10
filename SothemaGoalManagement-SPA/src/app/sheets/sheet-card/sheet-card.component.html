@@ -19,17 +19,17 @@
 
             <button type="button" class="btn ml-1" class="btn btn-primary" *ngIf="sheetToValidate.goalsStatus === 'En Revue'" (click)="showGoals()">
               <span>
-                <fa-icon [icon]="faCheckSquare"></fa-icon>Valider</span>
+                <fa-icon [icon]="faCheckSquare" class="mr-2"></fa-icon>Valider</span>
             </button>
 
-            <button type="button" class="btn btn-success ml-1" *ngIf="sheetToValidate.goalsStatus === 'Publiée'" (click)="showSheetDetail()">
+            <button type="button" class="btn btn-success ml-1" *ngIf="sheetToValidate.goalsStatus === 'Publiée'" (click)="showSheetDetail(1)">
               <span>
-                <fa-icon [icon]="faList"></fa-icon>Evaluer</span>
+                <fa-icon [icon]="faList" class="mr-2"></fa-icon>Evaluer</span>
             </button>
 
             <button type="button" class="btn btn-secondary ml-1" *ngIf="sheetToValidate.goalsStatus !== 'En Revue'" (click)="showGoals()">
               <span>
-                <fa-icon [icon]="faEye"></fa-icon>Afficher</span>
+                <fa-icon [icon]="faEye" class="mr-2"></fa-icon>Afficher</span>
             </button>
           </div>
         </div>

@@ -216,9 +216,9 @@ export class SheetsPanelComponent implements OnInit {
     this.goalsMode = event;
   }
 
-  handleShowSheetDetail(sheetToValidate: EvaluationFileInstance) {
-    this.sheetToValidate = sheetToValidate;
-    this.tabIndex = 1;
+  handleShowSheetDetail(data: any) {
+    this.sheetToValidate = data.sheet;
+    this.tabIndex = data.tab;
     this.detailMode = true;
   }
 

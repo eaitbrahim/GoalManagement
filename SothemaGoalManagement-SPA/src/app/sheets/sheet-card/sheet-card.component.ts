@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { faCaretDown, faCaretUp, faCheckSquare, faEye, faList } from '@fortawesome/free-solid-svg-icons';
+import { faCaretDown, faCaretUp, faCheckSquare, faEye, faList, faHandRock } from '@fortawesome/free-solid-svg-icons';
 
 import { EvaluationFileInstance } from '../../_models/evaluationFileInstance';
 import { AxisInstance } from '../../_models/axisInstance';
@@ -15,11 +15,12 @@ export class SheetCardComponent implements OnInit {
   @Input() sheetToValidate: EvaluationFileInstance;
   @Output() updateUserWeightEvent = new EventEmitter<any>();
   @Output() loadGoalsEvent = new EventEmitter<any>();
-  @Output() showSheetDetailEvent = new EventEmitter<EvaluationFileInstance>();
+  @Output() showSheetDetailEvent = new EventEmitter<any>();
   axisInstanceList: AxisInstance[];
   faCaretDown = faCaretDown;
   faCaretUp = faCaretUp;
   faCheckSquare = faCheckSquare;
+  faHandRock = faHandRock;
   faEye = faEye;
   faList = faList;
   isCollapsed = false;
@@ -42,14 +43,16 @@ export class SheetCardComponent implements OnInit {
     this.tallyUserWeights();
     this.isCollapsed = !this.isCollapsed;
   }
+
   showGoals() {
     var axisInstanceIds = this.sheetToValidate.axisInstances.map(a => a.id);
     var loadGoalsData = { sheetToValidate: this.sheetToValidate, axisInstanceIds: axisInstanceIds };
     this.loadGoalsEvent.emit(loadGoalsData);
   }
 
-  showSheetDetail() {
-    this.showSheetDetailEvent.emit(this.sheetToValidate);
+  showSheetDetail(tab: number) {
+    const data = { tab, sheet: this.sheetToValidate };
+    this.showSheetDetailEvent.emit(data);
   }
 
   tallyUserWeights() {
@@ -60,4 +63,5 @@ export class SheetCardComponent implements OnInit {
       this.message = '';
     }
   }
+
 }

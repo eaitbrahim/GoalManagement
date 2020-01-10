@@ -54,6 +54,8 @@ export class SheetDetailComponent implements OnInit {
       this.fetchEvaluators();
       this.getGoalsForAxis();
       this.getBehavioralSkillInstances();
+      this.loadGoalTypes();
+      this.loadProjects();
     } else {
       this.route.data.subscribe(data => {
         const resolvedData = data['resolvedData'];
@@ -107,21 +109,29 @@ export class SheetDetailComponent implements OnInit {
   CheckReadOnly() {
     var goalsInInitialStatus = this.goalsByAxisInstanceList.filter(g => g.goalsStatus === 'Pas encore créé' || g.goalsStatus == 'Rédaction');
     if (goalsInInitialStatus.length == 0) {
+      console.log('Init');
       this.areGoalsReadOnly = true;
     } else {
       var indx = this.evaluators.findIndex(e => e.id == this.authService.decodedToken.nameid);
       if (this.sheetDetail.ownerId != this.authService.decodedToken.nameid && indx === -1) {
+        console.log('Not set as Evaluator');
         this.areGoalsReadOnly = true;
       } else {
+        console.log('Evaluator or owner');
         this.areGoalsReadOnly = false;
       }
+    }
+
+    if (this.authService.roleMatch(['HRD'])) {
+      console.log('HRD');
+      this.areGoalsReadOnly = false;
     }
     return this.areGoalsReadOnly;
   }
 
   handleCreateGoal(newGoal: any) {
     this.loading = true;
-    this.userService.createGoal(this.authService.decodedToken.nameid, newGoal).subscribe(
+    this.userService.createGoal(this.authService.decodedToken.nameid, this.sheetDetail.id, newGoal).subscribe(
       () => {
         this.loading = false;
         this.getGoalsForAxis();
@@ -308,6 +318,33 @@ export class SheetDetailComponent implements OnInit {
       () => {
         this.loading = false;
         this.alertify.success('Votre demande de création de sous-objectifs a été envoyée avec succès. Veuillez vérifier vos messages pour les résultats.');
+      },
+      error => {
+        this.loading = false;
+        this.alertify.error(error);
+      }
+    );
+  }
+
+  loadGoalTypes() {
+    this.loading = true;
+    this.userService.getGoalTypes(this.authService.decodedToken.nameid).subscribe(
+      (res: GoalType[]) => {
+        this.loading = false;
+        this.goalTypeList = res;
+      },
+      error => {
+        this.loading = false;
+        this.alertify.error(error);
+      }
+    );
+  }
+
+  loadProjects() {
+    this.userService.getProjects(this.authService.decodedToken.nameid).subscribe(
+      (res: Project[]) => {
+        this.loading = false;
+        this.projectList = res;
       },
       error => {
         this.loading = false;

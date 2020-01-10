@@ -160,8 +160,8 @@ export class UserService {
     return this.http.get(`${this.baseUrl}users/${userId}/goal/goalWithChildren/${goalId}`);
   }
 
-  createGoal(userId: number, goal: any) {
-    return this.http.post(`${this.baseUrl}users/${userId}/goal/createGoal`, goal);
+  createGoal(userId: number, sheetId: number, goal: any) {
+    return this.http.post(`${this.baseUrl}users/${userId}/goal/createGoal/${sheetId}`, goal);
   }
 
   cascadeGoal(userId: number, golasForCascade: any, sheetId: number, modelId: number) {

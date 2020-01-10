@@ -210,8 +210,8 @@ namespace SothemaGoalManagement.API.Controllers
             }
         }
 
-        [HttpPost("createGoal")]
-        public async Task<IActionResult> CreateGoal(int userId, GoalForCreationDto goalCreationDto)
+        [HttpPost("createGoal/{sheetId}")]
+        public async Task<IActionResult> CreateGoal(int userId, int sheetId, GoalForCreationDto goalCreationDto)
         {
             try
             {
@@ -226,6 +226,14 @@ namespace SothemaGoalManagement.API.Controllers
 
                 // Create a new goal
                 var goal = _mapper.Map<Goal>(goalCreationDto);
+                var sheetFromRepo = await _repo.EvaluationFileInstance.GetEvaluationFileInstance(sheetId);
+                if (sheetFromRepo != null)
+                {
+                    if (userId != sheetFromRepo.OwnerId && await IsUserInRole(userId, Constants.HRD))
+                    {
+                        goal.Status = Constants.PUBLISHED;
+                    }
+                }
                 _repo.Goal.AddGoal(goal);
                 await _repo.Goal.SaveAllAsync();
 
@@ -406,6 +414,23 @@ namespace SothemaGoalManagement.API.Controllers
                     else
                     {
                         if (goalFromRepo.Status == Constants.DRAFT) return BadRequest("La fiche d'évaluation est encore en rédaction.");
+                        // Check if the goal has already evaluations
+                        var goalEvaluations = await _repo.GoalEvaluation.GetGoalEvaluationsByGoalId(goalFromRepo.Id);
+                        if (goalEvaluations != null && goalEvaluations.Count() > 0)
+                        {
+                            if (await IsUserInRole(userId, Constants.HRD))
+                            {
+                                foreach (var eval in goalEvaluations)
+                                {
+                                    _repo.GoalEvaluation.DeleteGoalEvaluation(eval);
+                                }
+                                await _repo.GoalEvaluation.SaveAllAsync();
+                            }
+                            else
+                            {
+                                return BadRequest("L'objectif a des évaluations, uniquement DRH qui peut les supprimer.");
+                            }
+                        }
                     }
                 }
 
@@ -628,13 +653,9 @@ namespace SothemaGoalManagement.API.Controllers
                     if (action == "read")
                     {
                         // Check if current user has allowed roles:
-                        var currentUser = await _userManager.FindByIdAsync(currentUserId.ToString());
-                        var roles = await _userManager.GetRolesAsync(currentUser);
-                        foreach (var role in roles)
-                        {
-                            if (role == Constants.HR || role == Constants.HRD) return true;
-
-                        }
+                        var isHrRole = await IsUserInRole(currentUserId, Constants.HR);
+                        var isHrdRole = await IsUserInRole(currentUserId, Constants.HRD);
+                        if (isHrRole || isHrdRole) return true;
                         return false;
                     }
                     else
@@ -646,6 +667,17 @@ namespace SothemaGoalManagement.API.Controllers
             return true;
         }
 
+        private async Task<bool> IsUserInRole(int userId, string expectedRole)
+        {
+            var currentUser = await _userManager.FindByIdAsync(userId.ToString());
+            var roles = await _userManager.GetRolesAsync(currentUser);
+            foreach (var role in roles)
+            {
+                if (role == expectedRole) return true;
+
+            }
+            return false;
+        }
         private async Task<bool> IsGoalOwnerSelfEvaluator(int goalOwnerId)
         {
             var evaluators = await _repo.User.LoadEvaluators(goalOwnerId);

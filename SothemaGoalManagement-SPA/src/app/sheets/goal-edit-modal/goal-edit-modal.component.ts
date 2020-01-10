@@ -6,6 +6,9 @@ import { GoalType } from '../../_models/goalType';
 import { Axis } from '../../_models/axis';
 import { GoalByAxisInstance } from './../../_models/goalsByAxisInstance';
 import { Project } from '../../_models/project';
+import { UserService } from '../../_services/user.service';
+import { AuthService } from '../../_services/auth.service';
+import { AlertifyService } from '../../_services/alertify.service';
 
 @Component({
   selector: 'app-goal-edit-modal',
@@ -22,8 +25,9 @@ export class GoalEditModalComponent implements OnInit {
   updatedGoal: any = {};
   showError: boolean = false;
   filteredProjects: Project[] = [];
+  public loading = false;
 
-  constructor(public bsModalRef: BsModalRef) { }
+  constructor(public bsModalRef: BsModalRef, private userService: UserService, private authService: AuthService, private alertify: AlertifyService) { }
 
   ngOnInit() {
     this.updatedGoal = {
@@ -35,6 +39,9 @@ export class GoalEditModalComponent implements OnInit {
       'weight': this.goal.weight,
       'status': this.goal.status
     }
+
+    if (!this.goalTypeList) this.loadGoalTypes();
+    if (!this.projectList) this.loadProjects();
   }
 
   updateGoal() {
@@ -71,5 +78,32 @@ export class GoalEditModalComponent implements OnInit {
   onChangeGoalType() {
     this.filteredProjects = this.projectList.filter(p => p.goalTypeId === this.updatedGoal.goalTypeId);
     this.filteredProjects.length > 0 ? this.updatedGoal.projectName = this.filteredProjects[0].name : '';
+  }
+
+  loadGoalTypes() {
+    this.loading = true;
+    this.userService.getGoalTypes(this.authService.decodedToken.nameid).subscribe(
+      (res: GoalType[]) => {
+        this.loading = false;
+        this.goalTypeList = res;
+      },
+      error => {
+        this.loading = false;
+        this.alertify.error(error);
+      }
+    );
+  }
+
+  loadProjects() {
+    this.userService.getProjects(this.authService.decodedToken.nameid).subscribe(
+      (res: Project[]) => {
+        this.loading = false;
+        this.projectList = res;
+      },
+      error => {
+        this.loading = false;
+        this.alertify.error(error);
+      }
+    );
   }
 }

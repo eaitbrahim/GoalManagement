@@ -19,7 +19,7 @@ export class MyCollaboratorsSheetsComponent implements OnInit {
   @Output() acceptGoalsEvent = new EventEmitter<any>();
   @Output() loadGoalsEvent = new EventEmitter<any>();
   @Output() switchOffGoalsEvent = new EventEmitter<boolean>();
-  @Output() showSheetDetailEvent = new EventEmitter<EvaluationFileInstance>();
+  @Output() showSheetDetailEvent = new EventEmitter<any>();
 
   constructor() { }
 
@@ -46,7 +46,7 @@ export class MyCollaboratorsSheetsComponent implements OnInit {
     this.loadGoalsEvent.emit(loadGoalsData);
   }
 
-  handleShowSheetDetail(sheetToValidate: EvaluationFileInstance) {
-    this.showSheetDetailEvent.emit(sheetToValidate);
+  handleShowSheetDetail(data: any) {
+    this.showSheetDetailEvent.emit(data);
   }
 }

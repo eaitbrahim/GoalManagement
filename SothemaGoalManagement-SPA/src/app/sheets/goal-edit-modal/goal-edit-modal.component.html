@@ -6,7 +6,7 @@
 </div>
 <div class="modal-body">
   <form #goalForm="ngForm" id="goalForm">
-
+    <ngx-loading [show]="loading"></ngx-loading>
     <h4>Axe:</h4>
     <select class="form-control mb-1" style="width: 200px" id="axis" name="axis" [(ngModel)]="updatedGoal.axisInstanceId" required>
       <option *ngFor="let axis of axisList" [ngValue]="axis.id">
@@ -18,8 +18,8 @@
     <textarea rows="2" [(ngModel)]="updatedGoal.description" name="goal" required type="text" class="form-control input-sm" placeholder="Ajouter un objectif"></textarea>
 
     <h4>Type d'objectif:</h4>
-    <select class="form-control mb-1" style="width: 200px" id="goalType" name="goalType" [(ngModel)]="updatedGoal.goalTypeId" (change)="onChangeGoalType()"
-      required>
+    <select class="form-control mb-1" style="width: 200px" id="goalType" name="goalType" [(ngModel)]="updatedGoal.goalTypeId"
+      (change)="onChangeGoalType()" required>
       <option *ngFor="let goalType of goalTypeList" [ngValue]="goalType.id">
         {{ goalType.name }}
       </option>
