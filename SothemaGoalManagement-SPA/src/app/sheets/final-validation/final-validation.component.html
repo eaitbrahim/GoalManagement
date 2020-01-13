@@ -1,0 +1,30 @@
+<div class="container mt-2">
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <textarea [(ngModel)]="comment" rows="3" cols="100" placeholder="Commentaire"></textarea>
+      </div>
+      <div>
+        <button class="btn btn-success" type="button" (click)="addParameters()">Validation Finale</button>
+      </div>
+    </div>
+    <div class="card-body">
+      <!-- <table *ngIf="parameters.length > 0" class="table table-hover">
+        <tr>
+          <th style="width: 50%">Evénement</th>
+          <th style="width: 45%">Plage de dates</th>
+          <th style="width: 5%"></th>
+        </tr>
+        <tr *ngFor="let evaluationParameter of parameters; let idx = index">
+          <td>{{ evaluationParameter.event }}</td>
+          <td>{{ evaluationParameter.startEvent | date:'mediumDate' }} - {{ evaluationParameter.endEvent | date:'mediumDate'}}</td>
+          <td>
+            <button class="btn btn-outline-danger rounded-circle" (click)="deleteParameters(evaluationParameter)">
+              <fa-icon [icon]="faTrash"></fa-icon>
+            </button>
+          </td>
+        </tr>
+      </table> -->
+    </div>
+  </div>
+</div>

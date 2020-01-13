@@ -124,8 +124,7 @@ export class SheetDetailComponent implements OnInit {
     }
 
     if (this.parameters.length > 0) {
-      if (this.isTodayWithinEventsRange('validation')) this.areGoalsReadOnly = false;
-      else this.areGoalsReadOnly = true;
+      if (!this.isTodayWithinEventsRange('validation')) this.areGoalsReadOnly = true;
     }
 
     if (this.authService.roleMatch(['HRD'])) {
@@ -191,8 +190,7 @@ export class SheetDetailComponent implements OnInit {
     }
 
     if (this.parameters.length > 0) {
-      if (this.isTodayWithinEventsRange('évaluation')) this.areGoalsCompleted = false;
-      else this.areGoalsCompleted = true;
+      if (!this.isTodayWithinEventsRange('évaluation')) this.areGoalsCompleted = true;
     }
 
     return this.areGoalsCompleted;
@@ -213,6 +211,10 @@ export class SheetDetailComponent implements OnInit {
       this.areBehavioralSkillsEvaluable = false;
     } else {
       this.areBehavioralSkillsEvaluable = true;
+    }
+
+    if (this.parameters.length > 0) {
+      if (!this.isTodayWithinEventsRange('évaluation')) this.areBehavioralSkillsEvaluable = true;
     }
   }
 

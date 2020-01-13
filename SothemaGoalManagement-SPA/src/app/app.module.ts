@@ -110,6 +110,7 @@ import { AutoEvaluationAxisComponent } from './sheets/auto-evaluation-axis/auto-
 import { BehavioralSkillListEvaluationComponent } from './sheets/behavioral-skill-list-evaluation/behavioral-skill-list-evaluation.component';
 import { EvaluationHrParametersComponent } from './hr/evaluations/evaluation-hr-parameters/evaluation-hr-parameters.component';
 import { SheetMetaDataComponent } from './sheets/sheet-meta-data/sheet-meta-data.component';
+import { FinalValidationComponent } from './sheets/final-validation/final-validation.component';
 import { TruncateTextPipe } from './_pipes/truncate-text.pipe';
 
 export function tokenGetter() {
@@ -188,6 +189,7 @@ export function tokenGetter() {
     GoalEvaluationModalComponent,
     CascadeMyGoalsModalComponent,
     BehavioralSkillListEvaluationComponent,
+    FinalValidationComponent,
     TruncateTextPipe
   ],
   imports: [

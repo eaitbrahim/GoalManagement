@@ -414,22 +414,23 @@ namespace SothemaGoalManagement.API.Controllers
                     else
                     {
                         if (goalFromRepo.Status == Constants.DRAFT) return BadRequest("La fiche d'évaluation est encore en rédaction.");
-                        // Check if the goal has already evaluations
-                        var goalEvaluations = await _repo.GoalEvaluation.GetGoalEvaluationsByGoalId(goalFromRepo.Id);
-                        if (goalEvaluations != null && goalEvaluations.Count() > 0)
+                    }
+
+                    // Check if the goal has already evaluations
+                    var goalEvaluations = await _repo.GoalEvaluation.GetGoalEvaluationsByGoalId(goalFromRepo.Id);
+                    if (goalEvaluations != null && goalEvaluations.Count() > 0)
+                    {
+                        if (await IsUserInRole(userId, Constants.HRD))
                         {
-                            if (await IsUserInRole(userId, Constants.HRD))
+                            foreach (var eval in goalEvaluations)
                             {
-                                foreach (var eval in goalEvaluations)
-                                {
-                                    _repo.GoalEvaluation.DeleteGoalEvaluation(eval);
-                                }
-                                await _repo.GoalEvaluation.SaveAllAsync();
+                                _repo.GoalEvaluation.DeleteGoalEvaluation(eval);
                             }
-                            else
-                            {
-                                return BadRequest("L'objectif a des évaluations, uniquement DRH qui peut les supprimer.");
-                            }
+                            await _repo.GoalEvaluation.SaveAllAsync();
+                        }
+                        else
+                        {
+                            return BadRequest("L'objectif a des évaluations, uniquement DRH qui peut les supprimer.");
                         }
                     }
                 }
