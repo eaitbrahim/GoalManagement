@@ -1,5 +1,4 @@
 import { BehavioralSkillEvaluation } from './../../_models/behavioralSkillEvaluation';
-import { HrService } from './../../_services/hr.service';
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { TabsetComponent } from 'ngx-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,6 +7,7 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { EvaluationFileInstance } from '../../_models/evaluationFileInstance';
 import { Goal } from '../../_models/goal';
 import { GoalType } from '../../_models/goalType';
+import { HrService } from '../../_services/hr.service';
 import { UserService } from '../../_services/user.service';
 import { AdminService } from '../../_services/admin.service';
 import { AuthService } from '../../_services/auth.service';
@@ -17,6 +17,7 @@ import { GoalEvaluation } from '../../_models/goalEvaluation';
 import { BehavioralSkillInstance } from '../../_models/behavioralSkillInstance';
 import { Project } from '../../_models/project';
 import { Evaluator } from '../../_models/evaluator';
+import { Parameters } from '../../_models/parameters';
 
 @Component({
   selector: 'app-sheet-detail',
@@ -44,13 +45,15 @@ export class SheetDetailComponent implements OnInit {
   showDetail: boolean;
   faArrowLeft = faArrowLeft;
   evaluators: Evaluator[] = [];
+  parameters: Parameters[] = [];
 
-  constructor(private route: ActivatedRoute, private router: Router, private userService: UserService, private adminService: AdminService, private authService: AuthService, private alertify: AlertifyService) { }
+  constructor(private route: ActivatedRoute, private router: Router, private userService: UserService, private hrService: HrService, private adminService: AdminService, private authService: AuthService, private alertify: AlertifyService) { }
 
   ngOnInit() {
     if (this.sheetToValidate) {
       this.sheetDetail = this.sheetToValidate;
       this.sheetTabs.tabs[this.tabIndex].active = true;
+      this.loadParameters()
       this.fetchEvaluators();
       this.getGoalsForAxis();
       this.getBehavioralSkillInstances();
@@ -62,6 +65,7 @@ export class SheetDetailComponent implements OnInit {
         this.sheetDetail = resolvedData['sheetDetail'];
         this.goalTypeList = resolvedData['goalTypeList'];
         this.projectList = resolvedData['projectList'];
+        this.loadParameters()
         this.fetchEvaluators();;
         this.getGoalsForAxis();
         this.getBehavioralSkillInstances();
@@ -109,21 +113,22 @@ export class SheetDetailComponent implements OnInit {
   CheckReadOnly() {
     var goalsInInitialStatus = this.goalsByAxisInstanceList.filter(g => g.goalsStatus === 'Pas encore créé' || g.goalsStatus == 'Rédaction');
     if (goalsInInitialStatus.length == 0) {
-      console.log('Init');
       this.areGoalsReadOnly = true;
     } else {
       var indx = this.evaluators.findIndex(e => e.id == this.authService.decodedToken.nameid);
       if (this.sheetDetail.ownerId != this.authService.decodedToken.nameid && indx === -1) {
-        console.log('Not set as Evaluator');
         this.areGoalsReadOnly = true;
       } else {
-        console.log('Evaluator or owner');
         this.areGoalsReadOnly = false;
       }
     }
 
+    if (this.parameters.length > 0) {
+      if (this.isTodayWithinEventsRange('validation')) this.areGoalsReadOnly = false;
+      else this.areGoalsReadOnly = true;
+    }
+
     if (this.authService.roleMatch(['HRD'])) {
-      console.log('HRD');
       this.areGoalsReadOnly = false;
     }
     return this.areGoalsReadOnly;
@@ -184,6 +189,12 @@ export class SheetDetailComponent implements OnInit {
     } else {
       this.areGoalsCompleted = false;
     }
+
+    if (this.parameters.length > 0) {
+      if (this.isTodayWithinEventsRange('évaluation')) this.areGoalsCompleted = false;
+      else this.areGoalsCompleted = true;
+    }
+
     return this.areGoalsCompleted;
   }
 
@@ -349,7 +360,41 @@ export class SheetDetailComponent implements OnInit {
       error => {
         this.loading = false;
         this.alertify.error(error);
+        console.log('Problem with loading projects.')
       }
     );
+  }
+
+  loadParameters() {
+    this.loading = true;
+    this.hrService
+      .loadParameters(this.sheetDetail.evaluationFileId)
+      .subscribe(
+        (result: Parameters[]) => {
+          this.loading = false;
+          this.parameters = result;
+        },
+        error => {
+          this.loading = false;
+          this.alertify.error(error);
+          console.log('Impossible de charger les événements.');
+        }
+      );
+  }
+
+  isTodayWithinEventsRange(event: string) {
+    const today = new Date();
+    let isTodayWithinEventRanges = [];
+    const eventRange = this.parameters.filter(p => p.event.includes(event));
+    for (let param of eventRange) {
+      if (new Date(param.startEvent) <= today && today <= new Date(param.endEvent)) {
+        isTodayWithinEventRanges.push(true);
+      } else {
+        isTodayWithinEventRanges.push(false);
+      }
+    }
+
+    if (isTodayWithinEventRanges.includes(true)) return true;
+    return false;
   }
 }

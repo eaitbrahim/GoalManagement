@@ -1,6 +1,6 @@
 export interface Parameters {
   id: number;
-  startEvent: number;
+  startEvent: Date;
   event: string;
   endEvent: Date;
   evaluationFileId: number;
