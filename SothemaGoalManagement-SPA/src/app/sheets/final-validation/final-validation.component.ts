@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-final-validation',
@@ -6,10 +6,21 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./final-validation.component.css']
 })
 export class FinalValidationComponent implements OnInit {
+  @Input() ownerFullName: string;
+  @Input() ownerComment: string;
+  @Input() validatorFullName: string;
+  @Input() validatorComment: string;
+  @Input() ownerValidationDateTime: string;
+  @Input() validatorValidationDateTime: string;
+  @Output() addFinalEvaluationEvent = new EventEmitter<string>();
+  comment: string;
 
   constructor() { }
 
   ngOnInit() {
   }
 
+  addFinalEvaluation() {
+    this.addFinalEvaluationEvent.emit(this.comment)
+  }
 }

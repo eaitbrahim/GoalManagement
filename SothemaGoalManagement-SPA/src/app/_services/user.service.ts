@@ -207,4 +207,8 @@ export class UserService {
   addBehavioralSkillEvaluations(userId: number, evals: any[]) {
     return this.http.post(`${this.baseUrl}users/${userId}/behavioralSkillEvaluation/createBehavioralSkillEvaluation`, evals);
   }
+
+  addFinalEvaluation(userId: number, sheetId: number, finalEvaluation: any) {
+    return this.http.put(`${this.baseUrl}users/${userId}/sheet/addFinalEvaluation/${sheetId}`, finalEvaluation);
+  }
 }

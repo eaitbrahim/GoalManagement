@@ -18,6 +18,7 @@ import { BehavioralSkillInstance } from '../../_models/behavioralSkillInstance';
 import { Project } from '../../_models/project';
 import { Evaluator } from '../../_models/evaluator';
 import { Parameters } from '../../_models/parameters';
+import { User } from '../../_models/user';
 
 @Component({
   selector: 'app-sheet-detail',
@@ -46,6 +47,8 @@ export class SheetDetailComponent implements OnInit {
   faArrowLeft = faArrowLeft;
   evaluators: Evaluator[] = [];
   parameters: Parameters[] = [];
+  ownerFullName: string;
+  validatorFullName: string;
 
   constructor(private route: ActivatedRoute, private router: Router, private userService: UserService, private hrService: HrService, private adminService: AdminService, private authService: AuthService, private alertify: AlertifyService) { }
 
@@ -53,7 +56,9 @@ export class SheetDetailComponent implements OnInit {
     if (this.sheetToValidate) {
       this.sheetDetail = this.sheetToValidate;
       this.sheetTabs.tabs[this.tabIndex].active = true;
-      this.loadParameters()
+      this.getOwnerFullName();
+      this.getValidatorFullName();
+      this.loadParameters();
       this.fetchEvaluators();
       this.getGoalsForAxis();
       this.getBehavioralSkillInstances();
@@ -65,7 +70,9 @@ export class SheetDetailComponent implements OnInit {
         this.sheetDetail = resolvedData['sheetDetail'];
         this.goalTypeList = resolvedData['goalTypeList'];
         this.projectList = resolvedData['projectList'];
-        this.loadParameters()
+        this.getOwnerFullName();
+        this.getValidatorFullName();
+        this.loadParameters();
         this.fetchEvaluators();;
         this.getGoalsForAxis();
         this.getBehavioralSkillInstances();
@@ -130,6 +137,11 @@ export class SheetDetailComponent implements OnInit {
     if (this.authService.roleMatch(['HRD'])) {
       this.areGoalsReadOnly = false;
     }
+
+    if (this.sheetDetail.status === 'Publiée') {
+      this.areGoalsReadOnly = true;
+    }
+
     return this.areGoalsReadOnly;
   }
 
@@ -193,6 +205,10 @@ export class SheetDetailComponent implements OnInit {
       if (!this.isTodayWithinEventsRange('évaluation')) this.areGoalsCompleted = true;
     }
 
+    if (this.sheetDetail.status === 'Publiée') {
+      this.areGoalsCompleted = true;
+    }
+
     return this.areGoalsCompleted;
   }
 
@@ -202,6 +218,11 @@ export class SheetDetailComponent implements OnInit {
     } else {
       this.areGoalsEvaluable = true;
     }
+
+    if (this.sheetDetail.status === 'Publiée') {
+      this.areGoalsEvaluable = true;
+    }
+
     return this.areGoalsEvaluable;
   }
 
@@ -215,6 +236,10 @@ export class SheetDetailComponent implements OnInit {
 
     if (this.parameters.length > 0) {
       if (!this.isTodayWithinEventsRange('évaluation')) this.areBehavioralSkillsEvaluable = true;
+    }
+
+    if (this.sheetDetail.status === 'Publiée') {
+      this.areBehavioralSkillsEvaluable = false;
     }
   }
 
@@ -323,10 +348,6 @@ export class SheetDetailComponent implements OnInit {
 
   handleCascadeMyGoal(golasForCascade: any) {
     this.loading = true;
-    console.log('golasForCascade:', golasForCascade);
-    console.log('userId:', this.authService.decodedToken.nameid);
-    console.log('sheetId:', this.sheetDetail.id);
-    console.log('modelId:', this.sheetDetail.evaluationFileId);
     this.userService.cascadeGoal(this.authService.decodedToken.nameid, golasForCascade, this.sheetDetail.id, this.sheetDetail.evaluationFileId).subscribe(
       () => {
         this.loading = false;
@@ -398,5 +419,90 @@ export class SheetDetailComponent implements OnInit {
 
     if (isTodayWithinEventRanges.includes(true)) return true;
     return false;
+  }
+
+  handleAddFinalEvaluation(comment: string) {
+    let finalEvaluation: any = {};
+    if (this.authService.decodedToken.nameid === this.sheetDetail.ownerId) {
+      finalEvaluation.ownerComment = comment;
+      finalEvaluation.ownerValidationDateTime = new Date();
+    } else {
+      if (this.evaluators.findIndex(e => e.id === this.authService.decodedToken.nameid) > -1) {
+        finalEvaluation.validatorId = this.authService.decodedToken.nameid;
+        finalEvaluation.validatorComment = comment;
+        finalEvaluation.validatorValidationDateTime = new Date();
+      } else {
+        return this.alertify.error('Vous n\'êtes pas autorisé à soumettre une évaluation finale pour cette fiche.');
+      }
+    }
+
+    this.alertify.confirm('Confirmer',
+      'Êtes-vous sûr de vouloir ajouter une évaluation finale pour cette fiche?',
+      () => {
+        this.loading = true;
+        this.userService
+          .addFinalEvaluation(this.authService.decodedToken.nameid, this.sheetDetail.id, finalEvaluation)
+          .subscribe(
+            () => {
+              this.loading = false;
+              this.fetchSheet();
+              this.alertify.success('Votre évaluation finale a été ajoutée avec succès.');
+            },
+            error => {
+              this.loading = false;
+              this.alertify.error(error);
+            }
+          );
+      }
+    );
+
+  }
+
+  fetchSheet() {
+    this.loading = true;
+    this.userService
+      .getMySheet(this.authService.decodedToken.nameid, this.sheetDetail.id)
+      .subscribe(
+        (result: EvaluationFileInstance) => {
+          this.loading = false;
+          this.sheetDetail = result;
+        },
+        error => {
+          this.loading = false;
+          this.alertify.error(error);
+        }
+      );
+  }
+
+  getOwnerFullName() {
+    this.loading = true;
+    this.userService
+      .getUser(this.sheetDetail.ownerId)
+      .subscribe(
+        (result: User) => {
+          this.loading = false;
+          this.ownerFullName = result.firstName + ' ' + result.lastName;
+        },
+        error => {
+          this.loading = false;
+          this.alertify.error(error);
+        }
+      );
+  }
+
+  getValidatorFullName() {
+    this.loading = true;
+    this.userService
+      .getUser(this.sheetDetail.validatorId)
+      .subscribe(
+        (result: User) => {
+          this.loading = false;
+          this.validatorFullName = result.firstName + ' ' + result.lastName;
+        },
+        error => {
+          this.loading = false;
+          this.alertify.error(error);
+        }
+      );
   }
 }

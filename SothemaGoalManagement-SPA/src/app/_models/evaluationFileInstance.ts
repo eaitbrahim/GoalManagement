@@ -17,4 +17,9 @@ export interface EvaluationFileInstance {
   status: string;
   goalsStatus: string
   created: Date;
+  ownerComment: string;
+  validatorComment: string;
+  ownerValidationDateTime: Date;
+  validatorValidationDateTime: Date;
+  validatorId: number;
 }

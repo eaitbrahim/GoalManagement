@@ -38,6 +38,7 @@ namespace SothemaGoalManagement.API.Models
 
         public DateTime OwnerValidationDateTime { get; set; }
         public DateTime ValidatorValidationDateTime { get; set; }
+        public int ValidatorId { get; set; }
 
         public EvaluationFile EvaluationFile { get; set; }
         public EvaluationFileInstance()

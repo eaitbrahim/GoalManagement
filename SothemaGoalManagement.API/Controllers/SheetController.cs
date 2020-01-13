@@ -142,6 +142,62 @@ namespace SothemaGoalManagement.API.Controllers
             }
         }
 
+        [HttpPut("{addFinalEvaluation}/{sheetId}")]
+        public async Task<IActionResult> AddFinalEvaluation(int userId, int sheetId, FinalEvaluationDto finalEvaluation)
+        {
+            try
+            {
+                var sheetFromRepo = await _repo.EvaluationFileInstance.GetEvaluationFileInstance(sheetId);
+                if (sheetFromRepo == null) return NotFound();
+
+                if (!await IsItAllowed(sheetFromRepo.OwnerId)) return Unauthorized();
+
+                // Case of evaluation by Owner
+                if (finalEvaluation.OwnerValidationDateTime != null && sheetFromRepo.OwnerValidationDateTime == null)
+                {
+                    sheetFromRepo.OwnerValidationDateTime = finalEvaluation.OwnerValidationDateTime;
+                    sheetFromRepo.OwnerComment = finalEvaluation.OwnerComment;
+                    if (sheetFromRepo.ValidatorValidationDateTime != null)
+                    {
+                        sheetFromRepo.Status = Constants.PUBLISHED;
+                    }
+                }
+
+                // Case of evaluation by Evaluator
+                if (finalEvaluation.ValidatorValidationDateTime != null && sheetFromRepo.ValidatorValidationDateTime == null)
+                {
+                    sheetFromRepo.ValidatorValidationDateTime = finalEvaluation.ValidatorValidationDateTime;
+                    sheetFromRepo.ValidatorComment = finalEvaluation.ValidatorComment;
+                    sheetFromRepo.ValidatorId = finalEvaluation.ValidatorId;
+                    if (sheetFromRepo.OwnerValidationDateTime != null)
+                    {
+                        sheetFromRepo.Status = Constants.PUBLISHED;
+                    }
+                }
+
+                _repo.EvaluationFileInstance.UpdateEvaluationFileInstance(sheetFromRepo);
+                await _repo.EvaluationFileInstance.SaveAllAsync();
+
+                // Log the update of user's weight
+                var user = _repo.User.GetUser(userId, true).Result;
+                var efil = new EvaluationFileInstanceLog
+                {
+                    Title = sheetFromRepo.Title,
+                    Created = DateTime.Now,
+                    Log = $"Une évaluation finale a été sauveguardée avec succés' par {user.FirstName} {user.LastName}."
+                };
+                _repo.EvaluationFileInstanceLog.AddEvaluationFileInstanceLog(efil);
+                await _repo.EvaluationFileInstanceLog.SaveAllAsync();
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong inside AddFinalEvaluation endpoint: {ex.Message}");
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
         private async Task<IEnumerable<EvaluationFileInstanceToReturnDto>> SetGoalsStatus(List<EvaluationFileInstanceToReturnDto> sheets)
         {
             IList<int> axisInstanceIds = new List<int>();

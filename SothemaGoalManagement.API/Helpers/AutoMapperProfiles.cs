@@ -160,6 +160,8 @@ namespace SothemaGoalManagement.API.Helpers
             {
                 opt.ResolveUsing(u => u.Evaluator.FirstName.FullName(u.Evaluator.LastName));
             });
+
+            CreateMap<FinalEvaluationDto, EvaluationFileInstance>();
         }
     }
 }
