@@ -1,4 +1,15 @@
-<div class="container mt-5">
+<div class="container mt-2">
+  <div class="alert alert-primary mb-2" role="alert">
+    <ul>
+      <li>Plage de dates de validation des objectifs: c'est la période pour créer et valider des objectifs. Elle n'est pas obligatoire
+        d'être définie. Elle peut être définie plusieurs fois.</li>
+      <li>Plage de dates d'évaluation: c'est la période pour évaluer les objectifs et les compétences comportementales. Elle
+        n'est pas obligatoire d'être définie. Elle peut être définie plusieurs fois.</li>
+      <li>Date de validation finale de la fiche: c'est la date d'affichage de la validation finale de la fiche au propriétaire
+        de la fiche et à son évaluateur. Elle est obligatoire d'être définie une seule fois.</li>
+      <li>Ces intervalles de temps doivent être en séquence.</li>
+    </ul>
+  </div>
   <div class="card">
     <div class="card-header">
       <div class="row">
@@ -6,6 +17,7 @@
           <select class="custom-select form-control" id="event">
             <option value="Plage de dates de validation des objectifs">Plage de dates de validation des objectifs</option>
             <option value="Plage de dates d'évaluation">Plage de dates d'évaluation</option>
+            <option value="Date de validation finale de la fiche">Date de validation finale de la fiche</option>
           </select>
         </div>
         <div class="col-xs-12 col-12 col-sm-4 col-md-6 col-lg-4 form-group">
