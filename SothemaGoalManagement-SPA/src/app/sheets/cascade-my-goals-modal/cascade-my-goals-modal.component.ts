@@ -175,7 +175,7 @@ export class CascadeMyGoalsModalComponent implements OnInit {
       evaluateeId: subGoal.evaluateeId,
       fullName: subGoal.fullName,
       description: subGoal.description,
-      weight: 0
+      weight: subGoal.weight
     };
     this.filteredSubGoals.splice(idx, 0, sg);
   }

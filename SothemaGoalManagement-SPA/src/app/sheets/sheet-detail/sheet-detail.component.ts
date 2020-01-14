@@ -464,6 +464,7 @@ export class SheetDetailComponent implements OnInit {
         (result: EvaluationFileInstance) => {
           this.loading = false;
           this.sheetDetail = result;
+          this.getValidatorFullName();
         },
         error => {
           this.loading = false;
@@ -473,7 +474,7 @@ export class SheetDetailComponent implements OnInit {
   }
 
   getValidatorFullName() {
-    if (this.sheetDetail.validatorId) {
+    if (this.sheetDetail.validatorId > 0) {
       this.loading = true;
       this.userService
         .getUser(this.sheetDetail.validatorId)
