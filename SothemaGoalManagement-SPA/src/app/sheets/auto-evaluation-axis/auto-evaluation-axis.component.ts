@@ -1,6 +1,6 @@
 import { filter } from 'rxjs/operators';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { faCaretDown, faCaretUp, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faCaretDown, faCaretUp, faMedkit } from '@fortawesome/free-solid-svg-icons';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap';
 
 import { GoalByAxisInstance } from '../../_models/goalsByAxisInstance';
@@ -20,7 +20,7 @@ export class AutoEvaluationAxisComponent implements OnInit {
   isCollapsed: boolean;
   faCaretDown = faCaretDown;
   faCaretUp = faCaretUp;
-  faPlus = faPlus;
+  faMedkit = faMedkit;
   bsModalRef: BsModalRef;
 
   constructor(private modalService: BsModalService) { }

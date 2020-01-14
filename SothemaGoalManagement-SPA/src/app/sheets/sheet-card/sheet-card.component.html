@@ -29,7 +29,7 @@
                 <fa-icon [icon]="faList" class="mr-2"></fa-icon>Evaluer</span>
             </button>
 
-            <button type="button" class="btn btn-secondary ml-1" *ngIf="sheetToValidate.goalsStatus !== 'En Revue'" (click)="showGoals()">
+            <button type="button" class="btn btn-secondary ml-1" *ngIf="sheetToValidate.goalsStatus !== 'En Revue'" (click)="showSheetDetail(0)">
               <span>
                 <fa-icon [icon]="faEye" class="mr-2"></fa-icon>Afficher</span>
             </button>
