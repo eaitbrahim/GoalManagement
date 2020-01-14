@@ -36,12 +36,16 @@ export class SheetsPanelComponent implements OnInit {
   goalsMode = false;
   detailMode: boolean;
   tabIndex: number = 0;
+  filters: any = {};
+  statusList: string[];
 
   public behavioralSkillEvaluationUpdated: boolean;
 
   constructor(private modalService: BsModalService, private route: ActivatedRoute, private userService: UserService, private authService: AuthService, private alertify: AlertifyService) { }
 
   ngOnInit() {
+    this.statusList = ['Rédaction', 'En Revue', 'Publiée', 'Archivée'];
+    this.filters.status = '';
     this.route.data.subscribe(data => {
       const resolvedData = data['resolvedData'];
       this.sheetsToValidate = resolvedData['sheetsToValidate'];
@@ -56,7 +60,8 @@ export class SheetsPanelComponent implements OnInit {
       .getMySheets(
         this.authService.decodedToken.nameid,
         this.pagination.currentPage,
-        this.pagination.itemsPerPage
+        this.pagination.itemsPerPage,
+        this.filters
       )
       .subscribe(
         (res: PaginatedResult<EvaluationFileInstance[]>) => {
@@ -74,7 +79,7 @@ export class SheetsPanelComponent implements OnInit {
   loadSheetsToValidate() {
     this.loading = true;
     this.userService.getMyCollaboratorsSheets(
-      this.authService.decodedToken.nameid
+      this.authService.decodedToken.nameid, this.filters
     )
       .subscribe(
         (res: EvaluationFileInstance[]) => {
@@ -228,5 +233,15 @@ export class SheetsPanelComponent implements OnInit {
 
   handleBehavioralSkillEvaluationUpdated(event: boolean) {
     this.behavioralSkillEvaluationUpdated = event;
+  }
+
+  loadData() {
+    this.loadSheets();
+    this.loadSheetsToValidate();
+  }
+
+  resetFilters() {
+    this.filters.status = '';
+    this.loadData();
   }
 }

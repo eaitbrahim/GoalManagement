@@ -74,7 +74,7 @@ namespace SothemaGoalManagement.API.Controllers
         }
 
         [HttpGet("myCollaboratorsSheets")]
-        public async Task<IActionResult> GetMyCollaboratorsSheets(int userId)
+        public async Task<IActionResult> GetMyCollaboratorsSheets(int userId, [FromQuery]CommunParams communParams)
         {
             try
             {
@@ -85,7 +85,7 @@ namespace SothemaGoalManagement.API.Controllers
                 {
                     evaluateeIds.Add(evaluatee.Id);
                 }
-                var sheetsTovalidateFromRepo = await _repo.EvaluationFileInstance.GetEvaluationFileInstancesToValidate(evaluateeIds);
+                var sheetsTovalidateFromRepo = await _repo.EvaluationFileInstance.GetEvaluationFileInstancesToValidate(evaluateeIds, communParams);
                 var sheetsToValidate = _mapper.Map<IEnumerable<EvaluationFileInstanceToReturnDto>>(sheetsTovalidateFromRepo);
                 sheetsToValidate = await SetGoalsStatus((List<EvaluationFileInstanceToReturnDto>)sheetsToValidate);
                 return Ok(sheetsToValidate);

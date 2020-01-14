@@ -45,18 +45,67 @@ namespace SothemaGoalManagement.API.Repositories
         public async Task<PagedList<EvaluationFileInstance>> GetEvaluationFileInstancesForUser(CommunParams communParams)
         {
             var sheets = FindByCondition(s => s.OwnerId == communParams.OwnerId).Include(s => s.Owner).AsQueryable();
-            sheets = sheets.OrderByDescending(d => d.Year);
+            sheets = sheets.OrderByDescending(d => d.Created);
+
+            switch (communParams.Status)
+            {
+                case Constants.PUBLISHED:
+                    sheets = sheets.Where(s => s.Status == Constants.PUBLISHED);
+                    break;
+                case Constants.DRAFT:
+                    sheets = sheets.Where(s => s.Status == Constants.DRAFT && s.OwnerId == communParams.OwnerId);
+                    break;
+                case Constants.REVIEW:
+                    sheets = sheets.Where(s => s.Status == Constants.REVIEW);
+                    break;
+                case Constants.ARCHIVED:
+                    sheets = sheets.Where(s => s.Status == Constants.ARCHIVED);
+                    break;
+                default:
+                    sheets = sheets.Where(s => (s.Status == Constants.DRAFT && s.OwnerId == communParams.OwnerId)
+                    || s.Status == Constants.REVIEW || s.Status == Constants.PUBLISHED || s.Status == Constants.ARCHIVED);
+                    break;
+            }
+
             return await PagedList<EvaluationFileInstance>.CreateAsync(sheets, communParams.PageNumber, communParams.PageSize);
         }
 
-        public async Task<IEnumerable<EvaluationFileInstance>> GetEvaluationFileInstancesToValidate(IEnumerable<int> evaluateeIds)
+        public async Task<IEnumerable<EvaluationFileInstance>> GetEvaluationFileInstancesToValidate(IEnumerable<int> evaluateeIds, CommunParams communParams)
         {
-            return await RepositoryContext.EvaluationFileInstances.Include(efi => efi.AxisInstances)
+            // return await RepositoryContext.EvaluationFileInstances.Include(efi => efi.AxisInstances)
+            //                                                     .Include(efi => efi.Owner).ThenInclude(p => p.Photos)
+            //                                                     .Include(efi => efi.Owner).ThenInclude(u => u.Department).ThenInclude(d => d.Pole)
+            //                                                     .Where(efi => evaluateeIds.Contains(efi.OwnerId)
+            //                                                                     && (efi.Status == Constants.DRAFT || efi.Status == Constants.REVIEW))
+            //                                                     .ToListAsync();
+            var sheets = RepositoryContext.EvaluationFileInstances.Include(efi => efi.AxisInstances)
                                                                 .Include(efi => efi.Owner).ThenInclude(p => p.Photos)
                                                                 .Include(efi => efi.Owner).ThenInclude(u => u.Department).ThenInclude(d => d.Pole)
-                                                                .Where(efi => evaluateeIds.Contains(efi.OwnerId)
-                                                                                && (efi.Status == Constants.DRAFT || efi.Status == Constants.REVIEW))
-                                                                .ToListAsync();
+                                                                .OrderByDescending(d => d.Created)
+                                                                .Where(efi => evaluateeIds.Contains(efi.OwnerId))
+                                                                .AsQueryable();
+
+            switch (communParams.Status)
+            {
+                case Constants.PUBLISHED:
+                    sheets = sheets.Where(s => s.Status == Constants.PUBLISHED);
+                    break;
+                case Constants.DRAFT:
+                    sheets = sheets.Where(s => s.Status == Constants.DRAFT);
+                    break;
+                case Constants.REVIEW:
+                    sheets = sheets.Where(s => s.Status == Constants.REVIEW);
+                    break;
+                case Constants.ARCHIVED:
+                    sheets = sheets.Where(s => s.Status == Constants.ARCHIVED);
+                    break;
+                default:
+                    sheets = sheets.Where(s => (s.Status == Constants.DRAFT)
+                    || s.Status == Constants.REVIEW || s.Status == Constants.PUBLISHED || s.Status == Constants.ARCHIVED);
+                    break;
+            }
+
+            return await sheets.ToListAsync();
         }
 
         public async Task<int> GetAxisInstanceByUserIdAndAxisTitle(int evaluateeId, int modelId, string axisInstanceTitle, int parentGoalId)
