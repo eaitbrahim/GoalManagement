@@ -2,7 +2,7 @@
   <div class="card">
     <div class="card-header" *ngIf="sheetStatus !== 'Publiée'">
       <div>
-        <textarea [(ngModel)]="comment" rows="3" cols="150" placeholder="Commentaire"></textarea>
+        <textarea [(ngModel)]="comment" rows="3" style="width:100%;" placeholder="Commentaire"></textarea>
       </div>
       <div class="float-right">
         <button class="btn btn-success" type="button" (click)="addFinalEvaluation()" [disabled]="comment ===''">Validation Finale</button>
@@ -15,12 +15,12 @@
           <th style="width: 20% ">Date Validation</th>
           <th style="width: 60% ">Commentaire</th>
         </tr>
-        <tr>
+        <tr *ngIf="ownerComment">
           <td>{{ ownerFullName }}</td>
           <td>{{ ownerValidationDateTime | date:'mediumDate' }}</td>
           <td>{{ ownerComment }}</td>
         </tr>
-        <tr>
+        <tr *ngIf="validatorComment">
           <td>{{ validatorFullName }}</td>
           <td>{{ validatorValidationDateTime | date:'mediumDate' }}</td>
           <td>{{ validatorComment }}</td>
