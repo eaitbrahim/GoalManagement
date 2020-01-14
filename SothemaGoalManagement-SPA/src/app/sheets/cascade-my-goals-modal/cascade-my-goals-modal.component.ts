@@ -32,6 +32,7 @@ export class CascadeMyGoalsModalComponent implements OnInit {
   faTrash = faTrash;
   showSubGoal: boolean;
   goalChildren: GoalWithChildren[] = [];
+  sheetStatus: string;
 
   constructor(public bsModalRef: BsModalRef, private userService: UserService, private adminService: AdminService, private authService: AuthService, private alertify: AlertifyService) { }
 

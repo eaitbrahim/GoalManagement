@@ -13,6 +13,7 @@ export class GoalEvaluationModalComponent implements OnInit {
   goal: Goal;
   newEval: any;
   evaluateeId: number;
+  sheetStatus: string;
 
   constructor(public bsModalRef: BsModalRef, private alertify: AlertifyService) { }
 
