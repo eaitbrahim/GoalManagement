@@ -265,7 +265,11 @@ namespace SothemaGoalManagement.API.Controllers
                 var goalFromRepo = await _repo.Goal.GetGoal(id);
                 if (goalFromRepo == null) return BadRequest("La fiche d'évaluation n'existe pas!");
 
-                //Prevent evaluator from update in case the sheet's status is in draft
+                // Prevent deleting goals from published sheet
+                var sheetFromRepo = await _repo.EvaluationFileInstance.GetEvaluationFileInstance(goalFromRepo.AxisInstance.EvaluationFileInstanceId);
+                if (sheetFromRepo.Status == Constants.PUBLISHED || sheetFromRepo.Status == Constants.ARCHIVED) return BadRequest("La fiche de l'objectif est est déjà scellé.");
+
+                //Prevent evaluator from update in case the goal's status is in draft
                 if (goalOwner.Id != userId && goalFromRepo.Status == Constants.DRAFT) return BadRequest("La fiche d'évaluation est encore en rédaction.");
 
                 _mapper.Map(goalForUpdateDto, goalFromRepo);
@@ -417,6 +421,10 @@ namespace SothemaGoalManagement.API.Controllers
 
                 var goalFromRepo = await _repo.Goal.GetGoal(id);
                 if (goalFromRepo == null) return NotFound();
+
+                // Prevent deleting goals from published sheet
+                var sheetFromRepo = await _repo.EvaluationFileInstance.GetEvaluationFileInstance(goalFromRepo.AxisInstance.EvaluationFileInstanceId);
+                if (sheetFromRepo.Status == Constants.PUBLISHED || sheetFromRepo.Status == Constants.ARCHIVED) return BadRequest("La fiche de l'objectif est est déjà scellé.");
 
                 // Prevent deleting the goal if it has children
                 var children = await _repo.Goal.GetGoalChildren(goalFromRepo.Id);
