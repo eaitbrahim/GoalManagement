@@ -33,6 +33,13 @@ namespace SothemaGoalManagement.API.Dtos
 
         public ICollection<AxisInstanceToReturnDto> AxisInstances { get; set; }
 
+        public string OwnerComment { get; set; }
+        public string ValidatorComment { get; set; }
+
+        public DateTime OwnerValidationDateTime { get; set; }
+        public DateTime ValidatorValidationDateTime { get; set; }
+        public int ValidatorId { get; set; }
+
         public EvaluationFileInstanceToReturnDto()
         {
             AxisInstances = new Collection<AxisInstanceToReturnDto>();

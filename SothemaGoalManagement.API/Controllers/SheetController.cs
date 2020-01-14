@@ -152,43 +152,50 @@ namespace SothemaGoalManagement.API.Controllers
 
                 if (!await IsItAllowed(sheetFromRepo.OwnerId)) return Unauthorized();
 
+                var processUpdate = false;
+
                 // Case of evaluation by Owner
-                if (finalEvaluation.OwnerValidationDateTime != null && sheetFromRepo.OwnerValidationDateTime == null)
+                if (!string.IsNullOrEmpty(finalEvaluation.OwnerComment))
                 {
                     sheetFromRepo.OwnerValidationDateTime = finalEvaluation.OwnerValidationDateTime;
                     sheetFromRepo.OwnerComment = finalEvaluation.OwnerComment;
-                    if (sheetFromRepo.ValidatorValidationDateTime != null)
+                    if (sheetFromRepo.ValidatorId > 0)
                     {
                         sheetFromRepo.Status = Constants.PUBLISHED;
                     }
+
+                    processUpdate = true;
                 }
 
                 // Case of evaluation by Evaluator
-                if (finalEvaluation.ValidatorValidationDateTime != null && sheetFromRepo.ValidatorValidationDateTime == null)
+                if (!string.IsNullOrEmpty(finalEvaluation.ValidatorComment))
                 {
                     sheetFromRepo.ValidatorValidationDateTime = finalEvaluation.ValidatorValidationDateTime;
                     sheetFromRepo.ValidatorComment = finalEvaluation.ValidatorComment;
                     sheetFromRepo.ValidatorId = finalEvaluation.ValidatorId;
-                    if (sheetFromRepo.OwnerValidationDateTime != null)
+                    if (sheetFromRepo.OwnerComment != null)
                     {
                         sheetFromRepo.Status = Constants.PUBLISHED;
                     }
+                    processUpdate = true;
                 }
 
-                _repo.EvaluationFileInstance.UpdateEvaluationFileInstance(sheetFromRepo);
-                await _repo.EvaluationFileInstance.SaveAllAsync();
-
-                // Log the update of user's weight
-                var user = _repo.User.GetUser(userId, true).Result;
-                var efil = new EvaluationFileInstanceLog
+                if (processUpdate)
                 {
-                    Title = sheetFromRepo.Title,
-                    Created = DateTime.Now,
-                    Log = $"Une évaluation finale a été sauveguardée avec succés' par {user.FirstName} {user.LastName}."
-                };
-                _repo.EvaluationFileInstanceLog.AddEvaluationFileInstanceLog(efil);
-                await _repo.EvaluationFileInstanceLog.SaveAllAsync();
+                    _repo.EvaluationFileInstance.UpdateEvaluationFileInstance(sheetFromRepo);
+                    await _repo.EvaluationFileInstance.SaveAllAsync();
 
+                    // Log the update of user's weight
+                    var user = _repo.User.GetUser(userId, true).Result;
+                    var efil = new EvaluationFileInstanceLog
+                    {
+                        Title = sheetFromRepo.Title,
+                        Created = DateTime.Now,
+                        Log = $"Une évaluation finale a été sauveguardée avec succés' par {user.FirstName} {user.LastName}."
+                    };
+                    _repo.EvaluationFileInstanceLog.AddEvaluationFileInstanceLog(efil);
+                    await _repo.EvaluationFileInstanceLog.SaveAllAsync();
+                }
                 return NoContent();
             }
             catch (Exception ex)

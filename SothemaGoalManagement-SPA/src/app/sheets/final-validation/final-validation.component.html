@@ -1,11 +1,11 @@
 <div class="container mt-2">
   <div class="card">
-    <div class="card-header">
+    <div class="card-header" *ngIf="sheetStatus !== 'Publiée'">
       <div>
-        <textarea [(ngModel)]="comment" rows="3" cols="155" placeholder="Commentaire"></textarea>
+        <textarea [(ngModel)]="comment" rows="3" cols="150" placeholder="Commentaire"></textarea>
       </div>
       <div class="float-right">
-        <button class="btn btn-success" type="button" (click)="addFinalEvaluation()">Validation Finale</button>
+        <button class="btn btn-success" type="button" (click)="addFinalEvaluation()" [disabled]="comment ===''">Validation Finale</button>
       </div>
     </div>
     <div class="card-body">

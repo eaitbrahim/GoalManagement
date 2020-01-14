@@ -47,7 +47,6 @@ export class SheetDetailComponent implements OnInit {
   faArrowLeft = faArrowLeft;
   evaluators: Evaluator[] = [];
   parameters: Parameters[] = [];
-  ownerFullName: string;
   validatorFullName: string;
 
   constructor(private route: ActivatedRoute, private router: Router, private userService: UserService, private hrService: HrService, private adminService: AdminService, private authService: AuthService, private alertify: AlertifyService) { }
@@ -56,7 +55,6 @@ export class SheetDetailComponent implements OnInit {
     if (this.sheetToValidate) {
       this.sheetDetail = this.sheetToValidate;
       this.sheetTabs.tabs[this.tabIndex].active = true;
-      this.getOwnerFullName();
       this.getValidatorFullName();
       this.loadParameters();
       this.fetchEvaluators();
@@ -70,12 +68,12 @@ export class SheetDetailComponent implements OnInit {
         this.sheetDetail = resolvedData['sheetDetail'];
         this.goalTypeList = resolvedData['goalTypeList'];
         this.projectList = resolvedData['projectList'];
-        this.getOwnerFullName();
         this.getValidatorFullName();
         this.loadParameters();
         this.fetchEvaluators();;
         this.getGoalsForAxis();
         this.getBehavioralSkillInstances();
+        console.log('sheetDetail:', this.sheetDetail);
       });
     }
   }
@@ -122,7 +120,7 @@ export class SheetDetailComponent implements OnInit {
     if (goalsInInitialStatus.length == 0) {
       this.areGoalsReadOnly = true;
     } else {
-      var indx = this.evaluators.findIndex(e => e.id == this.authService.decodedToken.nameid);
+      var indx = this.evaluators.findIndex(e => e.id == parseInt(this.authService.decodedToken.nameid));
       if (this.sheetDetail.ownerId != this.authService.decodedToken.nameid && indx === -1) {
         this.areGoalsReadOnly = true;
       } else {
@@ -227,7 +225,7 @@ export class SheetDetailComponent implements OnInit {
   }
 
   CanBehavioralSkillBeEvaluated() {
-    var indx = this.evaluators.findIndex(e => e.id == this.authService.decodedToken.nameid);
+    var indx = this.evaluators.findIndex(e => e.id == parseInt(this.authService.decodedToken.nameid));
     if (indx === -1) {
       this.areBehavioralSkillsEvaluable = false;
     } else {
@@ -273,7 +271,7 @@ export class SheetDetailComponent implements OnInit {
     });
 
     this.userService
-      .validateGoals(this.authService.decodedToken.nameid, goals)
+      .validateGoals(this.authService.decodedToken.nameid, this.sheetDetail.id, goals)
       .subscribe(
         () => {
           this.loading = false;
@@ -423,11 +421,11 @@ export class SheetDetailComponent implements OnInit {
 
   handleAddFinalEvaluation(comment: string) {
     let finalEvaluation: any = {};
-    if (this.authService.decodedToken.nameid === this.sheetDetail.ownerId) {
+    if (parseInt(this.authService.decodedToken.nameid) === this.sheetDetail.ownerId) {
       finalEvaluation.ownerComment = comment;
       finalEvaluation.ownerValidationDateTime = new Date();
     } else {
-      if (this.evaluators.findIndex(e => e.id === this.authService.decodedToken.nameid) > -1) {
+      if (this.evaluators.findIndex(e => e.id === parseInt(this.authService.decodedToken.nameid)) > -1) {
         finalEvaluation.validatorId = this.authService.decodedToken.nameid;
         finalEvaluation.validatorComment = comment;
         finalEvaluation.validatorValidationDateTime = new Date();
@@ -445,7 +443,7 @@ export class SheetDetailComponent implements OnInit {
           .subscribe(
             () => {
               this.loading = false;
-              this.fetchSheet();
+              this.fetchSheet(this.sheetDetail.id);
               this.alertify.success('Votre évaluation finale a été ajoutée avec succès.');
             },
             error => {
@@ -458,10 +456,10 @@ export class SheetDetailComponent implements OnInit {
 
   }
 
-  fetchSheet() {
+  fetchSheet(sheetId: number) {
     this.loading = true;
     this.userService
-      .getMySheet(this.authService.decodedToken.nameid, this.sheetDetail.id)
+      .getMySheet(sheetId, this.authService.decodedToken.nameid)
       .subscribe(
         (result: EvaluationFileInstance) => {
           this.loading = false;
@@ -474,35 +472,21 @@ export class SheetDetailComponent implements OnInit {
       );
   }
 
-  getOwnerFullName() {
-    this.loading = true;
-    this.userService
-      .getUser(this.sheetDetail.ownerId)
-      .subscribe(
-        (result: User) => {
-          this.loading = false;
-          this.ownerFullName = result.firstName + ' ' + result.lastName;
-        },
-        error => {
-          this.loading = false;
-          this.alertify.error(error);
-        }
-      );
-  }
-
   getValidatorFullName() {
-    this.loading = true;
-    this.userService
-      .getUser(this.sheetDetail.validatorId)
-      .subscribe(
-        (result: User) => {
-          this.loading = false;
-          this.validatorFullName = result.firstName + ' ' + result.lastName;
-        },
-        error => {
-          this.loading = false;
-          this.alertify.error(error);
-        }
-      );
+    if (this.sheetDetail.validatorId) {
+      this.loading = true;
+      this.userService
+        .getUser(this.sheetDetail.validatorId)
+        .subscribe(
+          (result: User) => {
+            this.loading = false;
+            this.validatorFullName = result.firstName + ' ' + result.lastName;
+          },
+          error => {
+            this.loading = false;
+            this.alertify.error(error);
+          }
+        );
+    }
   }
 }

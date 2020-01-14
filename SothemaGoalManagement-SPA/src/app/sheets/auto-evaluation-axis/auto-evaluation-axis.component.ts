@@ -15,6 +15,7 @@ import { GoalEvaluationModalComponent } from '../goal-evaluation-modal/goal-eval
 export class AutoEvaluationAxisComponent implements OnInit {
   @Input() goalsByAxisInstance: GoalByAxisInstance;
   @Input() sheetOwnerId: number;
+  @Input() sheetStatus: string;
   @Output() addGoalEvaluationEvent = new EventEmitter<any>();
   isCollapsed: boolean;
   faCaretDown = faCaretDown;
@@ -35,7 +36,8 @@ export class AutoEvaluationAxisComponent implements OnInit {
   addEvaluation(goal) {
     const initialState = {
       goal: goal,
-      evaluateeId: this.sheetOwnerId
+      evaluateeId: this.sheetOwnerId,
+      sheetStatus: this.sheetStatus
     };
 
     this.bsModalRef = this.modalService.show(GoalEvaluationModalComponent, { initialState, ignoreBackdropClick: true, class: 'modal-lg' });

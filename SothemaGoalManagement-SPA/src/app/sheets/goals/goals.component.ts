@@ -20,6 +20,7 @@ export class GoalsComponent implements OnInit {
   @Input() goalsByAxisInstanceList: GoalByAxisInstance[];
   @Input() goalTypeList: GoalType[];
   @Input() projectList: Project[];
+  @Input() sheetStatus: string;
   @Output() createGoalEvent = new EventEmitter<any>();
   @Output() editGoalEvent = new EventEmitter<Goal>();
   @Output() deleteGoalEvent = new EventEmitter<Goal>();

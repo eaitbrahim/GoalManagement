@@ -291,8 +291,8 @@ namespace SothemaGoalManagement.API.Controllers
             }
         }
 
-        [HttpPut("validateGoals")]
-        public async Task<IActionResult> ValidateGoals(int userId, IEnumerable<GoalForUpdateDto> goalsToUpdateDto)
+        [HttpPut("validateGoals/{sheetId}")]
+        public async Task<IActionResult> ValidateGoals(int userId, int sheetId, IEnumerable<GoalForUpdateDto> goalsToUpdateDto)
         {
             try
             {
@@ -356,6 +356,15 @@ namespace SothemaGoalManagement.API.Controllers
                     }
                     await _repo.Goal.SaveAllAsync();
 
+                    // Set status of sheet
+                    var sheetFromRepo = await _repo.EvaluationFileInstance.GetEvaluationFileInstance(sheetId);
+                    if (goalsStatus == Constants.PUBLISHED && sheetFromRepo != null)
+                    {
+                        sheetFromRepo.Status = Constants.REVIEW;
+                        _repo.EvaluationFileInstance.UpdateEvaluationFileInstance(sheetFromRepo);
+                        await _repo.EvaluationFileInstance.SaveAllAsync();
+                    }
+
                     // Log objectifs have been submitted for validation
                     var efilList = new List<EvaluationFileInstanceLog>(){new EvaluationFileInstanceLog
                     {
@@ -363,6 +372,16 @@ namespace SothemaGoalManagement.API.Controllers
                         Created = DateTime.Now,
                         Log = $"Les objectives de la fiche: '{sheetTitle}' ont été mis au statut {goalsStatus}."
                     }};
+
+                    if (goalsStatus == Constants.PUBLISHED && sheetFromRepo != null)
+                    {
+                        efilList.Add(new EvaluationFileInstanceLog
+                        {
+                            Title = sheetTitle,
+                            Created = DateTime.Now,
+                            Log = $"Le statut de la fiche: '{sheetTitle}' a été mis au: {sheetFromRepo.Status}."
+                        });
+                    }
 
                     await LogForSheet(efilList);
 

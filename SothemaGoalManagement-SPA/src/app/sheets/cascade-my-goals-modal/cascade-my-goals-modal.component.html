@@ -45,7 +45,7 @@
     Aucun évalué n'a été encore affecté à vous!
   </div>
 
-  <div class="card mt-1" *ngIf="filteredSubGoals.length > 0">
+  <div class="card mt-1" *ngIf="filteredSubGoals.length > 0 && sheetStatus !== 'Publiée'">
     <div class="card-header">
       <div class="text-muted">
         Veuillez sélectionner un ou plusieurs évalués pour leur cascader votre objectif.

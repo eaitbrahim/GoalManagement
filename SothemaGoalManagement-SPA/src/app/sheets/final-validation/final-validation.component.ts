@@ -6,6 +6,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./final-validation.component.css']
 })
 export class FinalValidationComponent implements OnInit {
+  @Input() sheetStatus: string;
   @Input() ownerFullName: string;
   @Input() ownerComment: string;
   @Input() validatorFullName: string;
@@ -13,7 +14,7 @@ export class FinalValidationComponent implements OnInit {
   @Input() ownerValidationDateTime: string;
   @Input() validatorValidationDateTime: string;
   @Output() addFinalEvaluationEvent = new EventEmitter<string>();
-  comment: string;
+  comment: string = '';
 
   constructor() { }
 
@@ -22,5 +23,6 @@ export class FinalValidationComponent implements OnInit {
 
   addFinalEvaluation() {
     this.addFinalEvaluationEvent.emit(this.comment)
+    this.comment = '';
   }
 }

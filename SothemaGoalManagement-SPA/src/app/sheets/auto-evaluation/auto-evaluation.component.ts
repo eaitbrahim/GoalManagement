@@ -11,6 +11,7 @@ export class AutoEvaluationComponent implements OnInit {
   @Input() goalsByAxisInstanceList: GoalByAxisInstance[];
   @Input() areGoalsEvaluable: boolean;
   @Input() sheetOwnerId: number;
+  @Input() sheetStatus: string;
   @Output() addGoalEvaluationEvent = new EventEmitter<any>();
 
   constructor() { }

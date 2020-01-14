@@ -58,7 +58,7 @@ export class MyCollaboratorGoalsComponent implements OnInit {
         }));
       });
 
-      var rejectionData = { goals: goals };
+      var rejectionData = { sheetId: this.sheetToValidate.id, goals: goals };
       this.rejectGoalsEvent.emit(rejectionData);
       this.switchOffGoalsEvent.emit(false);
     });
@@ -80,7 +80,7 @@ export class MyCollaboratorGoalsComponent implements OnInit {
       }));
     });
 
-    var acceptanceData = { goals: goals };
+    var acceptanceData = { sheetId: this.sheetToValidate.id, goals: goals };
     this.acceptGoalsEvent.emit(acceptanceData);
     this.switchOffGoalsEvent.emit(false);
   }

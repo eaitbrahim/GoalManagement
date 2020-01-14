@@ -39,8 +39,8 @@
 
     <div class="card-body">
       <div *ngFor="let goalsByAxisInstance of goalsByAxisInstanceList">
-        <app-goal-card [sheetId]="sheetId" [areGoalsReadOnly]="areGoalsReadOnly" [axisInstances]="axisInstances" [goalTypeList]="goalTypeList"
-          [projectList]="projectList" [goalsByAxisInstance]="goalsByAxisInstance" (editGoalEvent)="handleEditGoal($event)"
+        <app-goal-card [sheetStatus]="sheetStatus" [sheetId]="sheetId" [areGoalsReadOnly]="areGoalsReadOnly" [axisInstances]="axisInstances"
+          [goalTypeList]="goalTypeList" [projectList]="projectList" [goalsByAxisInstance]="goalsByAxisInstance" (editGoalEvent)="handleEditGoal($event)"
           (deleteGoalEvent)="handleDeleteGoal($event)" (cascadeMyGoalEvent)="handleCascadeMyGoal($event)"></app-goal-card>
       </div>
     </div>

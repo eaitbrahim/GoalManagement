@@ -188,8 +188,8 @@ export class UserService {
     return this.http.put(`${this.baseUrl}users/${userId}/sheet/${axisInstanceId}/${userWeight}`, {})
   }
 
-  validateGoals(userId: number, goals: any[]) {
-    return this.http.put(`${this.baseUrl}users/${userId}/goal/validateGoals`, goals);
+  validateGoals(userId: number, sheetId: number, goals: any[]) {
+    return this.http.put(`${this.baseUrl}users/${userId}/goal/validateGoals/${sheetId}`, goals);
   }
 
   getGoalEvaluations(userId: number, goalId: number) {

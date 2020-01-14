@@ -23,6 +23,7 @@ export class GoalCardComponent implements OnInit {
   @Input() goalTypeList: GoalType[];
   @Input() projectList: Project[];
   @Input() ownerName: string;
+  @Input() sheetStatus: string;
   @Output() editGoalEvent = new EventEmitter<any>();
   @Output() cascadeMyGoalEvent = new EventEmitter<any>();
   @Output() deleteGoalEvent = new EventEmitter<Goal>();
@@ -63,7 +64,8 @@ export class GoalCardComponent implements OnInit {
   cascadeGoal(myGoal: Goal) {
     const initialState = {
       myGoal,
-      axisInstanceTitle: this.goalsByAxisInstance.title
+      axisInstanceTitle: this.goalsByAxisInstance.title,
+      sheetStatus: this.sheetStatus
     };
 
     this.bsModalRef = this.modalService.show(CascadeMyGoalsModalComponent, { initialState, ignoreBackdropClick: true, class: 'modal-lg' });

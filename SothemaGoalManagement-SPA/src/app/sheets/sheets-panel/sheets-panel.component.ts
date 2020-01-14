@@ -164,7 +164,7 @@ export class SheetsPanelComponent implements OnInit {
   handleRejectGoals(event: any) {
     this.loading = true;
     this.userService
-      .validateGoals(this.authService.decodedToken.nameid, event.goals)
+      .validateGoals(this.authService.decodedToken.nameid, event.sheetId, event.goals)
       .subscribe(
         () => {
           this.loading = false;
@@ -181,7 +181,7 @@ export class SheetsPanelComponent implements OnInit {
   handleAcceptGoals(acceptanceData: any) {
     this.loading = true;
     this.userService
-      .validateGoals(this.authService.decodedToken.nameid, acceptanceData.goals)
+      .validateGoals(this.authService.decodedToken.nameid, acceptanceData.sheetId, acceptanceData.goals)
       .subscribe(
         () => {
           this.loading = false;

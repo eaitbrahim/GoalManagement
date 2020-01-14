@@ -21,16 +21,16 @@
       <tabset class="member-tabset" #sheetTabs>
         <tab heading="Définition des objectifs">
           <div *ngIf="goalsByAxisInstanceList">
-            <app-goals [sheetId]="sheetDetail.id" [areGoalsCompleted]="areGoalsCompleted" [areGoalsReadOnly]="areGoalsReadOnly" [goalsByAxisInstanceList]="goalsByAxisInstanceList"
-              [axisInstances]="sheetDetail.axisInstances" [goalTypeList]="goalTypeList" [projectList]="projectList" (createGoalEvent)="handleCreateGoal($event)"
-              (editGoalEvent)="handleEditGoal($event)" (deleteGoalEvent)="handleDeleteGoal($event)" (validateGoalsEvent)="handleValidateGoals($event)"
-              (cascadeMyGoalEvent)="handleCascadeMyGoal($event)"></app-goals>
+            <app-goals [sheetStatus]="sheetDetail.status" [sheetId]="sheetDetail.id" [areGoalsCompleted]="areGoalsCompleted" [areGoalsReadOnly]="areGoalsReadOnly"
+              [goalsByAxisInstanceList]="goalsByAxisInstanceList" [axisInstances]="sheetDetail.axisInstances" [goalTypeList]="goalTypeList"
+              [projectList]="projectList" (createGoalEvent)="handleCreateGoal($event)" (editGoalEvent)="handleEditGoal($event)"
+              (deleteGoalEvent)="handleDeleteGoal($event)" (validateGoalsEvent)="handleValidateGoals($event)" (cascadeMyGoalEvent)="handleCascadeMyGoal($event)"></app-goals>
           </div>
         </tab>
         <tab heading="Évaluation des Objectifs">
           <div *ngIf="goalsByAxisInstanceList">
-            <app-auto-evaluation [sheetOwnerId]="sheetDetail.ownerId" [goalsByAxisInstanceList]="goalsByAxisInstanceList" [areGoalsEvaluable]="areGoalsEvaluable"
-              (addGoalEvaluationEvent)="handleAddGoalEvaluation($event)"></app-auto-evaluation>
+            <app-auto-evaluation [sheetStatus]="sheetDetail.status" [sheetOwnerId]="sheetDetail.ownerId" [goalsByAxisInstanceList]="goalsByAxisInstanceList"
+              [areGoalsEvaluable]="areGoalsEvaluable" (addGoalEvaluationEvent)="handleAddGoalEvaluation($event)"></app-auto-evaluation>
           </div>
         </tab>
         <tab heading="Évaluation des Compétence Comportementale">
@@ -41,8 +41,8 @@
           </div>
         </tab>
         <tab heading="Validation Finale de la Fiche">
-          <app-final-validation [ownerFullName]="ownerFullName" [validatorFullName]="validatorFullName" [ownerComment]="sheetDetail.ownerComment"
-            [validatorComment]="sheetDetail.validatorComment" [ownerValidationDateTime]="sheetDetail.ownerValidationDateTime"
+          <app-final-validation [sheetStatus]="sheetDetail.status" [ownerFullName]="sheetDetail.ownerName" [validatorFullName]="validatorFullName"
+            [ownerComment]="sheetDetail.ownerComment" [validatorComment]="sheetDetail.validatorComment" [ownerValidationDateTime]="sheetDetail.ownerValidationDateTime"
             [validatorValidationDateTime]="sheetDetail.validatorValidationDateTime" (addFinalEvaluationEvent)="handleAddFinalEvaluation($event)"></app-final-validation>
         </tab>
       </tabset>
