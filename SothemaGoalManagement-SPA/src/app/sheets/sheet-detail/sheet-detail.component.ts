@@ -48,6 +48,7 @@ export class SheetDetailComponent implements OnInit {
   evaluators: Evaluator[] = [];
   parameters: Parameters[] = [];
   validatorFullName: string;
+  isFinalValidationActive: boolean = false;
 
   constructor(private route: ActivatedRoute, private router: Router, private userService: UserService, private hrService: HrService, private adminService: AdminService, private authService: AuthService, private alertify: AlertifyService) { }
 
@@ -73,7 +74,6 @@ export class SheetDetailComponent implements OnInit {
         this.fetchEvaluators();;
         this.getGoalsForAxis();
         this.getBehavioralSkillInstances();
-        console.log('sheetDetail:', this.sheetDetail);
       });
     }
   }
@@ -87,7 +87,6 @@ export class SheetDetailComponent implements OnInit {
         (result: GoalByAxisInstance[]) => {
           this.loading = false;
           this.goalsByAxisInstanceList = result;
-          this.CanGoalsBeValidated();
           this.CheckReadOnly();
           this.CanGoalsBeEvaluated();
         },
@@ -119,25 +118,30 @@ export class SheetDetailComponent implements OnInit {
     var goalsInInitialStatus = this.goalsByAxisInstanceList.filter(g => g.goalsStatus === 'Pas encore créé' || g.goalsStatus == 'Rédaction');
     if (goalsInInitialStatus.length == 0) {
       this.areGoalsReadOnly = true;
+      console.log('(goalsInInitialStatus) areGoalsReadOnly:', this.areGoalsReadOnly);
     } else {
       var indx = this.evaluators.findIndex(e => e.id == parseInt(this.authService.decodedToken.nameid));
       if (this.sheetDetail.ownerId != this.authService.decodedToken.nameid && indx === -1) {
         this.areGoalsReadOnly = true;
+        console.log('(It is not an evaluator) areGoalsReadOnly:', this.areGoalsReadOnly);
       } else {
         this.areGoalsReadOnly = false;
+        console.log('(Evaluator) areGoalsReadOnly:', this.areGoalsReadOnly);
       }
     }
 
     if (this.parameters.length > 0) {
-      if (!this.isTodayWithinEventsRange('validation')) this.areGoalsReadOnly = true;
+      if (!this.isTodayWithinEventsRange('objectifs')) { this.areGoalsReadOnly = true; console.log('(Validation date) areGoalsReadOnly:', this.areGoalsReadOnly); }
     }
 
     if (this.authService.roleMatch(['HRD'])) {
       this.areGoalsReadOnly = false;
+      console.log('(HRD) areGoalsReadOnly:', this.areGoalsReadOnly);
     }
 
     if (this.sheetDetail.status === 'Publiée') {
       this.areGoalsReadOnly = true;
+      console.log('(Published sheet) areGoalsReadOnly:', this.areGoalsReadOnly);
     }
 
     return this.areGoalsReadOnly;
@@ -394,6 +398,9 @@ export class SheetDetailComponent implements OnInit {
         (result: Parameters[]) => {
           this.loading = false;
           this.parameters = result;
+          if (this.parameters.length > 0) {
+            if (this.isTodayWithinEventsRange('finale')) this.isFinalValidationActive = true;
+          }
         },
         error => {
           this.loading = false;
@@ -407,6 +414,7 @@ export class SheetDetailComponent implements OnInit {
     const today = new Date();
     let isTodayWithinEventRanges = [];
     const eventRange = this.parameters.filter(p => p.event.includes(event));
+
     for (let param of eventRange) {
       if (new Date(param.startEvent) <= today && today <= new Date(param.endEvent)) {
         isTodayWithinEventRanges.push(true);

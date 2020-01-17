@@ -5,7 +5,7 @@
         <textarea [(ngModel)]="comment" rows="3" style="width:100%;" placeholder="Commentaires généraux et opinion finale sur l'évaluation de cette fiche."></textarea>
       </div>
       <div class="float-right">
-        <button class="btn btn-success" type="button" (click)="addFinalEvaluation()" [disabled]="comment ===''">Validation Finale</button>
+        <button class="btn btn-success" type="button" (click)="addFinalEvaluation()" [disabled]="comment ==='' || !isFinalValidationActive">Validation Finale</button>
       </div>
     </div>
     <div class="card-body">

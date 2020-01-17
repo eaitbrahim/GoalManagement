@@ -41,9 +41,10 @@
           </div>
         </tab>
         <tab heading="Validation Finale de la Fiche">
-          <app-final-validation [sheetStatus]="sheetDetail.status" [ownerFullName]="sheetDetail.ownerName" [validatorFullName]="validatorFullName"
-            [ownerComment]="sheetDetail.ownerComment" [validatorComment]="sheetDetail.validatorComment" [ownerValidationDateTime]="sheetDetail.ownerValidationDateTime"
-            [validatorValidationDateTime]="sheetDetail.validatorValidationDateTime" (addFinalEvaluationEvent)="handleAddFinalEvaluation($event)"></app-final-validation>
+          <app-final-validation [isFinalValidationActive]="isFinalValidationActive" [sheetStatus]="sheetDetail.status" [ownerFullName]="sheetDetail.ownerName"
+            [validatorFullName]="validatorFullName" [ownerComment]="sheetDetail.ownerComment" [validatorComment]="sheetDetail.validatorComment"
+            [ownerValidationDateTime]="sheetDetail.ownerValidationDateTime" [validatorValidationDateTime]="sheetDetail.validatorValidationDateTime"
+            (addFinalEvaluationEvent)="handleAddFinalEvaluation($event)"></app-final-validation>
         </tab>
       </tabset>
     </div>

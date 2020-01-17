@@ -13,12 +13,14 @@ export class FinalValidationComponent implements OnInit {
   @Input() validatorComment: string;
   @Input() ownerValidationDateTime: string;
   @Input() validatorValidationDateTime: string;
+  @Input() isFinalValidationActive: boolean;
   @Output() addFinalEvaluationEvent = new EventEmitter<string>();
   comment: string = '';
 
   constructor() { }
 
   ngOnInit() {
+    console.log('isFinalValidationActive:', this.isFinalValidationActive);
   }
 
   addFinalEvaluation() {
