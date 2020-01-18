@@ -597,7 +597,12 @@ namespace SothemaGoalManagement.API.Migrations
                     OwnerId = table.Column<int>(nullable: false),
                     StrategyTitle = table.Column<string>(nullable: true),
                     StrategyDescription = table.Column<string>(nullable: true),
-                    EvaluationFileId = table.Column<int>(nullable: false)
+                    EvaluationFileId = table.Column<int>(nullable: false),
+                    OwnerComment = table.Column<string>(nullable: true),
+                    ValidatorComment = table.Column<string>(nullable: true),
+                    OwnerValidationDateTime = table.Column<DateTime>(nullable: false),
+                    ValidatorValidationDateTime = table.Column<DateTime>(nullable: false),
+                    ValidatorId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -625,7 +630,8 @@ namespace SothemaGoalManagement.API.Migrations
                     Event = table.Column<string>(nullable: true),
                     StartEvent = table.Column<DateTime>(nullable: false),
                     EndEvent = table.Column<DateTime>(nullable: false),
-                    EvaluationFileId = table.Column<int>(nullable: false)
+                    EvaluationFileId = table.Column<int>(nullable: false),
+                    ToggleChangeAxisWeight = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {

@@ -28,6 +28,7 @@ export class EvaluationHrDetailComponent implements OnInit {
   bsModalRef: BsModalRef;
   faTrash = faTrash
   isReadOnly: boolean;
+  toggleChangeAxisWeightParam: Parameters;
 
   constructor(private modalService: BsModalService, private route: ActivatedRoute, private router: Router, private hrService: HrService, private adminService: AdminService, private authService: AuthService, private alertify: AlertifyService) { }
 
@@ -144,7 +145,7 @@ export class EvaluationHrDetailComponent implements OnInit {
     );
   }
 
-  handleAddDateRange(event: any) {
+  handleAddNewParam(event: any) {
     const newParameters = { ...event, evaluationFileId: this.evaluationFile.id };
     this.loading = true;
     this.hrService
@@ -164,8 +165,9 @@ export class EvaluationHrDetailComponent implements OnInit {
   }
 
   handleDeleteDateRange(parameters: Parameters) {
+
     this.alertify.confirm('Supprimer',
-      `Êtes-vous sûr de vouloir supprimer l'événement: ${parameters.event} avec la plage des dates: ${parameters.startEvent.toString().substring(0, 10)} et ${parameters.endEvent.toString().substring(0, 10)}?`,
+      `Êtes-vous sûr de vouloir supprimer l'événement: ${parameters.event}?`,
       () => {
         this.loading = true;
         this.hrService
@@ -194,6 +196,15 @@ export class EvaluationHrDetailComponent implements OnInit {
         (result: Parameters[]) => {
           this.loading = false;
           this.parameters = result;
+          if (this.parameters.length > 0) {
+            const changeAxisWeightIdx = this.parameters.findIndex(p => p.event.includes('Change Axis Weight'));
+            if (changeAxisWeightIdx > -1) {
+              this.toggleChangeAxisWeightParam = this.parameters[changeAxisWeightIdx];
+              this.parameters = this.parameters.splice(changeAxisWeightIdx, 1);
+            } else {
+              this.toggleChangeAxisWeightParam = Object.assign({ toggleChangeAxisWeight: false });
+            }
+          }
         },
         error => {
           this.loading = false;

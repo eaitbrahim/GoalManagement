@@ -14,5 +14,7 @@ namespace SothemaGoalManagement.API.Dtos
 
         public int EvaluationFilelId { get; set; }
 
+        public bool ToggleChangeAxisWeight { get; set; }
+
     }
 }

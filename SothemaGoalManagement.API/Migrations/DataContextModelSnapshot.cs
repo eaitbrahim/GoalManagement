@@ -538,6 +538,8 @@ namespace SothemaGoalManagement.API.Migrations
 
                     b.Property<DateTime>("StartEvent");
 
+                    b.Property<bool>("ToggleChangeAxisWeight");
+
                     b.HasKey("Id");
 
                     b.HasIndex("EvaluationFileId");

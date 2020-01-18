@@ -38,6 +38,8 @@ export class SheetsPanelComponent implements OnInit {
   tabIndex: number = 0;
   filters: any = {};
   statusList: string[];
+  toggleChangeAxisWeight: boolean;
+
 
   public behavioralSkillEvaluationUpdated: boolean;
 
@@ -51,6 +53,7 @@ export class SheetsPanelComponent implements OnInit {
       this.sheetsToValidate = resolvedData['sheetsToValidate'];
       this.sheets = resolvedData['sheets'].result;
       this.pagination = resolvedData['sheets'].pagination;
+      this.checkParameters();
     });
   }
 
@@ -76,6 +79,22 @@ export class SheetsPanelComponent implements OnInit {
       );
   }
 
+  checkParameters() {
+
+    this.sheetsToValidate.forEach(sheetToValidate => {
+      if (sheetToValidate.parameters.length > 0) {
+        let changeAxisWeightIdx = sheetToValidate.parameters.findIndex(p => p.event.includes('Change Axis Weight'));
+        if (changeAxisWeightIdx > -1) {
+          this.toggleChangeAxisWeight = sheetToValidate.parameters[changeAxisWeightIdx].toggleChangeAxisWeight;
+        } else {
+          this.toggleChangeAxisWeight = false;
+        }
+      }
+    });
+
+
+    console.log('toggleChangeAxisWeight:', this.toggleChangeAxisWeight);
+  }
   loadSheetsToValidate() {
     this.loading = true;
     this.userService.getMyCollaboratorsSheets(
@@ -85,6 +104,7 @@ export class SheetsPanelComponent implements OnInit {
         (res: EvaluationFileInstance[]) => {
           this.loading = false;
           this.sheetsToValidate = res;
+          this.checkParameters();
         },
         error => {
           this.loading = false;

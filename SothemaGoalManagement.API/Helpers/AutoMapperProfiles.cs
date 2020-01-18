@@ -116,6 +116,9 @@ namespace SothemaGoalManagement.API.Helpers
             }).ForMember(dest => dest.PhotoUrl, opt =>
             {
                 opt.MapFrom(src => src.Owner.Photos.FirstOrDefault(p => p.IsMain).Url);
+            }).ForMember(dest => dest.Parameters, opt =>
+            {
+                opt.MapFrom(src => src.EvaluationFile.Parameters);
             });
 
             CreateMap<GoalType, GoalTypeToReturnDto>();

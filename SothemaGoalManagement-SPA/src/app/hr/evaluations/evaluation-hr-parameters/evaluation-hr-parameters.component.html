@@ -1,4 +1,12 @@
 <div class="container mt-2">
+  <div class="card mb-2">
+    <div class="card-header">
+      <input name="isActive" type="checkbox" class="form-check-input ml-2" value="{{toggleChangeAxisWeightParam?.toggleChangeAxisWeight}}"
+        [checked]="toggleChangeAxisWeightParam?.toggleChangeAxisWeight" disabled>
+      <label class="ml-4">Autoriser l'évaluateur à modifier le poids de l'axe pour une personne évaluée.</label>
+      <button class="btn btn-success float-right" type="button" (click)="toggleChangeWeight()">Activer / Désactiver</button>
+    </div>
+  </div>
   <div class="alert alert-primary mb-2" role="alert">
     <ul>
       <li>Plage de dates de validation des objectifs: c'est la période pour créer et valider des objectifs. Elle n'est pas obligatoire

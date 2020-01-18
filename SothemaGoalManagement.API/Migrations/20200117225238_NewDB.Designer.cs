@@ -9,7 +9,7 @@ using SothemaGoalManagement.API.Data;
 namespace SothemaGoalManagement.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200103083455_NewDB")]
+    [Migration("20200117225238_NewDB")]
     partial class NewDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -364,7 +364,11 @@ namespace SothemaGoalManagement.API.Migrations
 
                     b.Property<int>("EvaluationFileId");
 
+                    b.Property<string>("OwnerComment");
+
                     b.Property<int>("OwnerId");
+
+                    b.Property<DateTime>("OwnerValidationDateTime");
 
                     b.Property<string>("Status");
 
@@ -373,6 +377,12 @@ namespace SothemaGoalManagement.API.Migrations
                     b.Property<string>("StrategyTitle");
 
                     b.Property<string>("Title");
+
+                    b.Property<string>("ValidatorComment");
+
+                    b.Property<int>("ValidatorId");
+
+                    b.Property<DateTime>("ValidatorValidationDateTime");
 
                     b.Property<int>("Year");
 
@@ -529,6 +539,8 @@ namespace SothemaGoalManagement.API.Migrations
                     b.Property<string>("Event");
 
                     b.Property<DateTime>("StartEvent");
+
+                    b.Property<bool>("ToggleChangeAxisWeight");
 
                     b.HasKey("Id");
 

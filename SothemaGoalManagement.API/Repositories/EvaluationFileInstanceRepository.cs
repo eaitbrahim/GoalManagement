@@ -73,6 +73,8 @@ namespace SothemaGoalManagement.API.Repositories
         public async Task<IEnumerable<EvaluationFileInstance>> GetEvaluationFileInstancesToValidate(IEnumerable<int> evaluateeIds, CommunParams communParams)
         {
             var sheets = RepositoryContext.EvaluationFileInstances.Include(efi => efi.AxisInstances)
+                                                                .Include(efi => efi.EvaluationFile)
+                                                                .ThenInclude(ef => ef.Parameters)
                                                                 .Include(efi => efi.Owner).ThenInclude(p => p.Photos)
                                                                 .Include(efi => efi.Owner).ThenInclude(u => u.Department).ThenInclude(d => d.Pole)
                                                                 .OrderByDescending(d => d.Created)

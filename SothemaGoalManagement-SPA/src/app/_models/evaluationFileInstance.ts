@@ -1,3 +1,4 @@
+import { Parameters } from './parameters';
 import { BehavioralSkillInstance } from "./behavioralSkillInstance";
 import { AxisInstance } from "./axisInstance";
 
@@ -22,4 +23,5 @@ export interface EvaluationFileInstance {
   ownerValidationDateTime: Date;
   validatorValidationDateTime: Date;
   validatorId: number;
+  parameters: Parameters[];
 }

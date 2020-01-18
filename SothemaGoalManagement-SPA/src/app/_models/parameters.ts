@@ -4,4 +4,5 @@ export interface Parameters {
   event: string;
   endEvent: Date;
   evaluationFileId: number;
+  toggleChangeAxisWeight: boolean;
 }

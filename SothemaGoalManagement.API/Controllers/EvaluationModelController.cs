@@ -202,6 +202,21 @@ namespace SothemaGoalManagement.API.Controllers
 
                 var evaluationFileFromRepo = await _repo.EvaluationFile.GetEvaluationFile(evaluationFileForUpdateDto.Id);
                 if (evaluationFileFromRepo == null) return BadRequest("La fiche d'évaluation n'existe pas!");
+                var parametersFromRepo = await _repo.Parameters.GetParametersByModeId(evaluationFileFromRepo.Id);
+                if (parametersFromRepo == null || parametersFromRepo.Count() == 0) return BadRequest("Vous devez définir la date de validation finale de la fiche dans les paramètres");
+                else
+                {
+                    var finaleEventExists = false;
+                    foreach (var param in parametersFromRepo)
+                    {
+                        if (param.Event.Contains("finale"))
+                        {
+                            finaleEventExists = true;
+                            break;
+                        }
+                    }
+                    if (!finaleEventExists) return BadRequest("Vous devez définir la date de validation finale de la fiche dans les paramètres");
+                }
                 if (evaluationFileFromRepo.Sealed && evaluationFileForUpdateDto.Status != Constants.ARCHIVED) return BadRequest("La fiche d'évaluation est scellée!");
                 if (evaluationFileFromRepo.Status != Constants.PUBLISHED && evaluationFileForUpdateDto.Status == Constants.PUBLISHED && evaluationFileFromRepo.Strategy.Sealed)
                 {

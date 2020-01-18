@@ -49,6 +49,7 @@ export class SheetDetailComponent implements OnInit {
   parameters: Parameters[] = [];
   validatorFullName: string;
   isFinalValidationActive: boolean = false;
+  toggleChangeAxisWeight: boolean;
 
   constructor(private route: ActivatedRoute, private router: Router, private userService: UserService, private hrService: HrService, private adminService: AdminService, private authService: AuthService, private alertify: AlertifyService) { }
 
@@ -400,6 +401,10 @@ export class SheetDetailComponent implements OnInit {
           this.parameters = result;
           if (this.parameters.length > 0) {
             if (this.isTodayWithinEventsRange('finale')) this.isFinalValidationActive = true;
+            const changeAxisWeightIdx = this.parameters.findIndex(p => p.event.includes('Change Axis Weight'));
+            if (changeAxisWeightIdx > -1) {
+              this.toggleChangeAxisWeight = this.parameters[changeAxisWeightIdx].toggleChangeAxisWeight;
+            }
           }
         },
         error => {

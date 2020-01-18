@@ -38,11 +38,14 @@ namespace SothemaGoalManagement.API.Dtos
 
         public DateTime OwnerValidationDateTime { get; set; }
         public DateTime ValidatorValidationDateTime { get; set; }
+
+        public ICollection<ParametersToReturnDto> Parameters { get; set; }
         public int ValidatorId { get; set; }
 
         public EvaluationFileInstanceToReturnDto()
         {
             AxisInstances = new Collection<AxisInstanceToReturnDto>();
+            Parameters = new Collection<ParametersToReturnDto>();
         }
 
     }

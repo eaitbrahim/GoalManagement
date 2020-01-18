@@ -7,7 +7,8 @@ namespace SothemaGoalManagement.API.Dtos
     {
         [Required] public int EvaluationFileId { get; set; }
         [Required] public string Event { get; set; }
-        [Required] public DateTime StartEvent { get; set; }
-        [Required] public DateTime EndEvent { get; set; }
+        public DateTime StartEvent { get; set; }
+        public DateTime EndEvent { get; set; }
+        public bool ToggleChangeAxisWeight { get; set; }
     }
 }

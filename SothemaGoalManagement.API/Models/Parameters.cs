@@ -14,6 +14,8 @@ namespace SothemaGoalManagement.API.Models
 
         public int EvaluationFileId { get; set; }
 
+        public bool ToggleChangeAxisWeight { get; set; }
+
         public EvaluationFile EvaluationFile { get; set; }
     }
 }

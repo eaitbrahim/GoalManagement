@@ -14,6 +14,7 @@ export class MyCollaboratorsSheetsComponent implements OnInit {
   @Input() sheetToValidate: EvaluationFileInstance;
   @Input() goalsByAxisInstanceList: GoalByAxisInstance[];
   @Input() goalsMode: boolean;
+  @Input() toggleChangeAxisWeight: boolean;
   @Output() updateUserWeightEvent = new EventEmitter<any>();
   @Output() rejectGoalsEvent = new EventEmitter<any>();
   @Output() acceptGoalsEvent = new EventEmitter<any>();
