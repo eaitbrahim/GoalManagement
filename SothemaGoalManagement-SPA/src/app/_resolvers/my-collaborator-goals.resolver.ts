@@ -22,7 +22,7 @@ export class MyCollaboratorGoalsResolver implements Resolve<Goal> {
 
     return this.userService.getGoalsForAxis(this.authService.decodedToken.nameid, axisInstanceIds).pipe(
       catchError(error => {
-        this.alertify.error(`Problème lors de la récupération des données des objectives: ${error}`);
+        this.alertify.error(`Problème lors de la récupération des données des objectifs: ${error}`);
         this.router.navigate(['/sheets']);
         return of(null);
       })

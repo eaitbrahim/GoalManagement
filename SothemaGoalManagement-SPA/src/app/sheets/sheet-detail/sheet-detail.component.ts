@@ -269,7 +269,7 @@ export class SheetDetailComponent implements OnInit {
         weight: g.weight,
         status: 'En Revue',
         sheetTitle: this.sheetDetail.title,
-        emailContent: `S'il vous plaît valider les objectives pour la fiche d'évaluation ${this.sheetDetail.title}.`,
+        emailContent: `S'il vous plaît valider les objectifs pour la fiche d'évaluation ${this.sheetDetail.title}.`,
         sheetOwnerId: this.sheetDetail.ownerId
 
       }));
@@ -282,7 +282,7 @@ export class SheetDetailComponent implements OnInit {
           this.loading = false;
           this.areGoalsReadOnly = true;
           this.getGoalsForAxis();
-          this.alertify.success('Les objectives ont été envoyées pour validation');
+          this.alertify.success('Les objectifs ont été envoyées pour validation');
         },
         error => {
           this.loading = false;

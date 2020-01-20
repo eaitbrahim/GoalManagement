@@ -374,7 +374,7 @@ namespace SothemaGoalManagement.API.Controllers
                     {
                         Title = sheetTitle,
                         Created = DateTime.Now,
-                        Log = $"Les objectives de la fiche: '{sheetTitle}' ont été mis au statut {goalsStatus}."
+                        Log = $"Les objectifs de la fiche: '{sheetTitle}' ont été mis au statut {goalsStatus}."
                     }};
 
                     if (goalsStatus == Constants.PUBLISHED && sheetFromRepo != null)

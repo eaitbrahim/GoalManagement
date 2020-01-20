@@ -75,7 +75,7 @@ export class MyCollaboratorGoalsComponent implements OnInit {
         weight: g.weight,
         status: 'Publiée',
         sheetTitle: this.sheetToValidate.title,
-        emailContent: `Les objectives ont été acceptées pour la fiche ${this.sheetToValidate.title}.`,
+        emailContent: `Les objectifs ont été acceptées pour la fiche ${this.sheetToValidate.title}.`,
         sheetOwnerId: this.sheetToValidate.ownerId
       }));
     });

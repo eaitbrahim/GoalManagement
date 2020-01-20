@@ -194,7 +194,7 @@ export class SheetsPanelComponent implements OnInit {
         () => {
           this.loading = false;
           this.loadSheetsToValidate();
-          this.alertify.success('Les objectives ont été renvoyées');
+          this.alertify.success('Les objectifs ont été renvoyées');
         },
         error => {
           this.loading = false;
@@ -211,7 +211,7 @@ export class SheetsPanelComponent implements OnInit {
         () => {
           this.loading = false;
           this.loadSheetsToValidate();
-          this.alertify.success('Les objectives ont été validées');
+          this.alertify.success('Les objectifs ont été validées');
         },
         error => {
           this.loading = false;
