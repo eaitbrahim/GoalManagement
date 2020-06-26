@@ -18,13 +18,23 @@
           </li>
           <li>
             Utilisateur:
-            <span class="badge badge-pill badge-success float-right" *ngIf="!editing">
+            <span
+              class="badge badge-pill badge-success float-right"
+              *ngIf="!editing"
+            >
               {{ axisInstance.userWeight }} %
             </span>
 
             <span *ngIf="editing" class="float-right">
-              <input type="number" min="0" max="100" [value]="axisInstance.userWeight" (input)="axisInstance.userWeight = weight.value"
-                #weight> %
+              <input
+                type="number"
+                min="0"
+                max="100"
+                [value]="axisInstance.userWeight"
+                (input)="onWeightChange(weight.value)"
+                #weight
+              />
+              %
             </span>
           </li>
         </ul>
@@ -32,17 +42,22 @@
     </ul>
   </div>
 
-
   <div class="card-footer" *ngIf="goalsStatus !== 'Publiée'">
-    <button class="btn" [ngClass]="editing ? 'btn-success' : 'btn-info'" (click)="toggleEdit(axisInstance)">
+    <button
+      class="btn"
+      [ngClass]="editing ? 'btn-success' : 'btn-info'"
+      (click)="toggleEdit(axisInstance)"
+    >
       <span *ngIf="editing">
-        <fa-icon [icon]="faSave"></fa-icon>Sauvegarder</span>
+        <fa-icon [icon]="faSave"></fa-icon>Sauvegarder</span
+      >
       <span *ngIf="!editing">
-        <fa-icon [icon]="faEdit"></fa-icon> Editer Pondération d'utilisateur</span>
+        <fa-icon [icon]="faEdit"></fa-icon> Editer Pondération
+        d'utilisateur</span
+      >
     </button>
     <button *ngIf="editing" class="btn btn-danger ml-1" (click)="cancel()">
-      <span>
-        <fa-icon [icon]="faUndo"></fa-icon>Annuler</span>
+      <span> <fa-icon [icon]="faUndo"></fa-icon>Annuler</span>
     </button>
   </div>
 </div>

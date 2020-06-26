@@ -1,15 +1,22 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { faCaretDown, faCaretUp, faCheckSquare, faEye, faList, faHandRock } from '@fortawesome/free-solid-svg-icons';
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
+import {
+  faCaretDown,
+  faCaretUp,
+  faCheckSquare,
+  faEye,
+  faList,
+  faHandRock,
+} from "@fortawesome/free-solid-svg-icons";
 
-import { EvaluationFileInstance } from '../../_models/evaluationFileInstance';
-import { AxisInstance } from '../../_models/axisInstance';
-import { AlertifyService } from '../../_services/alertify.service';
-import { GoalByAxisInstance } from '../../_models/goalsByAxisInstance';
+import { EvaluationFileInstance } from "../../_models/evaluationFileInstance";
+import { AxisInstance } from "../../_models/axisInstance";
+import { AlertifyService } from "../../_services/alertify.service";
+import { GoalByAxisInstance } from "../../_models/goalsByAxisInstance";
 
 @Component({
-  selector: 'app-sheet-card',
-  templateUrl: './sheet-card.component.html',
-  styleUrls: ['./sheet-card.component.css']
+  selector: "app-sheet-card",
+  templateUrl: "./sheet-card.component.html",
+  styleUrls: ["./sheet-card.component.css"],
 })
 export class SheetCardComponent implements OnInit {
   @Input() sheetToValidate: EvaluationFileInstance;
@@ -25,10 +32,10 @@ export class SheetCardComponent implements OnInit {
   faEye = faEye;
   faList = faList;
   isCollapsed = false;
-  message: string = '';
-  goalsStatus: string = '';
+  message = "";
+  goalsStatus = "";
 
-  constructor(private alertify: AlertifyService) { }
+  constructor(private alertify: AlertifyService) {}
 
   ngOnInit() {
     this.axisInstanceList = this.sheetToValidate.axisInstances;
@@ -37,7 +44,6 @@ export class SheetCardComponent implements OnInit {
   handleUpdateUserWeight(data) {
     this.updateUserWeightEvent.emit(data);
     this.tallyUserWeights();
-
   }
 
   toggleAxis() {
@@ -46,8 +52,11 @@ export class SheetCardComponent implements OnInit {
   }
 
   showGoals() {
-    var axisInstanceIds = this.sheetToValidate.axisInstances.map(a => a.id);
-    var loadGoalsData = { sheetToValidate: this.sheetToValidate, axisInstanceIds: axisInstanceIds };
+    const axisInstanceIds = this.sheetToValidate.axisInstances.map((a) => a.id);
+    const loadGoalsData = {
+      sheetToValidate: this.sheetToValidate,
+      axisInstanceIds: axisInstanceIds,
+    };
     this.loadGoalsEvent.emit(loadGoalsData);
   }
 
@@ -57,12 +66,18 @@ export class SheetCardComponent implements OnInit {
   }
 
   tallyUserWeights() {
-    let totalWeights = this.sheetToValidate.axisInstances.reduce((accumWeights, axisInstance) => accumWeights + (typeof axisInstance.userWeight === 'string' ? parseInt(axisInstance.userWeight) : axisInstance.userWeight), 0);
+    const totalWeights = this.sheetToValidate.axisInstances.reduce(
+      (accumWeights, axisInstance) =>
+        accumWeights +
+        (typeof axisInstance.userWeight === "string"
+          ? parseInt(axisInstance.userWeight)
+          : axisInstance.userWeight),
+      0
+    );
     if (totalWeights !== 100) {
-      this.message = `Pondération Utilisateur total est égale à ${totalWeights}%, elle doit être égale à 100%.`;
+      this.message = `Pondération Utilisateur total doit être égale à 100%.`;
     } else {
-      this.message = '';
+      this.message = "";
     }
   }
-
 }
