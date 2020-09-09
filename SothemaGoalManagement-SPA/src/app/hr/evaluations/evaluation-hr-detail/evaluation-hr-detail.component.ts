@@ -230,16 +230,19 @@ export class EvaluationHrDetailComponent implements OnInit {
     this.hrService.loadParameters(this.evaluationFile.id).subscribe(
       (result: Parameters[]) => {
         this.loading = false;
-        this.parameters = result;
-        if (this.parameters.length > 0) {
-          const changeAxisWeightIdx = this.parameters.findIndex((p) =>
+        if (result.length > 0) {
+          const changeAxisWeightIdx = result.findIndex((p) =>
             p.event.includes("Change Axis Weight")
           );
           if (changeAxisWeightIdx > -1) {
-            this.toggleChangeAxisWeightParam = this.parameters[
-              changeAxisWeightIdx
-            ];
-            this.parameters = this.parameters.splice(changeAxisWeightIdx, 1);
+            this.toggleChangeAxisWeightParam = result[changeAxisWeightIdx];
+            for (let i = 0; i < result.length; i++) {
+              if (i !== changeAxisWeightIdx) {
+                this.parameters.push(result[i]);
+              }
+            }
+          } else {
+            this.parameters = result;
           }
         }
       },
