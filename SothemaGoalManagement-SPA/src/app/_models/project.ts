@@ -1,4 +1,4 @@
 export interface Project {
   name: string;
-  goalTypeId: number
+  goalTypeId: number;
 }

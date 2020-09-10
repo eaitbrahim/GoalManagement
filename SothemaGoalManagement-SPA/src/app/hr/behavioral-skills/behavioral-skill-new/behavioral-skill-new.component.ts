@@ -26,7 +26,10 @@ export class BehavioralSkillNewComponent implements OnInit {
   newForm: FormGroup;
   public loading = false;
 
-  constructor(private fb: FormBuilder, private hrService: HrService, private authService: AuthService, private alertify: AlertifyService) { }
+  constructor(private fb: FormBuilder,
+    private hrService: HrService,
+    private authService: AuthService,
+    private alertify: AlertifyService) { }
 
   ngOnInit() {
     this.createForm();

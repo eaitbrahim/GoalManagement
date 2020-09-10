@@ -1,5 +1,5 @@
 import { BehavioralSkill } from './behavioralSkill';
-import { Strategy } from "./strategy";
+import { Strategy } from './strategy';
 import { Axis } from './axis';
 import { Parameters } from './parameters';
 

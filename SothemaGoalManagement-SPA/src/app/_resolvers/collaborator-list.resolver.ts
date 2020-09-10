@@ -22,8 +22,8 @@ export class CollaboratorListResolver implements Resolve<any> {
   ) { }
 
   resolve(route: ActivatedRouteSnapshot): Observable<any> {
-    let departmentList = localStorage.getItem('departmentList');
-    let userStatusList = localStorage.getItem('userStatusList');
+    const departmentList = localStorage.getItem('departmentList');
+    const userStatusList = localStorage.getItem('userStatusList');
 
     if (departmentList && userStatusList) {
       this.adminService.getUsersWithRoles(this.pageNumber, this.pageSize)

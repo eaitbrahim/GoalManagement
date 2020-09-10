@@ -20,6 +20,7 @@ export class EvaluationFileInstanceLogsComponent implements OnInit {
 
   onKeyUp(event) {
     this.values = event.target.value;
-    this.filteredEvaluationFileInstanceLogs = this.evaluationFileInstanceLogs.filter(efil => efil.title.toLowerCase().includes(this.values.toLowerCase()));
+    this.filteredEvaluationFileInstanceLogs = this.evaluationFileInstanceLogs
+                                                  .filter(efil => efil.title.toLowerCase().includes(this.values.toLowerCase()));
   }
 }

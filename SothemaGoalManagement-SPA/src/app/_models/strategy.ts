@@ -1,4 +1,4 @@
-import { Axis } from "./axis";
+import { Axis } from './axis';
 
 export interface Strategy {
   id: number;

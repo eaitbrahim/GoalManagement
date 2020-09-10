@@ -9,20 +9,26 @@ export class TruncateTextPipe implements PipeTransform {
     const biggestWord = 50;
     const elipses = `...(Afficher plus)`;
 
-    if (typeof value === "undefined") return value;
-    if (value.length <= length) return value;
+    if (typeof value === 'undefined') {
+      return value;
+    }
+    if (value.length <= length) {
+      return value;
+    }
 
-    //.. truncate to about correct lenght
+    // .. truncate to about correct lenght
     let truncatedText = value.slice(0, length + biggestWord);
 
-    //.. now nibble ends till correct length
+    // .. now nibble ends till correct length
     while (truncatedText.length > length - elipses.length) {
 
-      let lastSpace = truncatedText.lastIndexOf(" ");
-      if (lastSpace === -1) break;
+      const lastSpace = truncatedText.lastIndexOf(' ');
+      if (lastSpace === -1) {
+        break;
+      }
       truncatedText = truncatedText.slice(0, lastSpace).replace(/[!,.?;:]$/, '');
 
-    };
+    }
 
     return truncatedText + elipses;
   }

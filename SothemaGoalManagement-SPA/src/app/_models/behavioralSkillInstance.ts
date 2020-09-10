@@ -1,4 +1,4 @@
-import { BehavioralSkillEvaluation } from "./behavioralSkillEvaluation";
+import { BehavioralSkillEvaluation } from './behavioralSkillEvaluation';
 
 export interface BehavioralSkillInstance {
   id: number;

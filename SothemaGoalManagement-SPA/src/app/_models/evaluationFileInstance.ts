@@ -1,6 +1,5 @@
 import { Parameters } from './parameters';
-import { BehavioralSkillInstance } from "./behavioralSkillInstance";
-import { AxisInstance } from "./axisInstance";
+import { AxisInstance } from './axisInstance';
 
 export interface EvaluationFileInstance {
   id: number;
@@ -14,9 +13,9 @@ export interface EvaluationFileInstance {
   photoUrl: string;
   employeeNumber: string;
   ownerId: number;
-  evaluationFileId: number
+  evaluationFileId: number;
   status: string;
-  goalsStatus: string
+  goalsStatus: string;
   created: Date;
   ownerComment: string;
   validatorComment: string;

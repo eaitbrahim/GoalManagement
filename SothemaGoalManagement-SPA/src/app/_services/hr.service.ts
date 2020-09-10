@@ -12,7 +12,6 @@ import { AxisPole } from '../_models/axisPole';
 import { User } from '../_models/user';
 import { EvaluationFile } from '../_models/evaluationFile';
 import { EvaluationFileInstance } from '../_models/evaluationFileInstance';
-import { AxisInstance } from '../_models/axisInstance';
 import { EvaluationFileInstanceLog } from '../_models/evaluationFileInstanceLog';
 import { Parameters } from '../_models/parameters';
 

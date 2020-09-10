@@ -26,6 +26,6 @@ export class StrategyListResolver implements Resolve<Strategy[]> {
         this.alertify.error(`Problème lors de la récupération des données des strategies: ${error}`);
         this.router.navigate(['/home']);
         return of(null);
-      }))
+      }));
   }
 }

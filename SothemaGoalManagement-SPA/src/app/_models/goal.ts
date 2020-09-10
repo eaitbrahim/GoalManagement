@@ -1,6 +1,6 @@
-import { GoalType } from "./goalType";
-import { AxisInstance } from "./axisInstance";
-import { GoalEvaluation } from "./goalEvaluation";
+import { GoalType } from './goalType';
+import { AxisInstance } from './axisInstance';
+import { GoalEvaluation } from './goalEvaluation';
 
 export interface Goal {
   id: number;
@@ -8,7 +8,7 @@ export interface Goal {
   weight: number;
   created: Date;
   goalType: GoalType;
-  projectName: string
+  projectName: string;
   axisInstance: AxisInstance;
   status: string;
   completionRate: number;

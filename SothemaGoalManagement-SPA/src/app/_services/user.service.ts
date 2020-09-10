@@ -1,19 +1,16 @@
-import { BehavioralSkill } from "./../_models/behavioralSkill";
-import { map } from "rxjs/operators";
-import { Injectable } from "@angular/core";
-import { environment } from "../../environments/environment";
-import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
-import { Observable, BehaviorSubject } from "rxjs";
+import { map } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Observable, BehaviorSubject } from 'rxjs';
 
-import { User } from "../_models/user";
-import { PaginatedResult } from "./../_models/pagination";
-import { Message } from "../_models/message";
-import { Goal } from "../_models/goal";
-import { Strategy } from "../_models/strategy";
-import { EvaluationFileInstance } from "../_models/evaluationFileInstance";
+import { User } from '../_models/user';
+import { PaginatedResult } from './../_models/pagination';
+import { Message } from '../_models/message';
+import { EvaluationFileInstance } from '../_models/evaluationFileInstance';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class UserService {
   baseUrl = environment.apiUrl;
@@ -23,7 +20,7 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   totalUnreadMessages(userId: number) {
-    this.getMessages(userId, 1, 100, "Unread").subscribe(
+    this.getMessages(userId, 1, 100, 'Unread').subscribe(
       (res: PaginatedResult<Message[]>) => {
         this.unreadMessages.next(res.result.length);
       },
@@ -34,26 +31,26 @@ export class UserService {
   }
 
   getUser(id): Observable<User> {
-    return this.http.get<User>(this.baseUrl + "users/" + id);
+    return this.http.get<User>(this.baseUrl + 'users/' + id);
   }
 
   loadAllUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.baseUrl + "users/loadAllUsers");
+    return this.http.get<User[]>(this.baseUrl + 'users/loadAllUsers');
   }
 
   updateProfile(id: number, user: User) {
-    return this.http.put(this.baseUrl + "users/" + id, user);
+    return this.http.put(this.baseUrl + 'users/' + id, user);
   }
 
   setMainPhoto(userId: number, id: number) {
     return this.http.post(
-      this.baseUrl + "users/" + userId + "/photos/" + id + "/setMain",
+      this.baseUrl + 'users/' + userId + '/photos/' + id + '/setMain',
       {}
     );
   }
 
   deletePhoto(userId: number, id: number) {
-    return this.http.delete(this.baseUrl + "users/" + userId + "/photos/" + id);
+    return this.http.delete(this.baseUrl + 'users/' + userId + '/photos/' + id);
   }
 
   getMessages(
@@ -66,24 +63,24 @@ export class UserService {
       Message[]
     >();
     let params = new HttpParams();
-    params = params.append("MessageContainer", messageContainer);
+    params = params.append('MessageContainer', messageContainer);
 
     if (page != null && itemsPerPage != null) {
-      params = params.append("pageNumber", page);
-      params = params.append("pageSize", itemsPerPage);
+      params = params.append('pageNumber', page);
+      params = params.append('pageSize', itemsPerPage);
     }
 
     return this.http
-      .get<Message[]>(this.baseUrl + "users/" + id + "/messages", {
-        observe: "response",
+      .get<Message[]>(this.baseUrl + 'users/' + id + '/messages', {
+        observe: 'response',
         params,
       })
       .pipe(
         map((response) => {
           paginatedResult.result = response.body;
-          if (response.headers.get("Pagination") != null) {
+          if (response.headers.get('Pagination') != null) {
             paginatedResult.pagination = JSON.parse(
-              response.headers.get("Pagination")
+              response.headers.get('Pagination')
             );
           }
           return paginatedResult;
@@ -93,17 +90,17 @@ export class UserService {
 
   getMessageThread(id: number, recipientId: number) {
     return this.http.get<Message[]>(
-      this.baseUrl + "users/" + id + "/messages/thread/" + recipientId
+      this.baseUrl + 'users/' + id + '/messages/thread/' + recipientId
     );
   }
 
   sendMessage(id: number, message: Message) {
-    return this.http.post(this.baseUrl + "users/" + id + "/messages", message);
+    return this.http.post(this.baseUrl + 'users/' + id + '/messages', message);
   }
 
   deleteMessage(id: number, userId: number) {
     return this.http.post(
-      this.baseUrl + "users/" + userId + "/messages/" + id,
+      this.baseUrl + 'users/' + userId + '/messages/' + id,
       {}
     );
   }
@@ -111,7 +108,7 @@ export class UserService {
   markAsRead(userId: number, messageId: number) {
     this.http
       .post(
-        this.baseUrl + "users/" + userId + "/messages/" + messageId + "/read",
+        this.baseUrl + 'users/' + userId + '/messages/' + messageId + '/read',
         {}
       )
       .subscribe();
@@ -129,28 +126,28 @@ export class UserService {
     let params = new HttpParams();
 
     if (page != null && itemsPerPage != null) {
-      params = params.append("pageNumber", page);
-      params = params.append("pageSize", itemsPerPage);
+      params = params.append('pageNumber', page);
+      params = params.append('pageSize', itemsPerPage);
     }
 
     if (filters != null) {
-      params = params.append("status", filters.status);
+      params = params.append('status', filters.status);
     }
 
     return this.http
       .get<EvaluationFileInstance[]>(
-        this.baseUrl + "users/" + userId + "/sheet",
+        this.baseUrl + 'users/' + userId + '/sheet',
         {
-          observe: "response",
+          observe: 'response',
           params,
         }
       )
       .pipe(
         map((response) => {
           paginatedResult.result = response.body;
-          if (response.headers.get("Pagination") != null) {
+          if (response.headers.get('Pagination') != null) {
             paginatedResult.pagination = JSON.parse(
-              response.headers.get("Pagination")
+              response.headers.get('Pagination')
             );
           }
           return paginatedResult;
@@ -161,11 +158,11 @@ export class UserService {
   getMyCollaboratorsSheets(userId: number, filters?) {
     let params = new HttpParams();
     if (filters != null) {
-      params = params.append("status", filters.status);
+      params = params.append('status', filters.status);
     }
 
     return this.http.get<EvaluationFileInstance[]>(
-      this.baseUrl + "users/" + userId + "/sheet/myCollaboratorsSheets",
+      this.baseUrl + 'users/' + userId + '/sheet/myCollaboratorsSheets',
       {
         params,
       }
@@ -174,7 +171,7 @@ export class UserService {
 
   getMySheet(id: number, userId: number) {
     return this.http.get<EvaluationFileInstance>(
-      this.baseUrl + "users/" + userId + "/sheet/mysheet/" + id
+      this.baseUrl + 'users/' + userId + '/sheet/mysheet/' + id
     );
   }
 

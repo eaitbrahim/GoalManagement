@@ -1,4 +1,4 @@
-import { AxisPole } from "./axisPole";
+import { AxisPole } from './axisPole';
 
 export interface Axis {
   id: number;
@@ -6,5 +6,5 @@ export interface Axis {
   title: string;
   description: string;
   created: Date;
-  axisPoles: AxisPole[]
+  axisPoles: AxisPole[];
 }

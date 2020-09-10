@@ -4,5 +4,5 @@ export interface GoalEvaluation {
   created: Date;
   completionRate: number;
   evaluatorName: string;
-  comment?: string
+  comment?: string;
 }

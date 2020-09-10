@@ -6,7 +6,6 @@ import { Injectable } from '@angular/core';
 import { PaginatedResult } from './../_models/pagination';
 import { environment } from '../../environments/environment';
 import { User } from '../_models/user';
-import { Strategy } from '../_models/strategy';
 import { Evaluator } from '../_models/evaluator';
 
 @Injectable({

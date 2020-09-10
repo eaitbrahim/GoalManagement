@@ -23,7 +23,11 @@ export class BehavioralSkillDetailComponent implements OnInit {
   public loading = false;
   faTrash = faTrash;
 
-  constructor(private hrService: HrService, private authService: AuthService, private alertify: AlertifyService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private hrService: HrService,
+    private authService: AuthService,
+    private alertify: AlertifyService,
+    private route: ActivatedRoute,
+    private router: Router) { }
 
   ngOnInit() {
     this.route.data.subscribe(data => {

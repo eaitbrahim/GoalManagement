@@ -3,11 +3,10 @@ import { catchError, map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Resolve, Router, ActivatedRouteSnapshot } from '@angular/router';
 
-import { EvaluationFileInstance } from '../_models/evaluationFileInstance';
+
 import { UserService } from './../_services/user.service';
 import { AlertifyService } from './../_services/alertify.service';
 import { AuthService } from '../_services/auth.service';
-import { GoalType } from '../_models/goalType';
 
 @Injectable()
 export class SheetDetailResolver implements Resolve<any> {
@@ -19,7 +18,7 @@ export class SheetDetailResolver implements Resolve<any> {
   ) { }
 
   resolve(route: ActivatedRouteSnapshot): Observable<any> {
-    let goalTypeList = localStorage.getItem('goalTypeList');
+    const goalTypeList = localStorage.getItem('goalTypeList');
     const userId = this.authService.decodedToken.nameid;
 
     if (goalTypeList) {

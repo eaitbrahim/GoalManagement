@@ -28,7 +28,9 @@ export class EvaluationFileInstanceHrListComponent implements OnInit {
 
   onKeyUp(event) {
     this.values = event.target.value;
-    this.filteredEvaluationFileInstances = this.evaluationFileInstanceList.filter(efi => efi.ownerName.toLowerCase().includes(this.values.toLowerCase()));
+    this.filteredEvaluationFileInstances = this.evaluationFileInstanceList
+                                                .filter(efi => efi.ownerName.toLowerCase()
+                                                                            .includes(this.values.toLowerCase()));
   }
 
   delete(efi: EvaluationFileInstance) {

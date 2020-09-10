@@ -5,7 +5,7 @@ export interface GoalWithChildren {
   axisInstanceTitle: string;
   goalTypeName: string;
   projectName: string;
-  ownerFullName: string
+  ownerFullName: string;
   ownerPhotoUrl: string;
   children: GoalWithChildren[];
 }

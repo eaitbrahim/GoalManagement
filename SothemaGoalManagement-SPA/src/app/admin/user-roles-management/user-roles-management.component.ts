@@ -36,7 +36,7 @@ export class UserRolesManagementComponent implements OnInit {
         roleNames: [...values.filter(el => el.checked === true).map(el => el.name)]
       };
       if (rolesToUpdate) {
-        let updateParams = { user, rolesToUpdate }
+        const updateParams = { user, rolesToUpdate }
         this.editUserRoleEvent.emit(updateParams);
       }
     });
