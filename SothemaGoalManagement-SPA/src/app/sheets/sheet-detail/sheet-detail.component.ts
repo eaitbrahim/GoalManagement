@@ -36,6 +36,7 @@ export class SheetDetailComponent implements OnInit {
   @ViewChild('sheetTabs') sheetTabs: TabsetComponent;
   @Input() sheetToValidate: EvaluationFileInstance;
   @Input() tabIndex: number;
+  @Input() canDoFinalEvaluation: boolean;
   @Output() switchOffDetailModeEvent = new EventEmitter();
   @Output() behavioralSkillEvaluationUpdatedEvent = new EventEmitter<boolean>();
   sheetDetail: EvaluationFileInstance;

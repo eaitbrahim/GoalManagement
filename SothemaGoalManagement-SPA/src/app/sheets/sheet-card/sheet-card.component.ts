@@ -22,6 +22,7 @@ export class SheetCardComponent implements OnInit {
   @Input() toggleChangeAxisWeight: boolean;
   @Input() canValidate: boolean;
   @Input() canEvaluate: boolean;
+  @Input() canDoFinalEvaluation: boolean;
   @Output() updateUserWeightEvent = new EventEmitter<any>();
   @Output() loadGoalsEvent = new EventEmitter<any>();
   @Output() showSheetDetailEvent = new EventEmitter<any>();
@@ -62,7 +63,7 @@ export class SheetCardComponent implements OnInit {
   }
 
   showSheetDetail(tab: number) {
-    const data = { tab, sheet: this.sheetToValidate };
+    const data = { tab, sheet: this.sheetToValidate, canDoFinalEvaluation: this.canDoFinalEvaluation };
     this.showSheetDetailEvent.emit(data);
   }
 
