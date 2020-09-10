@@ -1,7 +1,20 @@
-import { Component, OnInit, Input, Output, EventEmitter, HostListener } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  HostListener,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { faCheckCircle, faAngry, faFrown, faSmile, faGrinAlt } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCheckCircle,
+  faAngry,
+  faFrown,
+  faSmile,
+  faGrinAlt,
+} from '@fortawesome/free-solid-svg-icons';
 import { BehavioralSkillInstance } from '../../_models/behavioralSkillInstance';
 import { AlertifyService } from '../../_services/alertify.service';
 import { BehavioralSkillEvaluation } from '../../_models/behavioralSkillEvaluation';
@@ -9,7 +22,7 @@ import { BehavioralSkillEvaluation } from '../../_models/behavioralSkillEvaluati
 @Component({
   selector: 'app-behavioral-skill-list-evaluation',
   templateUrl: './behavioral-skill-list-evaluation.component.html',
-  styleUrls: ['./behavioral-skill-list-evaluation.component.css']
+  styleUrls: ['./behavioral-skill-list-evaluation.component.css'],
 })
 export class BehavioralSkillListEvaluationComponent implements OnInit {
   @Input() behavioralSkillInstanceList: BehavioralSkillInstance[];
@@ -35,30 +48,41 @@ export class BehavioralSkillListEvaluationComponent implements OnInit {
     }
   }
 
-  constructor(private alertify: AlertifyService) { }
+  constructor(private alertify: AlertifyService) {}
 
   ngOnInit() {
-    this.evals = this.behavioralSkillInstanceList.map(behavioralSkillInstance => ({
-      grade: behavioralSkillInstance.behavioralSkillGrade,
-      level: behavioralSkillInstance.behavioralSkillLevel,
-      behavioralSkillInstanceId: behavioralSkillInstance.id,
-      evaluateeId: this.sheetOwnerId,
-      evaluationFileInstanceId: this.sheetId
-    }));
+    this.evals = this.behavioralSkillInstanceList.map(
+      (behavioralSkillInstance) => ({
+        grade: behavioralSkillInstance.behavioralSkillGrade,
+        level: behavioralSkillInstance.behavioralSkillLevel,
+        behavioralSkillInstanceId: behavioralSkillInstance.id,
+        evaluateeId: this.sheetOwnerId,
+        evaluationFileInstanceId: this.sheetId,
+      })
+    );
 
     this.calculateTotalGrade();
   }
 
-  changeEventInRadioButton(behavioralSkillInstance: BehavioralSkillInstance, newGrade: number) {
+  changeEventInRadioButton(
+    behavioralSkillInstance: BehavioralSkillInstance,
+    newGrade: number
+  ) {
     const newEval = {
       grade: newGrade,
       level: this.getLevel(behavioralSkillInstance, newGrade),
       behavioralSkillInstanceId: behavioralSkillInstance.id,
       evaluateeId: this.sheetOwnerId,
-      evaluationFileInstanceId: this.sheetId
+      evaluationFileInstanceId: this.sheetId,
     };
 
-    this.evals.splice(this.evals.findIndex(e => e.behavioralSkillInstanceId === behavioralSkillInstance.id), 1, newEval);
+    this.evals.splice(
+      this.evals.findIndex(
+        (e) => e.behavioralSkillInstanceId === behavioralSkillInstance.id
+      ),
+      1,
+      newEval
+    );
     this.calculateTotalGrade();
 
     this.dirty = true;
@@ -74,7 +98,7 @@ export class BehavioralSkillListEvaluationComponent implements OnInit {
   }
 
   enableSave() {
-    return this.evals.filter(e => e.level === '').length > 0 ? true : false;
+    return this.evals.filter((e) => e.level === '').length > 0 ? true : false;
   }
 
   getLevel(behavioralSkillInstance: BehavioralSkillInstance, grade: number) {
@@ -95,15 +119,22 @@ export class BehavioralSkillListEvaluationComponent implements OnInit {
   }
 
   save() {
-    this.alertify.confirm('Confirmer',
+    this.alertify.confirm(
+      'Confirmer',
       `Êtes-vous sûr de vouloir ajouter cette évaluation:
         <ul>
-        ${
-            this.evals.map(e => '<li>' + this.behavioralSkillInstanceList
-                                            .find(b => b.id === e.behavioralSkillInstanceId).skill + ': ' + e.level + '</li>'
-                          )
-                      .join('')
-          }
+        ${this.evals
+          .map(
+            (e) =>
+              '<li>' +
+              this.behavioralSkillInstanceList.find(
+                (b) => b.id === e.behavioralSkillInstanceId
+              ).skill +
+              ': ' +
+              e.level +
+              '</li>'
+          )
+          .join('')}
         </ul>
         `,
       () => {

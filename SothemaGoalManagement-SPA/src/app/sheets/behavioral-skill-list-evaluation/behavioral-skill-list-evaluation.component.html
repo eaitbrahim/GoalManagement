@@ -18,12 +18,12 @@
         </td>
         <td align="center">
           <div *ngIf="areBehavioralSkillsEvaluable">
-            <input type="radio" (click)="levelSelected(behavioralSkillInstance.levelOneDescription)" name="{{behavioralSkillInstance.skill}}"
+            <input type="radio" (click)="levelSelected(behavioralSkillInstance.levelOneDescription !== '' ? behavioralSkillInstance.levelOneDescription : behavioralSkillInstance.skill)" name="{{behavioralSkillInstance.skill}}"
               [value]="behavioralSkillInstance.levelOneGrade" (change)="changeEventInRadioButton(behavioralSkillInstance, behavioralSkillInstance.levelOneGrade)"
               [checked]="behavioralSkillInstance.behavioralSkillGrade==behavioralSkillInstance.levelOneGrade" />
           </div>
           <div *ngIf="!areBehavioralSkillsEvaluable">
-            <span (click)="levelSelected(behavioralSkillInstance.levelOneDescription)" style="cursor: pointer">
+            <span (click)="levelSelected(behavioralSkillInstance.levelOneDescription !== '' ? behavioralSkillInstance.levelOneDescription : behavioralSkillInstance.skill)" style="cursor: pointer">
               <fa-icon class="icon-backgroundEvaluated" [icon]="faCheckCircle" *ngIf="behavioralSkillInstance.behavioralSkillGrade==behavioralSkillInstance.levelOneGrade"></fa-icon>
               <fa-icon class="icon-backgroundNotEvaluated" [icon]="faCheckCircle" *ngIf="behavioralSkillInstance.behavioralSkillGrade!=behavioralSkillInstance.levelOneGrade"></fa-icon>
             </span>
@@ -31,12 +31,12 @@
         </td>
         <td align="center">
           <div *ngIf="areBehavioralSkillsEvaluable">
-            <input type="radio" (click)="levelSelected(behavioralSkillInstance.levelTwoDescription)" name="{{behavioralSkillInstance.skill}}"
+            <input type="radio" (click)="levelSelected(behavioralSkillInstance.levelTwoDescription !== '' ? behavioralSkillInstance.levelTwoDescription : behavioralSkillInstance.skill)" name="{{behavioralSkillInstance.skill}}"
               [value]="behavioralSkillInstance.levelTwoGrade" (change)="changeEventInRadioButton(behavioralSkillInstance, behavioralSkillInstance.levelTwoGrade)"
               [checked]="behavioralSkillInstance.behavioralSkillGrade==behavioralSkillInstance.levelTwoGrade" />
           </div>
           <div *ngIf="!areBehavioralSkillsEvaluable">
-            <span (click)="levelSelected(behavioralSkillInstance.levelTwoDescription)" style="cursor: pointer">
+            <span (click)="levelSelected(behavioralSkillInstance.levelTwoDescription !== '' ? behavioralSkillInstance.levelTwoDescription : behavioralSkillInstance.skill)" style="cursor: pointer">
               <fa-icon class="icon-backgroundEvaluated" [icon]="faCheckCircle" *ngIf="behavioralSkillInstance.behavioralSkillGrade==behavioralSkillInstance.levelTwoGrade"></fa-icon>
               <fa-icon class="icon-backgroundNotEvaluated" [icon]="faCheckCircle" *ngIf="behavioralSkillInstance.behavioralSkillGrade!=behavioralSkillInstance.levelTwoGrade"></fa-icon>
             </span>
@@ -45,12 +45,12 @@
 
         <td align="center">
           <div *ngIf="areBehavioralSkillsEvaluable">
-            <input type="radio" (click)="levelSelected(behavioralSkillInstance.levelThreeDescription)" name="{{behavioralSkillInstance.skill}}"
+            <input type="radio" (click)="levelSelected(behavioralSkillInstance.levelThreeDescription !== '' ? behavioralSkillInstance.levelThreeDescription : behavioralSkillInstance.skill)" name="{{behavioralSkillInstance.skill}}"
               [value]="behavioralSkillInstance.levelThreeGrade" (change)="changeEventInRadioButton(behavioralSkillInstance, behavioralSkillInstance.levelThreeGrade)"
               [checked]="behavioralSkillInstance.behavioralSkillGrade==behavioralSkillInstance.levelThreeGrade" />
           </div>
           <div *ngIf="!areBehavioralSkillsEvaluable">
-            <span (click)="levelSelected(behavioralSkillInstance.levelThreeDescription)" style="cursor: pointer">
+            <span (click)="levelSelected(behavioralSkillInstance.levelThreeDescription !== '' ? behavioralSkillInstance.levelThreeDescription : behavioralSkillInstance.skill)" style="cursor: pointer">
               <fa-icon class="icon-backgroundEvaluated" [icon]="faCheckCircle" *ngIf="behavioralSkillInstance.behavioralSkillGrade==behavioralSkillInstance.levelThreeGrade"></fa-icon>
               <fa-icon class="icon-backgroundNotEvaluated" [icon]="faCheckCircle" *ngIf="behavioralSkillInstance.behavioralSkillGrade!=behavioralSkillInstance.levelThreeGrade"></fa-icon>
             </span>
@@ -58,12 +58,12 @@
         </td>
         <td align="center">
           <div *ngIf="areBehavioralSkillsEvaluable">
-            <input type="radio" (click)="levelSelected(behavioralSkillInstance.levelFourDescription)" name="{{behavioralSkillInstance.skill}}"
+            <input type="radio" (click)="levelSelected(behavioralSkillInstance.levelFourDescription !== '' ? behavioralSkillInstance.levelFourDescription : behavioralSkillInstance.skill)" name="{{behavioralSkillInstance.skill}}"
               [value]="behavioralSkillInstance.levelFourGrade" (change)="changeEventInRadioButton(behavioralSkillInstance, behavioralSkillInstance.levelFourGrade)"
               [checked]="behavioralSkillInstance.behavioralSkillGrade==behavioralSkillInstance.levelFourGrade" />
           </div>
           <div *ngIf="!areBehavioralSkillsEvaluable">
-            <span (click)="levelSelected(behavioralSkillInstance.levelFourDescription)" style="cursor: pointer">
+            <span (click)="levelSelected(behavioralSkillInstance.levelFourDescription !== '' ? behavioralSkillInstance.levelFourDescription : behavioralSkillInstance.skill)" style="cursor: pointer">
               <fa-icon class="icon-backgroundEvaluated" [icon]="faCheckCircle" *ngIf="behavioralSkillInstance.behavioralSkillGrade==behavioralSkillInstance.levelFourGrade"></fa-icon>
               <fa-icon class="icon-backgroundNotEvaluated" [icon]="faCheckCircle" *ngIf="behavioralSkillInstance.behavioralSkillGrade!=behavioralSkillInstance.levelFourGrade"></fa-icon>
             </span>
