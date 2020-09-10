@@ -32,7 +32,7 @@ export class StrategyListComponent implements OnInit {
   }
 
   pageChanged(event: any): void {
-    let pageParams = { currentPage: event.page, filters: this.filters }
+    const pageParams = { currentPage: event.page, filters: this.filters };
     this.pageChangedEvent.emit(pageParams);;
   }
 
@@ -64,7 +64,7 @@ export class StrategyListComponent implements OnInit {
 
     this.bsModalRef = this.modalService.show(StrategyEditModalComponent, { initialState, ignoreBackdropClick: true });
     this.bsModalRef.content.updateSelectedStrategy.subscribe((updatedStrategy) => {
-      let updateParams = { updatedStrategy, filters: this.filters }
+      const updateParams = { updatedStrategy, filters: this.filters };
       this.editStrategyEvent.emit(updateParams);
     });
   }

@@ -38,7 +38,7 @@ export class HrFilterCreateActionsComponent implements OnInit {
   }
 
   creationToggle() {
-    this.creationModeEvent.emit(true)
+    this.creationModeEvent.emit(true);
   }
 
   loadData() {

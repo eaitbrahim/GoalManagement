@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
   faEye = faEye;
   faEyeSlash = faEyeSlash;
   togglePassword: boolean;
-  inputType: string = 'password';
+  inputType = 'password';
 
   constructor(private authService: AuthService, private alertify: AlertifyService,
     private router: Router,

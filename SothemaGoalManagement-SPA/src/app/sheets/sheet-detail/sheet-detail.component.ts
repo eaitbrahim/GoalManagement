@@ -1,4 +1,4 @@
-import { BehavioralSkillEvaluation } from "./../../_models/behavioralSkillEvaluation";
+import { BehavioralSkillEvaluation } from './../../_models/behavioralSkillEvaluation';
 import {
   Component,
   OnInit,
@@ -6,34 +6,34 @@ import {
   Output,
   EventEmitter,
   ViewChild,
-} from "@angular/core";
-import { TabsetComponent } from "ngx-bootstrap";
-import { ActivatedRoute, Router } from "@angular/router";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+} from '@angular/core';
+import { TabsetComponent } from 'ngx-bootstrap';
+import { ActivatedRoute, Router } from '@angular/router';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
-import { EvaluationFileInstance } from "../../_models/evaluationFileInstance";
-import { Goal } from "../../_models/goal";
-import { GoalType } from "../../_models/goalType";
-import { HrService } from "../../_services/hr.service";
-import { UserService } from "../../_services/user.service";
-import { AdminService } from "../../_services/admin.service";
-import { AuthService } from "../../_services/auth.service";
-import { AlertifyService } from "../../_services/alertify.service";
-import { GoalByAxisInstance } from "../../_models/goalsByAxisInstance";
-import { GoalEvaluation } from "../../_models/goalEvaluation";
-import { BehavioralSkillInstance } from "../../_models/behavioralSkillInstance";
-import { Project } from "../../_models/project";
-import { Evaluator } from "../../_models/evaluator";
-import { Parameters } from "../../_models/parameters";
-import { User } from "../../_models/user";
+import { EvaluationFileInstance } from '../../_models/evaluationFileInstance';
+import { Goal } from '../../_models/goal';
+import { GoalType } from '../../_models/goalType';
+import { HrService } from '../../_services/hr.service';
+import { UserService } from '../../_services/user.service';
+import { AdminService } from '../../_services/admin.service';
+import { AuthService } from '../../_services/auth.service';
+import { AlertifyService } from '../../_services/alertify.service';
+import { GoalByAxisInstance } from '../../_models/goalsByAxisInstance';
+import { GoalEvaluation } from '../../_models/goalEvaluation';
+import { BehavioralSkillInstance } from '../../_models/behavioralSkillInstance';
+import { Project } from '../../_models/project';
+import { Evaluator } from '../../_models/evaluator';
+import { Parameters } from '../../_models/parameters';
+import { User } from '../../_models/user';
 
 @Component({
-  selector: "app-sheet-detail",
-  templateUrl: "./sheet-detail.component.html",
-  styleUrls: ["./sheet-detail.component.css"],
+  selector: 'app-sheet-detail',
+  templateUrl: './sheet-detail.component.html',
+  styleUrls: ['./sheet-detail.component.css'],
 })
 export class SheetDetailComponent implements OnInit {
-  @ViewChild("sheetTabs") sheetTabs: TabsetComponent;
+  @ViewChild('sheetTabs') sheetTabs: TabsetComponent;
   @Input() sheetToValidate: EvaluationFileInstance;
   @Input() tabIndex: number;
   @Output() switchOffDetailModeEvent = new EventEmitter();
@@ -55,7 +55,7 @@ export class SheetDetailComponent implements OnInit {
   evaluators: Evaluator[] = [];
   parameters: Parameters[] = [];
   validatorFullName: string;
-  isFinalValidationActive: boolean = false;
+  isFinalValidationActive = false;
   toggleChangeAxisWeight: boolean;
 
   constructor(
@@ -81,10 +81,10 @@ export class SheetDetailComponent implements OnInit {
       this.loadProjects();
     } else {
       this.route.data.subscribe((data) => {
-        const resolvedData = data["resolvedData"];
-        this.sheetDetail = resolvedData["sheetDetail"];
-        this.goalTypeList = resolvedData["goalTypeList"];
-        this.projectList = resolvedData["projectList"];
+        const resolvedData = data['resolvedData'];
+        this.sheetDetail = resolvedData['sheetDetail'];
+        this.goalTypeList = resolvedData['goalTypeList'];
+        this.projectList = resolvedData['projectList'];
         this.getValidatorFullName();
         this.loadParameters();
         this.fetchEvaluators();
@@ -95,7 +95,7 @@ export class SheetDetailComponent implements OnInit {
   }
 
   getGoalsForAxis() {
-    var axisInstanceIds = this.sheetDetail.axisInstances.map((a) => a.id);
+    const axisInstanceIds = this.sheetDetail.axisInstances.map((a) => a.id);
     this.loading = true;
     this.userService
       .getGoalsForAxis(this.sheetDetail.ownerId, axisInstanceIds)
@@ -135,57 +135,57 @@ export class SheetDetailComponent implements OnInit {
   }
 
   CheckReadOnly() {
-    var goalsInInitialStatus = this.goalsByAxisInstanceList.filter(
-      (g) => g.goalsStatus === "Pas encore créé" || g.goalsStatus == "Rédaction"
+    const goalsInInitialStatus = this.goalsByAxisInstanceList.filter(
+      (g) => g.goalsStatus === 'Pas encore créé' || g.goalsStatus == 'Rédaction'
     );
 
     if (goalsInInitialStatus.length == 0) {
       this.areGoalsReadOnly = true;
       console.log(
-        "(goalsInInitialStatus) areGoalsReadOnly:",
+        '(goalsInInitialStatus) areGoalsReadOnly:',
         this.areGoalsReadOnly
       );
     } else {
-      var indx = this.evaluators.findIndex(
-        (e) => e.id == parseInt(this.authService.decodedToken.nameid)
+      const indx = this.evaluators.findIndex(
+        (e) => e.id === parseInt(this.authService.decodedToken.nameid, 10)
       );
 
       if (
-        this.sheetDetail.ownerId != this.authService.decodedToken.nameid &&
+        this.sheetDetail.ownerId !== this.authService.decodedToken.nameid &&
         indx === -1
       ) {
         this.areGoalsReadOnly = true;
         console.log(
-          "(It is not an evaluator) areGoalsReadOnly:",
+          '(It is not an evaluator) areGoalsReadOnly:',
           this.areGoalsReadOnly
         );
       } else if (this.evaluators.length === 0) {
         this.areGoalsReadOnly = true;
-        console.log("(Evaluator) areGoalsReadOnly:", this.areGoalsReadOnly);
+        console.log('(Evaluator) areGoalsReadOnly:', this.areGoalsReadOnly);
       } else {
         this.areGoalsReadOnly = false;
-        console.log("areGoalsReadOnly:", this.areGoalsReadOnly);
+        console.log('areGoalsReadOnly:', this.areGoalsReadOnly);
       }
     }
 
     if (this.parameters.length > 0) {
-      if (!this.isTodayWithinEventsRange("objectifs")) {
+      if (!this.isTodayWithinEventsRange('objectifs')) {
         this.areGoalsReadOnly = true;
         console.log(
-          "(Validation date) areGoalsReadOnly:",
+          '(Validation date) areGoalsReadOnly:',
           this.areGoalsReadOnly
         );
       }
     }
 
-    if (this.authService.roleMatch(["HRD"])) {
+    if (this.authService.roleMatch(['HRD'])) {
       this.areGoalsReadOnly = false;
-      console.log("(HRD) areGoalsReadOnly:", this.areGoalsReadOnly);
+      console.log('(HRD) areGoalsReadOnly:', this.areGoalsReadOnly);
     }
 
-    if (this.sheetDetail.status === "Publiée") {
+    if (this.sheetDetail.status === 'Publiée') {
       this.areGoalsReadOnly = true;
-      console.log("(Published sheet) areGoalsReadOnly:", this.areGoalsReadOnly);
+      console.log('(Published sheet) areGoalsReadOnly:', this.areGoalsReadOnly);
     }
 
     return this.areGoalsReadOnly;
@@ -203,7 +203,7 @@ export class SheetDetailComponent implements OnInit {
         () => {
           this.loading = false;
           this.getGoalsForAxis();
-          this.alertify.success("Objectif créé avec succès.");
+          this.alertify.success('Objectif créé avec succès.');
         },
         (error) => {
           this.loading = false;
@@ -219,7 +219,7 @@ export class SheetDetailComponent implements OnInit {
       .subscribe(
         () => {
           this.loading = false;
-          this.alertify.success("Objectif a été mis à jour.");
+          this.alertify.success('Objectif a été mis à jour.');
           this.getGoalsForAxis();
         },
         (error) => {
@@ -231,7 +231,7 @@ export class SheetDetailComponent implements OnInit {
 
   handleDeleteGoal(goal: Goal) {
     this.alertify.confirm(
-      "Supprimer",
+      'Supprimer',
       `Êtes-vous sûr de vouloir supprimer l'objectif: ${goal.description}?`,
       () => {
         this.loading = true;
@@ -241,7 +241,7 @@ export class SheetDetailComponent implements OnInit {
             () => {
               this.loading = false;
               this.getGoalsForAxis();
-              this.alertify.success("L'objectif a été supprimée");
+              this.alertify.success('L\'objectif a été supprimée');
             },
             (error) => {
               this.loading = false;
@@ -253,44 +253,39 @@ export class SheetDetailComponent implements OnInit {
   }
 
   CanGoalsBeValidated() {
-    console.log("this.goalsByAxisInstanceList:", this.goalsByAxisInstanceList);
-    if (
-      this.goalsByAxisInstanceList.filter((g) => g.totalGoalWeight != 100)
-        .length == 0
-    ) {
+    console.log('this.goalsByAxisInstanceList:', this.goalsByAxisInstanceList);
+    if (this.goalsByAxisInstanceList.filter((g) => g.totalGoalWeight !== 100).length === 0) {
       this.areGoalsCompleted = true;
     } else {
       this.areGoalsCompleted = false;
     }
 
     if (this.parameters.length > 0) {
-      if (!this.isTodayWithinEventsRange("évaluation"))
+      if (!this.isTodayWithinEventsRange('évaluation')) {
         this.areGoalsCompleted = true;
+      }
     }
 
-    if (this.sheetDetail.status === "Publiée") {
+    if (this.sheetDetail.status === 'Publiée') {
       this.areGoalsCompleted = true;
     }
 
-    console.log("areGoalsCompleted:", this.areGoalsCompleted);
+    console.log('areGoalsCompleted:', this.areGoalsCompleted);
     return this.areGoalsCompleted;
   }
 
   CanGoalsBeEvaluated() {
-    if (
-      this.goalsByAxisInstanceList.filter((g) => g.goalsStatus === "Publiée")
-        .length == 0
-    ) {
+    if (this.goalsByAxisInstanceList.filter((g) => g.goalsStatus === 'Publiée').length === 0) {
       this.areGoalsEvaluable = false;
     } else {
       this.areGoalsEvaluable = true;
     }
 
-    if (this.sheetDetail.status === "Publiée") {
+    if (this.sheetDetail.status === 'Publiée') {
       this.areGoalsEvaluable = true;
     }
 
-    console.log("this.sheetDetail.status:", this.sheetDetail.status);
+    console.log('this.sheetDetail.status:', this.sheetDetail.status);
     return this.areGoalsEvaluable;
   }
 
@@ -305,11 +300,11 @@ export class SheetDetailComponent implements OnInit {
     }
 
     if (this.parameters.length > 0) {
-      if (!this.isTodayWithinEventsRange("évaluation"))
+      if (!this.isTodayWithinEventsRange('évaluation'))
         this.areBehavioralSkillsEvaluable = true;
     }
 
-    if (this.sheetDetail.status === "Publiée") {
+    if (this.sheetDetail.status === 'Publiée') {
       this.areBehavioralSkillsEvaluable = false;
     }
   }
@@ -320,7 +315,7 @@ export class SheetDetailComponent implements OnInit {
         this.evaluators = result;
       },
       (error) => {
-        console.log("error in CanBehavioralSkillBeEvaluated: ", error);
+        console.log('error in CanBehavioralSkillBeEvaluated: ', error);
       }
     );
   }
@@ -328,16 +323,16 @@ export class SheetDetailComponent implements OnInit {
   handleValidateGoals() {
     this.loading = true;
 
-    var goals: any[] = [];
+    const goals: any[] = [];
     this.goalsByAxisInstanceList.forEach((a) => {
       a.goals.forEach((g) =>
         goals.push({
           id: g.id,
-          description: this.sheetDetail.title, //For logs
+          description: this.sheetDetail.title, // For logs
           goalTypeId: g.goalType.id,
           axisInstanceId: g.axisInstance.id,
           weight: g.weight,
-          status: "En Revue",
+          status: 'En Revue',
           sheetTitle: this.sheetDetail.title,
           emailContent: `S'il vous plaît valider les objectifs pour la fiche d'évaluation ${this.sheetDetail.title}.`,
           sheetOwnerId: this.sheetDetail.ownerId,
@@ -357,7 +352,7 @@ export class SheetDetailComponent implements OnInit {
           this.areGoalsReadOnly = true;
           this.getGoalsForAxis();
           this.alertify.success(
-            "Les objectifs ont été envoyées pour validation"
+            'Les objectifs ont été envoyées pour validation'
           );
         },
         (error) => {
@@ -369,7 +364,7 @@ export class SheetDetailComponent implements OnInit {
 
   handleAddGoalEvaluation(newEval: any) {
     this.loading = true;
-    let goalEval = {
+    const goalEval = {
       ...newEval,
       evaluatorId: this.authService.decodedToken.nameid,
     };
@@ -379,7 +374,7 @@ export class SheetDetailComponent implements OnInit {
         () => {
           this.loading = false;
           this.getGoalsForAxis();
-          this.alertify.success("L'évaluation a été ajoutée avec succès.");
+          this.alertify.success('L\'évaluation a été ajoutée avec succès.');
         },
         (error) => {
           this.loading = false;
@@ -396,7 +391,7 @@ export class SheetDetailComponent implements OnInit {
         () => {
           this.loading = false;
           this.alertify.success(
-            "les évaluations de compétences comportementales ont été enregistrées avec succès."
+            'les évaluations de compétences comportementales ont été enregistrées avec succès.'
           );
         },
         (error) => {
@@ -415,7 +410,7 @@ export class SheetDetailComponent implements OnInit {
     if (this.sheetToValidate) {
       if (this.behavioralSkillEvaluationUpdated) {
         this.alertify.confirm(
-          "Confirmer",
+          'Confirmer',
           `Êtes-vous sûr de vouloir revenir à la liste avant d’enregistrer les modifications apportées aux compétences comportementales?`,
           () => {
             this.switchOffDetailModeEvent.emit();
@@ -427,7 +422,7 @@ export class SheetDetailComponent implements OnInit {
         this.switchOffDetailModeEvent.emit();
       }
     } else {
-      this.router.navigate(["/sheets"]);
+      this.router.navigate(['/sheets']);
     }
   }
 
@@ -444,7 +439,7 @@ export class SheetDetailComponent implements OnInit {
         () => {
           this.loading = false;
           this.alertify.success(
-            "Votre demande de création de sous-objectifs a été envoyée avec succès. Veuillez vérifier vos messages pour les résultats."
+            'Votre demande de création de sous-objectifs a été envoyée avec succès. Veuillez vérifier vos messages pour les résultats.'
           );
         },
         (error) => {
@@ -481,7 +476,7 @@ export class SheetDetailComponent implements OnInit {
         (error) => {
           this.loading = false;
           this.alertify.error(error);
-          console.log("Problem with loading projects.");
+          console.log('Problem with loading projects.');
         }
       );
   }
@@ -493,10 +488,11 @@ export class SheetDetailComponent implements OnInit {
         this.loading = false;
         this.parameters = result;
         if (this.parameters.length > 0) {
-          if (this.isTodayWithinEventsRange("finale"))
+          if (this.isTodayWithinEventsRange('finale')){
             this.isFinalValidationActive = true;
+          }
           const changeAxisWeightIdx = this.parameters.findIndex((p) =>
-            p.event.includes("Change Axis Weight")
+            p.event.includes('Change Axis Weight')
           );
           if (changeAxisWeightIdx > -1) {
             this.toggleChangeAxisWeight = this.parameters[
@@ -508,17 +504,17 @@ export class SheetDetailComponent implements OnInit {
       (error) => {
         this.loading = false;
         this.alertify.error(error);
-        console.log("Impossible de charger les événements.");
+        console.log('Impossible de charger les événements.');
       }
     );
   }
 
   isTodayWithinEventsRange(event: string) {
     const today = new Date();
-    let isTodayWithinEventRanges = [];
+    const isTodayWithinEventRanges = [];
     const eventRange = this.parameters.filter((p) => p.event.includes(event));
 
-    for (let param of eventRange) {
+    for (const param of eventRange) {
       if (
         new Date(param.startEvent) <= today &&
         today <= new Date(param.endEvent)
@@ -529,14 +525,16 @@ export class SheetDetailComponent implements OnInit {
       }
     }
 
-    if (isTodayWithinEventRanges.includes(true)) return true;
+    if (isTodayWithinEventRanges.includes(true)) {
+      return true;
+    }
     return false;
   }
 
   handleAddFinalEvaluation(comment: string) {
-    let finalEvaluation: any = {};
+    const finalEvaluation: any = {};
     if (
-      parseInt(this.authService.decodedToken.nameid) ===
+      parseInt(this.authService.decodedToken.nameid, 10) ===
       this.sheetDetail.ownerId
     ) {
       finalEvaluation.ownerComment = comment;
@@ -544,7 +542,7 @@ export class SheetDetailComponent implements OnInit {
     } else {
       if (
         this.evaluators.findIndex(
-          (e) => e.id === parseInt(this.authService.decodedToken.nameid)
+          (e) => e.id === parseInt(this.authService.decodedToken.nameid, 10)
         ) > -1
       ) {
         finalEvaluation.validatorId = this.authService.decodedToken.nameid;
@@ -552,14 +550,14 @@ export class SheetDetailComponent implements OnInit {
         finalEvaluation.validatorValidationDateTime = new Date();
       } else {
         return this.alertify.error(
-          "Vous n'êtes pas autorisé à soumettre une évaluation finale pour cette fiche."
+          'Vous n\'êtes pas autorisé à soumettre une évaluation finale pour cette fiche.'
         );
       }
     }
 
     this.alertify.confirm(
-      "Confirmer",
-      "Êtes-vous sûr de vouloir ajouter une évaluation finale pour cette fiche?",
+      'Confirmer',
+      'Êtes-vous sûr de vouloir ajouter une évaluation finale pour cette fiche?',
       () => {
         this.loading = true;
         this.userService
@@ -573,7 +571,7 @@ export class SheetDetailComponent implements OnInit {
               this.loading = false;
               this.fetchSheet(this.sheetDetail.id);
               this.alertify.success(
-                "Votre évaluation finale a été ajoutée avec succès."
+                'Votre évaluation finale a été ajoutée avec succès.'
               );
             },
             (error) => {
@@ -608,7 +606,7 @@ export class SheetDetailComponent implements OnInit {
       this.userService.getUser(this.sheetDetail.validatorId).subscribe(
         (result: User) => {
           this.loading = false;
-          this.validatorFullName = result.firstName + " " + result.lastName;
+          this.validatorFullName = result.firstName + ' ' + result.lastName;
         },
         (error) => {
           this.loading = false;

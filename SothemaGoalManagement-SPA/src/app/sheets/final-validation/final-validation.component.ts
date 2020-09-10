@@ -15,7 +15,7 @@ export class FinalValidationComponent implements OnInit {
   @Input() validatorValidationDateTime: string;
   @Input() isFinalValidationActive: boolean;
   @Output() addFinalEvaluationEvent = new EventEmitter<string>();
-  comment: string = '';
+  comment = '';
 
   constructor() { }
 

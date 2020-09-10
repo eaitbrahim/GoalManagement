@@ -1,23 +1,23 @@
-import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { BsModalService, BsModalRef } from "ngx-bootstrap";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
-import { EvaluationFile } from "../../../_models/evaluationFile";
-import { EvaluationFileInstance } from "../../../_models/evaluationFileInstance";
-import { User } from "../../../_models/user";
-import { HrService } from "../../../_services/hr.service";
-import { AuthService } from "../../../_services/auth.service";
-import { AlertifyService } from "../../../_services/alertify.service";
-import { UserStatus } from "../../../_models/userStatus";
-import { AdminService } from "../../../_services/admin.service";
-import { CollaboratorSearchComponent } from "../../../collaborators/collaborator-search/collaborator-search.component";
-import { Parameters } from "../../../_models/parameters";
+import { EvaluationFile } from '../../../_models/evaluationFile';
+import { EvaluationFileInstance } from '../../../_models/evaluationFileInstance';
+import { User } from '../../../_models/user';
+import { HrService } from '../../../_services/hr.service';
+import { AuthService } from '../../../_services/auth.service';
+import { AlertifyService } from '../../../_services/alertify.service';
+import { UserStatus } from '../../../_models/userStatus';
+import { AdminService } from '../../../_services/admin.service';
+import { CollaboratorSearchComponent } from '../../../collaborators/collaborator-search/collaborator-search.component';
+import { Parameters } from '../../../_models/parameters';
 
 @Component({
-  selector: "app-evaluation-hr-detail",
-  templateUrl: "./evaluation-hr-detail.component.html",
-  styleUrls: ["./evaluation-hr-detail.component.css"],
+  selector: 'app-evaluation-hr-detail',
+  templateUrl: './evaluation-hr-detail.component.html',
+  styleUrls: ['./evaluation-hr-detail.component.css'],
 })
 export class EvaluationHrDetailComponent implements OnInit {
   evaluationFile: EvaluationFile;
@@ -42,12 +42,12 @@ export class EvaluationHrDetailComponent implements OnInit {
 
   ngOnInit() {
     this.route.data.subscribe((data) => {
-      this.evaluationFile = data["evaluationFile"];
+      this.evaluationFile = data['evaluationFile'];
       this.loadEvaluationFileInstances();
       this.loadParameters();
       this.isReadOnly =
-        this.evaluationFile.status == "Publiée" ||
-        this.evaluationFile.status == "Archivée";
+        this.evaluationFile.status === 'Publiée' ||
+        this.evaluationFile.status === 'Archivée';
     });
 
     this.getUserStatus();
@@ -69,8 +69,8 @@ export class EvaluationHrDetailComponent implements OnInit {
   }
 
   getUserStatus() {
-    if (localStorage.getItem("userStatusList")) {
-      this.userStatusList = JSON.parse(localStorage.getItem("userStatusList"));
+    if (localStorage.getItem('userStatusList')) {
+      this.userStatusList = JSON.parse(localStorage.getItem('userStatusList'));
     } else {
       this.loading = true;
       this.adminService.getUserStatus().subscribe(
@@ -90,7 +90,7 @@ export class EvaluationHrDetailComponent implements OnInit {
     evaluationFileInstance: EvaluationFileInstance
   ) {
     this.alertify.confirm(
-      "Supprimer",
+      'Supprimer',
       `Êtes-vous sûr de vouloir supprimer la Fiche d\'évaluation: ${evaluationFileInstance.title}?`,
       () => {
         this.loading = true;
@@ -104,12 +104,12 @@ export class EvaluationHrDetailComponent implements OnInit {
               this.loading = false;
               this.evaluationFileInstanceList = [];
               this.loadEvaluationFileInstances();
-              this.alertify.success("La fiche d'évaluation a été supprimée.");
+              this.alertify.success('La fiche d\'évaluation a été supprimée.');
             },
             (error) => {
               this.loading = false;
               this.alertify.error(
-                "Impossible de supprimer la fiche d'évaluation."
+                'Impossible de supprimer la fiche d\'évaluation.'
               );
             }
           );
@@ -120,12 +120,12 @@ export class EvaluationHrDetailComponent implements OnInit {
   openModal() {
     const initialState = {
       userStatusList: this.userStatusList,
-      actionLabel: "Générer une fiche d'évaluation",
+      actionLabel: 'Générer une fiche d\'évaluation',
     };
     this.bsModalRef = this.modalService.show(CollaboratorSearchComponent, {
       initialState,
       ignoreBackdropClick: true,
-      class: "modal-lg",
+      class: 'modal-lg',
     });
     this.bsModalRef.content.actionEvent.subscribe((users) => {
       this.loading = true;
@@ -135,7 +135,7 @@ export class EvaluationHrDetailComponent implements OnInit {
           (next) => {
             this.loading = false;
             this.alertify.success(
-              "Votre demande de générer une fiche d'évaluation pour les utilisateurs selectionés a été envoyée avec succès. Veuillez vérifier vos messages pour les résultats."
+              'Votre demande de générer une fiche d\'évaluation pour les utilisateurs selectionés a été envoyée avec succès. Veuillez vérifier vos messages pour les résultats.'
             );
             this.evaluationFileInstanceList = [];
             this.loadEvaluationFileInstances();
@@ -150,8 +150,8 @@ export class EvaluationHrDetailComponent implements OnInit {
 
   delete() {
     this.alertify.confirm(
-      "Supprimer",
-      "Êtes-vous sûr de vouloir supprimer ce modele?",
+      'Supprimer',
+      'Êtes-vous sûr de vouloir supprimer ce modele?',
       () => {
         this.loading = true;
         this.hrService
@@ -162,14 +162,14 @@ export class EvaluationHrDetailComponent implements OnInit {
           .subscribe(
             () => {
               this.loading = false;
-              this.alertify.success("Le modele a été supprimé");
+              this.alertify.success('Le modele a été supprimé');
             },
             (error) => {
               this.loading = false;
               this.alertify.error(error);
             },
             () => {
-              this.router.navigate(["/hr"], { queryParams: { tab: 2 } });
+              this.router.navigate(['/hr'], { queryParams: { tab: 2 } });
             }
           );
       }
@@ -189,18 +189,18 @@ export class EvaluationHrDetailComponent implements OnInit {
           this.loading = false;
           this.parameters = [];
           this.loadParameters();
-          this.alertify.success("L'événement a été ajouté.");
+          this.alertify.success('L\'événement a été ajouté.');
         },
         (error) => {
           this.loading = false;
-          this.alertify.error("Impossible d'ajouter l'événement.");
+          this.alertify.error('Impossible d\'ajouter l\'événement.');
         }
       );
   }
 
   handleDeleteDateRange(parameters: Parameters) {
     this.alertify.confirm(
-      "Supprimer",
+      'Supprimer',
       `Êtes-vous sûr de vouloir supprimer l'événement: ${parameters.event}?`,
       () => {
         this.loading = true;
@@ -211,11 +211,11 @@ export class EvaluationHrDetailComponent implements OnInit {
               this.loading = false;
               this.parameters = [];
               this.loadParameters();
-              this.alertify.success("L'événement a été supprimé.");
+              this.alertify.success('L\'événement a été supprimé.');
             },
             (error) => {
               this.loading = false;
-              this.alertify.error("Impossible de supprimer l'événement.");
+              this.alertify.error('Impossible de supprimer l\'événement.');
             }
           );
       }
@@ -232,7 +232,7 @@ export class EvaluationHrDetailComponent implements OnInit {
         this.loading = false;
         if (result.length > 0) {
           const changeAxisWeightIdx = result.findIndex((p) =>
-            p.event.includes("Change Axis Weight")
+            p.event.includes('Change Axis Weight')
           );
           if (changeAxisWeightIdx > -1) {
             this.toggleChangeAxisWeightParam = result[changeAxisWeightIdx];
@@ -248,7 +248,7 @@ export class EvaluationHrDetailComponent implements OnInit {
       },
       (error) => {
         this.loading = false;
-        this.alertify.error("Impossible de charger les événements.");
+        this.alertify.error('Impossible de charger les événements.');
       }
     );
   }

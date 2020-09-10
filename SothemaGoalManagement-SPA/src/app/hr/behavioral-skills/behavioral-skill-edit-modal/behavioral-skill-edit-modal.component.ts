@@ -18,7 +18,7 @@ export class BehavioralSkillEditModalComponent implements OnInit {
   constructor(public bsModalRef: BsModalRef) { }
 
   ngOnInit() {
-    if(this.behavioralSkill.sealed){
+    if (this.behavioralSkill.sealed) {
       this.isReadOnly = true;
     }
   }

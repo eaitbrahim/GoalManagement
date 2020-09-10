@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import {
   faCaretDown,
   faCaretUp,
@@ -6,17 +6,17 @@ import {
   faEye,
   faList,
   faHandRock,
-} from "@fortawesome/free-solid-svg-icons";
+} from '@fortawesome/free-solid-svg-icons';
 
-import { EvaluationFileInstance } from "../../_models/evaluationFileInstance";
-import { AxisInstance } from "../../_models/axisInstance";
-import { AlertifyService } from "../../_services/alertify.service";
-import { GoalByAxisInstance } from "../../_models/goalsByAxisInstance";
+import { EvaluationFileInstance } from '../../_models/evaluationFileInstance';
+import { AxisInstance } from '../../_models/axisInstance';
+import { AlertifyService } from '../../_services/alertify.service';
+import { GoalByAxisInstance } from '../../_models/goalsByAxisInstance';
 
 @Component({
-  selector: "app-sheet-card",
-  templateUrl: "./sheet-card.component.html",
-  styleUrls: ["./sheet-card.component.css"],
+  selector: 'app-sheet-card',
+  templateUrl: './sheet-card.component.html',
+  styleUrls: ['./sheet-card.component.css'],
 })
 export class SheetCardComponent implements OnInit {
   @Input() sheetToValidate: EvaluationFileInstance;
@@ -32,8 +32,8 @@ export class SheetCardComponent implements OnInit {
   faEye = faEye;
   faList = faList;
   isCollapsed = false;
-  message = "";
-  goalsStatus = "";
+  message = '';
+  goalsStatus = '';
 
   constructor(private alertify: AlertifyService) {}
 
@@ -69,15 +69,15 @@ export class SheetCardComponent implements OnInit {
     const totalWeights = this.sheetToValidate.axisInstances.reduce(
       (accumWeights, axisInstance) =>
         accumWeights +
-        (typeof axisInstance.userWeight === "string"
-          ? parseInt(axisInstance.userWeight)
+        (typeof axisInstance.userWeight === 'string'
+          ? parseInt(axisInstance.userWeight, 10)
           : axisInstance.userWeight),
       0
     );
     if (totalWeights !== 100) {
       this.message = `Pondération Utilisateur total doit être égale à 100%.`;
     } else {
-      this.message = "";
+      this.message = '';
     }
   }
 }

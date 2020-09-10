@@ -16,13 +16,13 @@ export class ProfileEditComponent implements OnInit {
   @ViewChild('editForm') editForm: NgForm;
   user: User;
   photoUrl: string;
+  public loading = false;
   @HostListener('window:beforeunload', ['$event'])
   unloadNotification($event: any) {
     if (this.editForm.dirty) {
       $event.returnValue = true;
     }
   }
-  public loading = false;
 
   constructor(
     private route: ActivatedRoute,

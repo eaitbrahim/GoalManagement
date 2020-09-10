@@ -20,19 +20,19 @@ export class AdminFilterActionsComponent implements OnInit {
   ngOnInit() {
     this.filters.departmentId = 0;
     this.filters.userStatusId = 0;
-    this.filters.userToSearch = "";
+    this.filters.userToSearch = '';
     this.filters.orderBy = 'lastActive';
   }
 
   resetFilters() {
     this.filters.departmentId = 0;
     this.filters.userStatusId = 0;
-    this.filters.userToSearch = "";
+    this.filters.userToSearch = '';
     this.loadDataEvent.emit(this.filters);
   }
 
   creationToggle() {
-    this.creationModeEvent.emit(true)
+    this.creationModeEvent.emit(true);
   }
 
   loadData() {

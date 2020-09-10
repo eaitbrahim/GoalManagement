@@ -23,7 +23,10 @@ export class StrategyAxisComponent implements OnInit {
   faTrash = faTrash;
   faEdit = faEdit;
 
-  constructor(private hrService: HrService, private authService: AuthService, private alertify: AlertifyService, private modalService: BsModalService) { }
+  constructor(private hrService: HrService,
+    private authService: AuthService,
+    private alertify: AlertifyService,
+    private modalService: BsModalService) { }
 
   ngOnInit() {
   }

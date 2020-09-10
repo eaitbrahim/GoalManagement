@@ -19,17 +19,17 @@ export class CollaboratorEditComponent implements OnInit {
   @ViewChild('editForm') editForm: NgForm;
   user: User;
   photoUrl: string;
+  bsConfig: Partial<BsDatepickerConfig>;
+  bsValue = new Date();
+  departmentList: Department[];
+  userStatusList: UserStatus[];
+  public loading = false;
   @HostListener('window:beforeunload', ['$event'])
   unloadNotification($event: any) {
     if (this.editForm.dirty) {
       $event.returnValue = true;
     }
   }
-  bsConfig: Partial<BsDatepickerConfig>;
-  bsValue = new Date();
-  departmentList: Department[];
-  userStatusList: UserStatus[];
-  public loading = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -54,7 +54,7 @@ export class CollaboratorEditComponent implements OnInit {
 
   updateUser() {
     this.loading = true;
-    var updatedUser = {
+    const updatedUser = {
       departmentId: this.user.department.id,
       userStatusId: this.user.userStatus.id,
       email: this.user.email,

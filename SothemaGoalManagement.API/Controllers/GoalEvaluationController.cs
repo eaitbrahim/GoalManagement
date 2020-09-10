@@ -77,6 +77,13 @@ namespace SothemaGoalEvaluationManagement.API.Controllers
                 var goalOwner = await _repo.Goal.GetGoalOwner(goalEvaluationCreationDto.GoalId);
                 if (!await IsItAllowed(goalOwner.Id, "write")) return Unauthorized();
 
+                // Check dates
+                // var parametersFromRepo = await _repo.Parameters.GetParametersByModeId(evaluationModelId);
+
+                // if (parametersFromRepo == null) return NotFound();
+                // var parametersToReturn = _mapper.Map<IEnumerable<ParametersToReturnDto>>(parametersFromRepo);
+                // return Ok(parametersToReturn);
+
                 // Create a new goalEvaluation
                 var goalEvaluation = _mapper.Map<GoalEvaluation>(goalEvaluationCreationDto);
                 if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)) goalEvaluation.SelfEvaluation = false;

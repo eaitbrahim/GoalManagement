@@ -44,7 +44,7 @@ export class HrPanelComponent implements OnInit {
 
     this.statusList = ['Rédaction', 'En Revue', 'Publiée', 'Archivée'];
 
-    //https://hackernoon.com/everything-you-need-to-know-about-the-expressionchangedafterithasbeencheckederror-error-e3fd9ce7dbb4
+    // https://hackernoon.com/everything-you-need-to-know-about-the-expressionchangedafterithasbeencheckederror-error-e3fd9ce7dbb4
     Promise.resolve(null).then(() => {
       this.route.queryParams.subscribe(params => {
         const selectedTab = params['tab'] || 0;

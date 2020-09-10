@@ -25,7 +25,7 @@ export class CascadeMyGoalsModalComponent implements OnInit {
   axisInstanceTitle: string;
   public loading = false;
   selectedAll: boolean;
-  values: string = '';
+  values = '';
   faPlus = faPlus;
   faMinus = faMinus;
   goalWithChildren: GoalWithChildren;
@@ -34,7 +34,11 @@ export class CascadeMyGoalsModalComponent implements OnInit {
   goalChildren: GoalWithChildren[] = [];
   sheetStatus: string;
 
-  constructor(public bsModalRef: BsModalRef, private userService: UserService, private adminService: AdminService, private authService: AuthService, private alertify: AlertifyService) { }
+  constructor(public bsModalRef: BsModalRef,
+    private userService: UserService,
+    private adminService: AdminService,
+    private authService: AuthService,
+    private alertify: AlertifyService) { }
 
   ngOnInit() {
     this.loadMyEvaluatees();
@@ -115,15 +119,17 @@ export class CascadeMyGoalsModalComponent implements OnInit {
 
   selectAll() {
     this.selectedAll = !this.selectedAll;
-    for (var i = 0; i < this.filteredSubGoals.length; i++) {
+    for (let i = 0; i < this.filteredSubGoals.length; i++) {
       this.filteredSubGoals[i].selected = this.selectedAll;
     }
   }
 
   checkIfAllSelected() {
-    var totalSelected = 0;
-    for (var i = 0; i < this.filteredSubGoals.length; i++) {
-      if (this.filteredSubGoals[i].selected) totalSelected++;
+    let totalSelected = 0;
+    for (let i = 0; i < this.filteredSubGoals.length; i++) {
+      if (this.filteredSubGoals[i].selected) {
+        totalSelected++;
+      }
     }
     this.selectedAll = totalSelected === this.filteredSubGoals.length;
 
@@ -132,7 +138,7 @@ export class CascadeMyGoalsModalComponent implements OnInit {
 
   cascadeGoal() {
     const { id, axisInstance, goalType, projectName, status } = this.myGoal;
-    let golasForCascade = this.filteredSubGoals.filter(sg => sg.selected == true)
+    let golasForCascade = this.filteredSubGoals.filter(sg => sg.selected === true)
       .map(ssg => ({
         evaluateeId: ssg.evaluateeId,
         goalForCreationDto: {
@@ -151,8 +157,10 @@ export class CascadeMyGoalsModalComponent implements OnInit {
   }
 
   disableAction() {
-    if (this.filteredSubGoals === undefined) return true;
-    for (var i = 0; i < this.filteredSubGoals.length; i++) {
+    if (this.filteredSubGoals === undefined) {
+      return true;
+    }
+    for (let i = 0; i < this.filteredSubGoals.length; i++) {
       if (this.filteredSubGoals[i].selected) {
         return false;
       }

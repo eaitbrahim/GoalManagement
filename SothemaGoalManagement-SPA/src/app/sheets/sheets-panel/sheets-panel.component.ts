@@ -1,29 +1,29 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
-import { Router, ActivatedRoute } from "@angular/router";
-import { BsModalService, BsModalRef } from "ngx-bootstrap";
-import { TabsetComponent } from "ngx-bootstrap";
-import { Subject, combineLatest } from "rxjs";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap';
+import { TabsetComponent } from 'ngx-bootstrap';
+import { Subject, combineLatest } from 'rxjs';
 
-import { Pagination, PaginatedResult } from "../../_models/pagination";
-import { EvaluationFileInstance } from "../../_models/evaluationFileInstance";
-import { UserService } from "../../_services/user.service";
-import { AuthService } from "../../_services/auth.service";
-import { AlertifyService } from "../../_services/alertify.service";
-import { Goal } from "../../_models/goal";
-import { GoalEditModalComponent } from "../goal-edit-modal/goal-edit-modal.component";
-import { AxisInstance } from "../../_models/axisInstance";
-import { GoalByAxisInstance } from "../../_models/goalsByAxisInstance";
+import { Pagination, PaginatedResult } from '../../_models/pagination';
+import { EvaluationFileInstance } from '../../_models/evaluationFileInstance';
+import { UserService } from '../../_services/user.service';
+import { AuthService } from '../../_services/auth.service';
+import { AlertifyService } from '../../_services/alertify.service';
+import { Goal } from '../../_models/goal';
+import { GoalEditModalComponent } from '../goal-edit-modal/goal-edit-modal.component';
+import { AxisInstance } from '../../_models/axisInstance';
+import { GoalByAxisInstance } from '../../_models/goalsByAxisInstance';
 
 @Component({
-  selector: "app-sheets-panel",
-  templateUrl: "./sheets-panel.component.html",
-  styleUrls: ["./sheets-panel.component.css"],
+  selector: 'app-sheets-panel',
+  templateUrl: './sheets-panel.component.html',
+  styleUrls: ['./sheets-panel.component.css'],
 })
 export class SheetsPanelComponent implements OnInit {
   private ngUnsubscribe = new Subject();
   private tabSetInitialized = new Subject();
   public tabSet: TabsetComponent;
-  @ViewChild("tabset") tabset: TabsetComponent;
+  @ViewChild('tabset') tabset: TabsetComponent;
   pagination: Pagination;
   sheets: EvaluationFileInstance[];
   sheetToValidate: EvaluationFileInstance;
@@ -34,7 +34,7 @@ export class SheetsPanelComponent implements OnInit {
   goalsByAxisInstanceList: GoalByAxisInstance[];
   goalsMode = false;
   detailMode: boolean;
-  tabIndex: number = 0;
+  tabIndex = 0;
   filters: any = {};
   statusList: string[];
   toggleChangeAxisWeight: boolean;
@@ -50,13 +50,13 @@ export class SheetsPanelComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.statusList = ["Rédaction", "En Revue", "Publiée", "Archivée"];
-    this.filters.status = "";
+    this.statusList = ['Rédaction', 'En Revue', 'Publiée', 'Archivée'];
+    this.filters.status = '';
     this.route.data.subscribe((data) => {
-      const resolvedData = data["resolvedData"];
-      this.sheetsToValidate = resolvedData["sheetsToValidate"];
-      this.sheets = resolvedData["sheets"].result;
-      this.pagination = resolvedData["sheets"].pagination;
+      const resolvedData = data['resolvedData'];
+      this.sheetsToValidate = resolvedData['sheetsToValidate'];
+      this.sheets = resolvedData['sheets'].result;
+      this.pagination = resolvedData['sheets'].pagination;
       this.checkParameters();
     });
   }
@@ -86,8 +86,8 @@ export class SheetsPanelComponent implements OnInit {
   checkParameters() {
     this.sheetsToValidate.forEach((sheetToValidate) => {
       if (sheetToValidate.parameters.length > 0) {
-        let changeAxisWeightIdx = sheetToValidate.parameters.findIndex((p) =>
-          p.event.includes("Change Axis Weight")
+        const changeAxisWeightIdx = sheetToValidate.parameters.findIndex((p) =>
+          p.event.includes('Change Axis Weight')
         );
         if (changeAxisWeightIdx > -1) {
           this.toggleChangeAxisWeight =
@@ -100,7 +100,7 @@ export class SheetsPanelComponent implements OnInit {
       }
     });
 
-    console.log("toggleChangeAxisWeight:", this.toggleChangeAxisWeight);
+    console.log('toggleChangeAxisWeight:', this.toggleChangeAxisWeight);
   }
   loadSheetsToValidate() {
     this.loading = true;
@@ -124,8 +124,8 @@ export class SheetsPanelComponent implements OnInit {
 
   handleDeleteGoal(id: number) {
     this.alertify.confirm(
-      "Supprimer",
-      "Êtes-vous sûr de vouloir supprimer cet objectif?",
+      'Supprimer',
+      'Êtes-vous sûr de vouloir supprimer cet objectif?',
       () => {
         this.loading = true;
         this.userService
@@ -137,7 +137,7 @@ export class SheetsPanelComponent implements OnInit {
                 this.goalList.findIndex((a) => a.id === id),
                 1
               );
-              this.alertify.success("L'objectif a été supprimé");
+              this.alertify.success('L\'objectif a été supprimé');
             },
             (error) => {
               this.loading = false;
@@ -164,7 +164,7 @@ export class SheetsPanelComponent implements OnInit {
         .subscribe(
           () => {
             this.loading = false;
-            this.alertify.success("L'objectif été mis à jour.");
+            this.alertify.success('L\'objectif été mis à jour.');
           },
           (error) => {
             this.loading = false;
@@ -230,7 +230,7 @@ export class SheetsPanelComponent implements OnInit {
         () => {
           this.loading = false;
           this.loadSheetsToValidate();
-          this.alertify.success("Les objectifs ont été renvoyées");
+          this.alertify.success('Les objectifs ont été renvoyées');
         },
         (error) => {
           this.loading = false;
@@ -251,7 +251,7 @@ export class SheetsPanelComponent implements OnInit {
         () => {
           this.loading = false;
           this.loadSheetsToValidate();
-          this.alertify.success("Les objectifs ont été validées");
+          this.alertify.success('Les objectifs ont été validées');
         },
         (error) => {
           this.loading = false;
@@ -305,7 +305,7 @@ export class SheetsPanelComponent implements OnInit {
   }
 
   resetFilters() {
-    this.filters.status = "";
+    this.filters.status = '';
     this.loadData();
   }
 }

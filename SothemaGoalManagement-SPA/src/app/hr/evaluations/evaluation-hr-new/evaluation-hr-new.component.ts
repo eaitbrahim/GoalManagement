@@ -60,7 +60,7 @@ export class EvaluationHrNewComponent implements OnInit {
     of(this.hrService.getPublishedBehavioralSkills().subscribe(
       (result: BehavioralSkill[]) => {
         this.loading = false;
-        this.skillsData = result;//.filter(r => r.sealed === false);;
+        this.skillsData = result; // .filter(r => r.sealed === false);;
         this.addCheckboxes();
       },
       error => {
@@ -83,7 +83,12 @@ export class EvaluationHrNewComponent implements OnInit {
   create() {
     if (this.newForm.valid) {
       const selectedSkillIds = this.newForm.value.skills.map((v, i) => v ? this.skillsData[i].id : null).filter(v => v !== null);
-      const newEvaluationFile = { title: this.newForm.value.title, year: this.newForm.value.year, strategyId: this.newForm.value.strategy.id, behavioralSkillIds: selectedSkillIds };
+      const newEvaluationFile = {
+        title: this.newForm.value.title,
+        year: this.newForm.value.year,
+        strategyId: this.newForm.value.strategy.id,
+        behavioralSkillIds: selectedSkillIds
+      };
       this.loading = true;
       this.hrService.createEvaluationFile(this.authService.decodedToken.nameid, newEvaluationFile).subscribe(
         () => {

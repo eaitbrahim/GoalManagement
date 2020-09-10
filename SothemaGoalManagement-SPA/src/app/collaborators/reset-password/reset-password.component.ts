@@ -24,10 +24,10 @@ export class ResetPasswordComponent implements OnInit {
   faHandshake = faHandshake;
   faEye = faEye;
   faEyeSlash = faEyeSlash;
-  minLength: number = 8;
-  maxLength: number = 24;
+  minLength: 8;
+  maxLength: 24;
   togglePassword: boolean;
-  inputType: string = 'password';
+  inputType = 'password';
 
   constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private authService: AuthService,
     private alertify: AlertifyService, ) { }
@@ -35,7 +35,7 @@ export class ResetPasswordComponent implements OnInit {
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       this.model.token = params['token'];
-      this.model.email = params['email']
+      this.model.email = params['email'];
     });
 
     this.createResetPasswordForm();

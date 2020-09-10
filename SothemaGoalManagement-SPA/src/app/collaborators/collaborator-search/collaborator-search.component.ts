@@ -30,15 +30,17 @@ export class CollaboratorSearchComponent implements OnInit {
 
   selectAll() {
     this.selectedAll = !this.selectedAll;
-    for (var i = 0; i < this.users.length; i++) {
+    for (let i = 0; i < this.users.length; i++) {
       this.users[i].selected = this.selectedAll;
     }
   }
 
   checkIfAllSelected() {
-    var totalSelected = 0;
-    for (var i = 0; i < this.users.length; i++) {
-      if (this.users[i].selected) totalSelected++;
+    let totalSelected = 0;
+    for (let i = 0; i < this.users.length; i++) {
+      if (this.users[i].selected) {
+        totalSelected++;
+      }
     }
     this.selectedAll = totalSelected === this.users.length;
 
@@ -69,9 +71,9 @@ export class CollaboratorSearchComponent implements OnInit {
   executeAction() {
     this.selectedUsers = [];
     let selectedUser = {} as User;
-    for (var i = 0; i < this.users.length; i++) {
+    for (let i = 0; i < this.users.length; i++) {
       if (this.users[i].selected) {
-        selectedUser = Object.assign({}, this.users[i])
+        selectedUser = Object.assign({}, this.users[i]);
         this.selectedUsers.push(selectedUser);
       }
     }
@@ -80,8 +82,10 @@ export class CollaboratorSearchComponent implements OnInit {
   }
 
   disableAction() {
-    if (this.users === undefined) return true;
-    for (var i = 0; i < this.users.length; i++) {
+    if (this.users === undefined) {
+      return true;
+    }
+    for (let i = 0; i < this.users.length; i++) {
       if (this.users[i].selected) {
         return false;
       }

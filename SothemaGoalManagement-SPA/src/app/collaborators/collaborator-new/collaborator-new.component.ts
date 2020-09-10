@@ -27,7 +27,7 @@ export class CollaboratorNewComponent implements OnInit {
   newUser: User;
   newUserForm: FormGroup;
   bsConfig: Partial<BsDatepickerConfig>;
-  notifyUser: boolean = false;
+  notifyUser = false;
   public loading = false;
 
   constructor(private fb: FormBuilder, private adminService: AdminService, private alertify: AlertifyService) { }
@@ -58,15 +58,15 @@ export class CollaboratorNewComponent implements OnInit {
     return new Promise((resolve, reject) => {
       this.adminService.employeeNumberAlreadyExists(control.value).subscribe(result => {
         if (result) {
-          resolve({ employeeNumberIsTaken: true })
+          resolve({ employeeNumberIsTaken: true });
         } else {
-          resolve(null)
+          resolve(null);
         }
       },
         error => {
 
           this.alertify.error(error);
-          resolve(null)
+          resolve(null);
         })
     });
   }
@@ -76,14 +76,14 @@ export class CollaboratorNewComponent implements OnInit {
 
       this.adminService.emailAlreadyExists(control.value).subscribe(result => {
         if (result) {
-          resolve({ emailIsTaken: true })
+          resolve({ emailIsTaken: true });
         } else {
-          resolve(null)
+          resolve(null);
         }
       },
         error => {
           this.alertify.error(error);
-          resolve(null)
+          resolve(null);
         })
     });
   }

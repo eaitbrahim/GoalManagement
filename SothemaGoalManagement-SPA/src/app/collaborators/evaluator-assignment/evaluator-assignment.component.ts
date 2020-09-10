@@ -40,7 +40,7 @@ export class EvaluatorAssignmentComponent implements OnInit {
       this.adminService.getUserStatus().subscribe(
         (result: UserStatus[]) => {
           this.loading = false;
-          this.userStatusList = result
+          this.userStatusList = result;
         },
         error => {
           this.loading = false;
@@ -58,7 +58,7 @@ export class EvaluatorAssignmentComponent implements OnInit {
     this.bsModalRef = this.modalService.show(CollaboratorSearchComponent, { initialState, ignoreBackdropClick: true, class: 'modal-lg' });
     this.bsModalRef.content.actionEvent.subscribe((users) => {
       this.loading = true;
-      let userIds = users.map(u => u.id);
+      const userIds = users.map(u => u.id);
       this.adminService.addEvaluatorToUser(this.evaluated.id, userIds)
         .subscribe(
           () => {
@@ -82,7 +82,7 @@ export class EvaluatorAssignmentComponent implements OnInit {
     this.bsModalRef = this.modalService.show(CollaboratorSearchComponent, { initialState, ignoreBackdropClick: true, class: 'modal-lg' });
     this.bsModalRef.content.actionEvent.subscribe((users) => {
       this.loading = true;
-      let userIds = users.map(u => u.id);
+      const userIds = users.map(u => u.id);
       this.adminService.addEvaluateeToUser(this.evaluated.id, userIds)
         .subscribe(
           () => {

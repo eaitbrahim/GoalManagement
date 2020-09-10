@@ -22,7 +22,7 @@ export class EvaluationHrEditModalComponent implements OnInit {
   constructor(public bsModalRef: BsModalRef) { }
 
   ngOnInit() {
-    if(this.evaluationFile.sealed){
+    if (this.evaluationFile.sealed) {
       this.isReadOnly = true;
       this.statusList = ['Publiée', 'Archivée'];
     }

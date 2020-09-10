@@ -20,7 +20,7 @@ import { AuthService } from '../../../_services/auth.service';
 })
 export class BehavioralSkillDetailComponent implements OnInit {
   behavioralSkill: BehavioralSkill;
-  public loading: boolean = false;
+  public loading = false;
   faTrash = faTrash;
 
   constructor(private hrService: HrService, private authService: AuthService, private alertify: AlertifyService, private route: ActivatedRoute, private router: Router) { }

@@ -12,7 +12,7 @@ export class EvaluatorComponent implements OnInit {
   @Input() evaluator: Evaluator;
   @Output() updateRankOfEvaluatorEvent = new EventEmitter<Evaluator>()
   @Output() deleteEvaluatorEvent = new EventEmitter<Evaluator>()
-  editing: boolean = false;
+  editing = false;
   faTrash = faTrash;
   faSave = faSave;
   faEdit = faEdit;

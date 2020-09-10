@@ -23,7 +23,7 @@ import { AxisPole } from '../../../_models/axisPole';
 export class StrategyDetailComponent implements OnInit {
   strategy: Strategy;
   axisList: Axis[];
-  public loading: boolean = false;
+  public loading = false;
   isReadOnly: boolean;
   faTrash = faTrash;
   tallyWeights: any = {};
@@ -31,7 +31,11 @@ export class StrategyDetailComponent implements OnInit {
   axisPoles: AxisPole[] = [];
   updatedAxisId: number;
 
-  constructor(private hrService: HrService, private authService: AuthService, private alertify: AlertifyService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private hrService: HrService,
+    private authService: AuthService,
+    private alertify: AlertifyService,
+    private route: ActivatedRoute,
+    private router: Router) { }
 
   ngOnInit() {
     this.route.data.subscribe(data => {
@@ -121,14 +125,24 @@ export class StrategyDetailComponent implements OnInit {
     this.axisPoles = [];
     this.axisList.forEach(axis => this.axisPoles = [...this.axisPoles, ...axis.axisPoles]);
     this.tallyWeights = this.axisPoles.reduce((tally, pole) => {
-      if (tally[pole.poleName]) tally[pole.poleName] = parseInt(tally[pole.poleName]) + pole.weight;
-      else tally[pole.poleName] = pole.weight;
+      if (tally[pole.poleName]) {
+        tally[pole.poleName] = parseInt(tally[pole.poleName], 10) + pole.weight;
+      } else {
+        tally[pole.poleName] = pole.weight;
+      }
       return tally;
     }, {});
 
-    if (this.messages.length > 0) this.messages = [];
-    for (let key in this.tallyWeights) {
-      this.messages.push({ poleName: key, totalWeight: this.tallyWeights[key] });
+    if (this.messages.length > 0) {
+      this.messages = [];
+    }
+    for (const key in this.tallyWeights) {
+      if (this.tallyWeights.hasOwnProperty(key)) {
+        this.messages.push({
+          poleName: key,
+          totalWeight: this.tallyWeights[key]
+        });
+      }
     }
   }
 

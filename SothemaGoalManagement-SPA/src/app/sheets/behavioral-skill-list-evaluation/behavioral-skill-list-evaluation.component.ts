@@ -18,22 +18,22 @@ export class BehavioralSkillListEvaluationComponent implements OnInit {
   @Input() areBehavioralSkillsEvaluable: boolean;
   @Output() addBehavioralSkillEvaluationEvent = new EventEmitter<any[]>();
   @Output() behavioralSkillEvaluationUpdatedEvent = new EventEmitter<boolean>();
+  displayDefinition: boolean;
+  description: string;
+  evals: any[] = [];
+  faCheckCircle = faCheckCircle;
+  faAngry = faAngry;
+  faFrown = faFrown;
+  faSmile = faSmile;
+  faGrin = faGrinAlt;
+  dirty: boolean;
+  totalGrade = '0.00';
   @HostListener('window:beforeunload', ['$event'])
   unloadNotification($event: any) {
     if (this.dirty) {
       $event.returnValue = true;
     }
   }
-  displayDefinition: boolean;
-  description: string;
-  evals: any[] = [];
-  faCheckCircle = faCheckCircle;
-  faAngry=faAngry;
-  faFrown=faFrown;
-  faSmile=faSmile;
-  faGrin=faGrinAlt;
-  dirty: boolean;
-  totalGrade: string = "0.00";
 
   constructor(private alertify: AlertifyService) { }
 
@@ -50,7 +50,7 @@ export class BehavioralSkillListEvaluationComponent implements OnInit {
   }
 
   changeEventInRadioButton(behavioralSkillInstance: BehavioralSkillInstance, newGrade: number) {
-    let newEval = {
+    const newEval = {
       grade: newGrade,
       level: this.getLevel(behavioralSkillInstance, newGrade),
       behavioralSkillInstanceId: behavioralSkillInstance.id,
@@ -67,21 +67,29 @@ export class BehavioralSkillListEvaluationComponent implements OnInit {
 
   calculateTotalGrade() {
     let totalGrade = 0;
-    for (let e of this.evals) {
+    for (const e of this.evals) {
       totalGrade += Number(e.grade);
     }
     this.totalGrade = (totalGrade / this.evals.length).toFixed(2);
   }
 
   enableSave() {
-    return this.evals.filter(e => e.level === "").length > 0 ? true : false;
+    return this.evals.filter(e => e.level === '').length > 0 ? true : false;
   }
 
   getLevel(behavioralSkillInstance: BehavioralSkillInstance, grade: number) {
-    if (grade == behavioralSkillInstance.levelOneGrade) return behavioralSkillInstance.levelOne;
-    if (grade == behavioralSkillInstance.levelTwoGrade) return behavioralSkillInstance.levelTwo;
-    if (grade == behavioralSkillInstance.levelThreeGrade) return behavioralSkillInstance.levelThree;
-    if (grade == behavioralSkillInstance.levelFourGrade) return behavioralSkillInstance.levelFour;
+    if (grade === behavioralSkillInstance.levelOneGrade) {
+      return behavioralSkillInstance.levelOne;
+    }
+    if (grade === behavioralSkillInstance.levelTwoGrade) {
+      return behavioralSkillInstance.levelTwo;
+    }
+    if (grade === behavioralSkillInstance.levelThreeGrade) {
+      return behavioralSkillInstance.levelThree;
+    }
+    if (grade === behavioralSkillInstance.levelFourGrade) {
+      return behavioralSkillInstance.levelFour;
+    }
 
     return '';
   }
@@ -90,7 +98,12 @@ export class BehavioralSkillListEvaluationComponent implements OnInit {
     this.alertify.confirm('Confirmer',
       `Êtes-vous sûr de vouloir ajouter cette évaluation:
         <ul>
-        ${this.evals.map(e => "<li>" + this.behavioralSkillInstanceList.find(b => b.id === e.behavioralSkillInstanceId).skill + ": " + e.level + "</li>").join("")}
+        ${
+            this.evals.map(e => '<li>' + this.behavioralSkillInstanceList
+                                            .find(b => b.id === e.behavioralSkillInstanceId).skill + ': ' + e.level + '</li>'
+                          )
+                      .join('')
+          }
         </ul>
         `,
       () => {

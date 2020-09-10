@@ -1,13 +1,13 @@
-import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
-import { EvaluationFileInstance } from "../../_models/evaluationFileInstance";
-import { AxisInstance } from "../../_models/axisInstance";
-import { GoalByAxisInstance } from "../../_models/goalsByAxisInstance";
+import { EvaluationFileInstance } from '../../_models/evaluationFileInstance';
+import { AxisInstance } from '../../_models/axisInstance';
+import { GoalByAxisInstance } from '../../_models/goalsByAxisInstance';
 
 @Component({
-  selector: "app-my-collaborators-sheets",
-  templateUrl: "./my-collaborators-sheets.component.html",
-  styleUrls: ["./my-collaborators-sheets.component.css"],
+  selector: 'app-my-collaborators-sheets',
+  templateUrl: './my-collaborators-sheets.component.html',
+  styleUrls: ['./my-collaborators-sheets.component.css'],
 })
 export class MyCollaboratorsSheetsComponent implements OnInit {
   @Input() sheetsToValidate: EvaluationFileInstance[];

@@ -25,8 +25,11 @@ export class AxisPolesWeightsCardComponent implements OnInit {
   ngOnInit() {
     this.axisPoleList = this.axis.axisPoles;
 
-    if (this.axis.id === this.updatedAxisId) this.isCollapsed = true;
-    else this.isCollapsed = false;
+    if (this.axis.id === this.updatedAxisId) {
+      this.isCollapsed = true;
+    } else {
+      this.isCollapsed = false;
+    }
   }
 
   handleUpdateAxisPole(axisPole: AxisPole) {

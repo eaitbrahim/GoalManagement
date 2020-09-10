@@ -27,9 +27,9 @@ export class EvaluationHrParametersComponent implements OnInit {
   }
 
   addParameters() {
-    const event = (<HTMLInputElement>document.querySelector("#event")).value;
-    const startEvent = (<HTMLInputElement>document.querySelector("#datesRange")).value.split('-')[0].trim();
-    const endEvent = (<HTMLInputElement>document.querySelector("#datesRange")).value.split('-')[1].trim();
+    const event = (<HTMLInputElement>document.querySelector('#event')).value;
+    const startEvent = (<HTMLInputElement>document.querySelector('#datesRange')).value.split('-')[0].trim();
+    const endEvent = (<HTMLInputElement>document.querySelector('#datesRange')).value.split('-')[1].trim();
     this.addNewParamEvent.emit({ event, startEvent, endEvent });
   }
 
@@ -40,7 +40,10 @@ export class EvaluationHrParametersComponent implements OnInit {
   toggleChangeWeight() {
     this.toggleChangeAxisWeightParam.toggleChangeAxisWeight = !this.toggleChangeAxisWeightParam.toggleChangeAxisWeight;
     if (this.toggleChangeAxisWeightParam.toggleChangeAxisWeight) {
-      this.addNewParamEvent.emit({ event: 'Change Axis Weight', toggleChangeAxisWeight: this.toggleChangeAxisWeightParam.toggleChangeAxisWeight });
+      this.addNewParamEvent.emit({
+        event: 'Change Axis Weight',
+        toggleChangeAxisWeight: this.toggleChangeAxisWeightParam.toggleChangeAxisWeight
+      });
     } else {
       this.deleteDateRangeEvent.emit(this.toggleChangeAxisWeightParam);
     }

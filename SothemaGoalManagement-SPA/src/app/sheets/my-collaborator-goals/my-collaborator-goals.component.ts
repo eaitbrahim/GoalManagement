@@ -43,7 +43,7 @@ export class MyCollaboratorGoalsComponent implements OnInit {
 
     this.bsModalRef = this.modalService.show(PromptModalComponent, { initialState, ignoreBackdropClick: true, class: 'modal-lg' });
     this.bsModalRef.content.sendPromptValueEvent.subscribe((promptValue) => {
-      var goals: any[] = [];
+      const goals: any[] = [];
       this.goalsByAxisInstanceList.forEach(a => {
         a.goals.forEach(g => goals.push({
           id: g.id,
@@ -58,14 +58,14 @@ export class MyCollaboratorGoalsComponent implements OnInit {
         }));
       });
 
-      var rejectionData = { sheetId: this.sheetToValidate.id, goals: goals };
+      const rejectionData = { sheetId: this.sheetToValidate.id, goals: goals };
       this.rejectGoalsEvent.emit(rejectionData);
       this.switchOffGoalsEvent.emit(false);
     });
   }
 
   acceptGoals() {
-    var goals: any[] = [];
+    const goals: any[] = [];
     this.goalsByAxisInstanceList.forEach(a => {
       a.goals.forEach(g => goals.push({
         id: g.id,
@@ -80,7 +80,7 @@ export class MyCollaboratorGoalsComponent implements OnInit {
       }));
     });
 
-    var acceptanceData = { sheetId: this.sheetToValidate.id, goals: goals };
+    const acceptanceData = { sheetId: this.sheetToValidate.id, goals: goals };
     this.acceptGoalsEvent.emit(acceptanceData);
     this.switchOffGoalsEvent.emit(false);
   }
