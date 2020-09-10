@@ -18,7 +18,7 @@
                 <fa-icon [icon]="faCaretUp"></fa-icon>Réduire Axes</span>
             </button>
 
-            <button type="button" class="btn ml-1" class="btn btn-primary" *ngIf="sheetToValidate.goalsStatus === 'En Revue'" (click)="showGoals()">
+            <button type="button" class="btn ml-1" class="btn btn-primary" *ngIf="sheetToValidate.goalsStatus === 'En Revue' && canValidate" (click)="showGoals()">
               <span>
                 <fa-icon [icon]="faCheckSquare" class="mr-2"></fa-icon>Valider</span>
             </button>

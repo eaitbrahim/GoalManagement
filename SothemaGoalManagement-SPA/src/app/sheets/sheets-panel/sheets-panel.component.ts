@@ -38,6 +38,7 @@ export class SheetsPanelComponent implements OnInit {
   filters: any = {};
   statusList: string[];
   toggleChangeAxisWeight: boolean;
+  canValidate: boolean;
 
   public behavioralSkillEvaluationUpdated: boolean;
 
@@ -97,11 +98,29 @@ export class SheetsPanelComponent implements OnInit {
         } else {
           this.toggleChangeAxisWeight = false;
         }
+
+        const validationDateIdx = sheetToValidate.parameters.findIndex((p) =>
+          p.event.includes('Plage de dates de validation des objectifs')
+        );
+
+        if (validationDateIdx > -1) {
+          this.canValidate = this.checkDates(sheetToValidate.parameters[validationDateIdx].startEvent,
+                                              sheetToValidate.parameters[validationDateIdx].endEvent,
+                                              new Date());
+        } else {
+          this.canValidate = false;
+        }
       }
     });
-
-    console.log('toggleChangeAxisWeight:', this.toggleChangeAxisWeight);
   }
+
+  checkDates(dateFrom, dateTo, dateCheck) {
+    const from = new Date(dateFrom);
+    const to = new Date(dateTo);
+
+    return dateCheck >= from && dateCheck <= to;
+  }
+
   loadSheetsToValidate() {
     this.loading = true;
     this.userService

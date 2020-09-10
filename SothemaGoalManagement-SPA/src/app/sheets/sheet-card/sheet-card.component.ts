@@ -11,7 +11,6 @@ import {
 import { EvaluationFileInstance } from '../../_models/evaluationFileInstance';
 import { AxisInstance } from '../../_models/axisInstance';
 import { AlertifyService } from '../../_services/alertify.service';
-import { GoalByAxisInstance } from '../../_models/goalsByAxisInstance';
 
 @Component({
   selector: 'app-sheet-card',
@@ -21,6 +20,7 @@ import { GoalByAxisInstance } from '../../_models/goalsByAxisInstance';
 export class SheetCardComponent implements OnInit {
   @Input() sheetToValidate: EvaluationFileInstance;
   @Input() toggleChangeAxisWeight: boolean;
+  @Input() canValidate: boolean;
   @Output() updateUserWeightEvent = new EventEmitter<any>();
   @Output() loadGoalsEvent = new EventEmitter<any>();
   @Output() showSheetDetailEvent = new EventEmitter<any>();
