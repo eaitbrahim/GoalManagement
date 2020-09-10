@@ -23,7 +23,7 @@
                 <fa-icon [icon]="faCheckSquare" class="mr-2"></fa-icon>Valider</span>
             </button>
 
-            <button type="button" class="btn btn-success ml-1" *ngIf="sheetToValidate.goalsStatus === 'Publiée' && sheetToValidate.status !== 'Publiée'"
+            <button type="button" class="btn btn-success ml-1" *ngIf="sheetToValidate.goalsStatus === 'Publiée' && sheetToValidate.status !== 'Publiée' && canEvaluate"
               (click)="showSheetDetail(1)">
               <span>
                 <fa-icon [icon]="faList" class="mr-2"></fa-icon>Evaluer</span>

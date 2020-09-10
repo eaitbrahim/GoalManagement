@@ -39,6 +39,7 @@ export class SheetsPanelComponent implements OnInit {
   statusList: string[];
   toggleChangeAxisWeight: boolean;
   canValidate: boolean;
+  canEvaluate: boolean;
 
   public behavioralSkillEvaluationUpdated: boolean;
 
@@ -109,6 +110,18 @@ export class SheetsPanelComponent implements OnInit {
                                               new Date());
         } else {
           this.canValidate = false;
+        }
+
+        const evaluationDateIdx = sheetToValidate.parameters.findIndex((p) =>
+          p.event.includes(`Plage de dates d'évaluation`)
+        );
+
+        if (evaluationDateIdx > -1) {
+          this.canEvaluate = this.checkDates(sheetToValidate.parameters[evaluationDateIdx].startEvent,
+                                              sheetToValidate.parameters[evaluationDateIdx].endEvent,
+                                              new Date());
+        } else {
+          this.canEvaluate = false;
         }
       }
     });

@@ -21,6 +21,7 @@ export class SheetCardComponent implements OnInit {
   @Input() sheetToValidate: EvaluationFileInstance;
   @Input() toggleChangeAxisWeight: boolean;
   @Input() canValidate: boolean;
+  @Input() canEvaluate: boolean;
   @Output() updateUserWeightEvent = new EventEmitter<any>();
   @Output() loadGoalsEvent = new EventEmitter<any>();
   @Output() showSheetDetailEvent = new EventEmitter<any>();
