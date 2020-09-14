@@ -15,6 +15,8 @@ namespace SothemaGoalManagement.API.Helpers
 
         public string Status { get; set; }
 
+        public int Year { get; set; }
+
         public string OrderBy { get; set; }
 
     }

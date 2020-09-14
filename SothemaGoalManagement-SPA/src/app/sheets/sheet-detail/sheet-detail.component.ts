@@ -137,10 +137,10 @@ export class SheetDetailComponent implements OnInit {
 
   CheckReadOnly() {
     const goalsInInitialStatus = this.goalsByAxisInstanceList.filter(
-      (g) => g.goalsStatus === 'Pas encore créé' || g.goalsStatus == 'Rédaction'
+      (g) => g.goalsStatus === 'Pas encore créé' || g.goalsStatus === 'Rédaction'
     );
 
-    if (goalsInInitialStatus.length == 0) {
+    if (goalsInInitialStatus.length === 0) {
       this.areGoalsReadOnly = true;
       console.log(
         '(goalsInInitialStatus) areGoalsReadOnly:',
@@ -152,7 +152,7 @@ export class SheetDetailComponent implements OnInit {
       );
 
       if (
-        this.sheetDetail.ownerId !== this.authService.decodedToken.nameid &&
+        this.sheetDetail.ownerId != this.authService.decodedToken.nameid &&
         indx === -1
       ) {
         this.areGoalsReadOnly = true;
@@ -291,8 +291,8 @@ export class SheetDetailComponent implements OnInit {
   }
 
   CanBehavioralSkillBeEvaluated() {
-    var indx = this.evaluators.findIndex(
-      (e) => e.id == parseInt(this.authService.decodedToken.nameid)
+    const indx = this.evaluators.findIndex(
+      (e) => e.id === parseInt(this.authService.decodedToken.nameid, 10)
     );
     if (indx === -1) {
       this.areBehavioralSkillsEvaluable = false;
@@ -301,8 +301,9 @@ export class SheetDetailComponent implements OnInit {
     }
 
     if (this.parameters.length > 0) {
-      if (!this.isTodayWithinEventsRange('évaluation'))
+      if (!this.isTodayWithinEventsRange('évaluation')) {
         this.areBehavioralSkillsEvaluable = true;
+      }
     }
 
     if (this.sheetDetail.status === 'Publiée') {
@@ -514,6 +515,10 @@ export class SheetDetailComponent implements OnInit {
     const today = new Date();
     const isTodayWithinEventRanges = [];
     const eventRange = this.parameters.filter((p) => p.event.includes(event));
+
+    if (eventRange.length === 0) {
+      return true;
+    }
 
     for (const param of eventRange) {
       if (

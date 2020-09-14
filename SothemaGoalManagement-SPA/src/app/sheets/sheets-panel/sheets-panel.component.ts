@@ -36,11 +36,11 @@ export class SheetsPanelComponent implements OnInit {
   detailMode: boolean;
   tabIndex = 0;
   filters: any = {};
-  statusList: string[];
-  toggleChangeAxisWeight: boolean;
-  canValidate: boolean;
-  canEvaluate: boolean;
-  canDoFinalEvaluation: boolean;
+  yearList: number[] = [];
+  toggleChangeAxisWeight = false;
+  canValidate = true;
+  canEvaluate = true;
+  canDoFinalEvaluation = true;
 
   public behavioralSkillEvaluationUpdated: boolean;
 
@@ -53,14 +53,18 @@ export class SheetsPanelComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.statusList = ['Rédaction', 'En Revue', 'Publiée', 'Archivée'];
-    this.filters.status = '';
+    this.filters.year = '0';
     this.route.data.subscribe((data) => {
       const resolvedData = data['resolvedData'];
       this.sheetsToValidate = resolvedData['sheetsToValidate'];
       this.sheets = resolvedData['sheets'].result;
       this.pagination = resolvedData['sheets'].pagination;
+
       this.checkParameters();
+
+      for (const sheet of this.sheets) {
+        this.yearList.push(sheet.year);
+      }
     });
   }
 
@@ -90,31 +94,40 @@ export class SheetsPanelComponent implements OnInit {
     this.sheetsToValidate.forEach((sheetToValidate) => {
       if (sheetToValidate.parameters.length > 0) {
         // Check if user can update axis weight
-        this.toggleChangeAxisWeight = this.checkDates(sheetToValidate, 'Change Axis Weight');
+        this.toggleChangeAxisWeight = this.checkEvents(sheetToValidate, 'Change Axis Weight');
 
         // Check user can validate goals
-          this.canValidate = this.checkDates(sheetToValidate, 'Plage de dates de validation des objectifs');
+          this.canValidate = this.checkEvents(sheetToValidate, 'Plage de dates de validation des objectifs');
 
         // Check user can evaluate goals
-          this.canEvaluate = this.checkDates(sheetToValidate, `Plage de dates d'évaluation`);
+          this.canEvaluate = this.checkEvents(sheetToValidate, `Plage de dates d'évaluation`);
 
         // Check user can do final evaluation
-        this.canDoFinalEvaluation = this.checkDates(sheetToValidate, `Plage de dates de validation finale de la fiche`);
+        this.canDoFinalEvaluation = this.checkEvents(sheetToValidate, `Plage de dates de validation finale de la fiche`);
       }
     });
   }
 
-  checkDates(sheetToValidate, event) {
+  checkEvents(sheetToValidate, event) {
     const eventDateIdx = sheetToValidate.parameters.findIndex((p) => p.event.includes(event));
 
     if (eventDateIdx > -1) {
+      if (event === 'Change Axis Weight') {
+        return sheetToValidate.parameters[eventDateIdx].toggleChangeAxisWeight;
+      }
+
       const from = new Date(sheetToValidate.parameters[eventDateIdx].startEvent);
       const to = new Date(sheetToValidate.parameters[eventDateIdx].endEvent);
       const dateCheck = new Date();
+
       return dateCheck >= from && dateCheck <= to;
     }
 
-    return false;
+    if (event === 'Change Axis Weight') {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   loadSheetsToValidate() {
@@ -321,7 +334,7 @@ export class SheetsPanelComponent implements OnInit {
   }
 
   resetFilters() {
-    this.filters.status = '';
+    this.filters.year = '0';
     this.loadData();
   }
 }

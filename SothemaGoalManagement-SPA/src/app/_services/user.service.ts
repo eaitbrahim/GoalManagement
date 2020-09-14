@@ -131,7 +131,7 @@ export class UserService {
     }
 
     if (filters != null) {
-      params = params.append('status', filters.status);
+      params = params.append('year', filters.year);
     }
 
     return this.http
@@ -158,7 +158,7 @@ export class UserService {
   getMyCollaboratorsSheets(userId: number, filters?) {
     let params = new HttpParams();
     if (filters != null) {
-      params = params.append('status', filters.status);
+      params = params.append('year', filters.year);
     }
 
     return this.http.get<EvaluationFileInstance[]>(

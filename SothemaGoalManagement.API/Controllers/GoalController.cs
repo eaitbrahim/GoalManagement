@@ -301,24 +301,19 @@ namespace SothemaGoalManagement.API.Controllers
             try
             {
                 if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)) return Unauthorized();
-                // Get main data
-                var goalIds = new List<int>();
-                foreach (var goalToUpdateDto in goalsToUpdateDto)
-                {
-                    goalIds.Add(goalToUpdateDto.Id);
-                }
 
                 var goalsStatus = "";
-                var emailContent = "";
-                var sheetTitle = "";
-                var sheetOwnerId = 0;
                 foreach (var goalToUpdateDto in goalsToUpdateDto)
                 {
                     goalsStatus = goalToUpdateDto.Status;
-                    emailContent = goalToUpdateDto.EmailContent;
-                    sheetTitle = goalToUpdateDto.SheetTitle;
-                    sheetOwnerId = goalToUpdateDto.SheetOwnerId;
                     break;
+                }
+
+                // Case of rejection
+                if (Constants.DRAFT == goalsStatus)
+                {
+                    await ProcessGolas(goalsToUpdateDto, sheetId, userId);
+                    return NoContent();
                 }
 
                 // Validate the total weights of the objectives within an axis instance
@@ -349,57 +344,7 @@ namespace SothemaGoalManagement.API.Controllers
                     return BadRequest("Vous n'avez pas d'évaluateur pour le moment!");
                 }
 
-                // Set Status of goals
-                var goalsFromRepo = await _repo.Goal.GetGoalsByIds(goalIds);
-                if (goalsFromRepo != null)
-                {
-                    foreach (var goal in goalsFromRepo)
-                    {
-                        goal.Status = goalsStatus;
-                        _repo.Goal.UpdateGoal(goal);
-                    }
-                    await _repo.Goal.SaveAllAsync();
-
-                    // Set status of sheet
-                    var sheetFromRepo = await _repo.EvaluationFileInstance.GetEvaluationFileInstance(sheetId);
-                    if (goalsStatus == Constants.PUBLISHED && sheetFromRepo != null)
-                    {
-                        sheetFromRepo.Status = Constants.REVIEW;
-                        _repo.EvaluationFileInstance.UpdateEvaluationFileInstance(sheetFromRepo);
-                        await _repo.EvaluationFileInstance.SaveAllAsync();
-                    }
-
-                    // Log objectifs have been submitted for validation
-                    var efilList = new List<EvaluationFileInstanceLog>(){new EvaluationFileInstanceLog
-                    {
-                        Title = sheetTitle,
-                        Created = DateTime.Now,
-                        Log = $"Les objectifs de la fiche: '{sheetTitle}' ont été mis au statut {goalsStatus}."
-                    }};
-
-                    if (goalsStatus == Constants.PUBLISHED && sheetFromRepo != null)
-                    {
-                        efilList.Add(new EvaluationFileInstanceLog
-                        {
-                            Title = sheetTitle,
-                            Created = DateTime.Now,
-                            Log = $"Le statut de la fiche: '{sheetTitle}' a été mis au: {sheetFromRepo.Status}."
-                        });
-                    }
-
-                    await LogForSheet(efilList);
-
-                    // Send Notification
-                    if (goalsStatus == Constants.REVIEW)
-                    {
-                        await SendNotificationsForEvaluator(userId, emailContent);
-                    }
-                    else
-                    {
-                        await SendNotificationsForSubordinate(userId, emailContent, new List<int>() { sheetOwnerId });
-                    }
-
-                }
+                await ProcessGolas(goalsToUpdateDto, sheetId, userId);
 
                 return NoContent();
             }
@@ -483,6 +428,81 @@ namespace SothemaGoalManagement.API.Controllers
             }
         }
 
+        private async Task ProcessGolas(IEnumerable<GoalForUpdateDto> goalsToUpdateDto, int sheetId, int userId)
+        {
+            // Get main data
+            var goalIds = new List<int>();
+            foreach (var goalToUpdateDto in goalsToUpdateDto)
+            {
+                goalIds.Add(goalToUpdateDto.Id);
+            }
+
+            var goalsStatus = "";
+            var emailContent = "";
+            var sheetTitle = "";
+            var sheetOwnerId = 0;
+            foreach (var goalToUpdateDto in goalsToUpdateDto)
+            {
+                goalsStatus = goalToUpdateDto.Status;
+                emailContent = goalToUpdateDto.EmailContent;
+                sheetTitle = goalToUpdateDto.SheetTitle;
+                sheetOwnerId = goalToUpdateDto.SheetOwnerId;
+                break;
+            }
+
+            // Set Status of goals
+            var goalsFromRepo = await _repo.Goal.GetGoalsByIds(goalIds);
+            if (goalsFromRepo != null)
+            {
+                foreach (var goal in goalsFromRepo)
+                {
+                    goal.Status = goalsStatus;
+                    _repo.Goal.UpdateGoal(goal);
+                }
+                await _repo.Goal.SaveAllAsync();
+
+                // Set status of sheet
+                var sheetFromRepo = await _repo.EvaluationFileInstance.GetEvaluationFileInstance(sheetId);
+                if (goalsStatus == Constants.PUBLISHED && sheetFromRepo != null)
+                {
+                    sheetFromRepo.Status = Constants.REVIEW;
+                    _repo.EvaluationFileInstance.UpdateEvaluationFileInstance(sheetFromRepo);
+                    await _repo.EvaluationFileInstance.SaveAllAsync();
+                }
+
+                // Log objectifs have been submitted for validation
+                var efilList = new List<EvaluationFileInstanceLog>(){new EvaluationFileInstanceLog
+                    {
+                        Title = sheetTitle,
+                        Created = DateTime.Now,
+                        Log = $"Les objectifs de la fiche: '{sheetTitle}' ont été mis au statut {goalsStatus}."
+                    }};
+
+                if (goalsStatus == Constants.PUBLISHED && sheetFromRepo != null)
+                {
+                    efilList.Add(new EvaluationFileInstanceLog
+                    {
+                        Title = sheetTitle,
+                        Created = DateTime.Now,
+                        Log = $"Le statut de la fiche: '{sheetTitle}' a été mis au: {sheetFromRepo.Status}."
+                    });
+                }
+
+                await LogForSheet(efilList);
+
+                // Send Notification
+                if (goalsStatus == Constants.REVIEW)
+                {
+                    await SendNotificationsForEvaluator(userId, emailContent);
+                }
+                else
+                {
+                    await SendNotificationsForSubordinate(userId, emailContent, new List<int>() { sheetOwnerId });
+                }
+
+            }
+
+        }
         private async Task<List<AxisInstanceWithGoalsToReturnDto>> GetAxisInstancesWithGoals(IEnumerable<int> axisInstanceIds)
         {
             var goalsGroupedByAxisInstanceList = new List<AxisInstanceWithGoalsToReturnDto>();

@@ -46,25 +46,9 @@ namespace SothemaGoalManagement.API.Repositories
         {
             var sheets = FindByCondition(s => s.OwnerId == communParams.OwnerId).Include(s => s.Owner).AsQueryable();
             sheets = sheets.OrderByDescending(d => d.Created);
-
-            switch (communParams.Status)
+            if( communParams.Year != 0)
             {
-                case Constants.PUBLISHED:
-                    sheets = sheets.Where(s => s.Status == Constants.PUBLISHED);
-                    break;
-                case Constants.DRAFT:
-                    sheets = sheets.Where(s => s.Status == Constants.DRAFT && s.OwnerId == communParams.OwnerId);
-                    break;
-                case Constants.REVIEW:
-                    sheets = sheets.Where(s => s.Status == Constants.REVIEW);
-                    break;
-                case Constants.ARCHIVED:
-                    sheets = sheets.Where(s => s.Status == Constants.ARCHIVED);
-                    break;
-                default:
-                    sheets = sheets.Where(s => (s.Status == Constants.DRAFT && s.OwnerId == communParams.OwnerId)
-                    || s.Status == Constants.REVIEW || s.Status == Constants.PUBLISHED || s.Status == Constants.ARCHIVED);
-                    break;
+                sheets = sheets.Where(s => s.Year == communParams.Year);
             }
 
             return await PagedList<EvaluationFileInstance>.CreateAsync(sheets, communParams.PageNumber, communParams.PageSize);
@@ -81,24 +65,9 @@ namespace SothemaGoalManagement.API.Repositories
                                                                 .Where(efi => evaluateeIds.Contains(efi.OwnerId))
                                                                 .AsQueryable();
 
-            switch (communParams.Status)
+            if( communParams.Year != 0)
             {
-                case Constants.PUBLISHED:
-                    sheets = sheets.Where(s => s.Status == Constants.PUBLISHED);
-                    break;
-                case Constants.DRAFT:
-                    sheets = sheets.Where(s => s.Status == Constants.DRAFT);
-                    break;
-                case Constants.REVIEW:
-                    sheets = sheets.Where(s => s.Status == Constants.REVIEW);
-                    break;
-                case Constants.ARCHIVED:
-                    sheets = sheets.Where(s => s.Status == Constants.ARCHIVED);
-                    break;
-                default:
-                    sheets = sheets.Where(s => (s.Status == Constants.DRAFT)
-                    || s.Status == Constants.REVIEW || s.Status == Constants.PUBLISHED || s.Status == Constants.ARCHIVED);
-                    break;
+                sheets = sheets.Where(s => s.Year == communParams.Year);
             }
 
             return await sheets.ToListAsync();

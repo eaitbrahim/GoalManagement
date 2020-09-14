@@ -1,15 +1,13 @@
 <div class="row" *ngIf="sheets?.length > 0">
   <table class="table table-hover  mt-2" style="cursor: pointer">
     <tr>
-      <th style="width: 30%">Titre</th>
+      <th style="width: 55%">Titre</th>
       <th style="width: 10%">Année</th>
-      <th style="width: 25%">Statut</th>
-      <td style="width: 15%">Créé</td>
+      <th style="width: 15%">Créé</th>
     </tr>
     <tr *ngFor="let evaluationFileInsatnce of sheets" [routerLink]="['/sheets/', evaluationFileInsatnce.id]">
       <td>{{ evaluationFileInsatnce.title }}</td>
       <td>{{ evaluationFileInsatnce.year }}</td>
-      <td>{{ evaluationFileInsatnce.status }}</td>
       <td>
         {{ evaluationFileInsatnce.created | date: 'mediumDate' }}
       </td>

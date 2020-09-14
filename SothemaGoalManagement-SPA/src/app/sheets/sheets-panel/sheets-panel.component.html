@@ -5,11 +5,11 @@
     <div class="mb-3">
       <form #form="ngForm" (ngSubmit)="loadData()" class="form-inline" novalidate>
         <div class="form-group">
-          <label for="status" class="mr-2">Statut:</label>
-          <select [(ngModel)]="filters.status" class="form-control" style="width: 150px" id="status" name="status">
-            <option value="">Tous les statut</option>
-            <option *ngFor="let status of statusList" [value]="status">
-              {{ status }}
+          <label for="year" class="mr-2">Année:</label>
+          <select [(ngModel)]="filters.year" class="form-control" style="width: 160px" id="years" name="years">
+            <option value="0">Toutes les Années</option>
+            <option *ngFor="let year of yearList" [value]="year">
+              {{ year }}
             </option>
           </select>
         </div>
