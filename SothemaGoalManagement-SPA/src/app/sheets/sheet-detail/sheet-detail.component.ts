@@ -37,6 +37,7 @@ export class SheetDetailComponent implements OnInit {
   @Input() sheetToValidate: EvaluationFileInstance;
   @Input() tabIndex: number;
   @Input() canDoFinalEvaluation: boolean;
+  @Input() canEvaluate: boolean;
   @Output() switchOffDetailModeEvent = new EventEmitter();
   @Output() behavioralSkillEvaluationUpdatedEvent = new EventEmitter<boolean>();
   sheetDetail: EvaluationFileInstance;
@@ -276,6 +277,14 @@ export class SheetDetailComponent implements OnInit {
   }
 
   CanGoalsBeEvaluated() {
+    if (!this.canEvaluate) {
+      this.areGoalsEvaluable = false;
+      console.log('Can not evaluate goals!');
+      return this.areGoalsEvaluable;
+    } else {
+      this.areGoalsEvaluable = true;
+    }
+
     if (this.goalsByAxisInstanceList.filter((g) => g.goalsStatus === 'Publiée').length === 0) {
       this.areGoalsEvaluable = false;
     } else {
@@ -301,8 +310,10 @@ export class SheetDetailComponent implements OnInit {
     }
 
     if (this.parameters.length > 0) {
-      if (!this.isTodayWithinEventsRange('évaluation')) {
+      if (this.isTodayWithinEventsRange('évaluation')) {
         this.areBehavioralSkillsEvaluable = true;
+      } else {
+        this.areBehavioralSkillsEvaluable = false;
       }
     }
 
@@ -517,6 +528,7 @@ export class SheetDetailComponent implements OnInit {
     const eventRange = this.parameters.filter((p) => p.event.includes(event));
 
     if (eventRange.length === 0) {
+      console.log(`Event ${event} date is not defined.`);
       return true;
     }
 
@@ -532,8 +544,10 @@ export class SheetDetailComponent implements OnInit {
     }
 
     if (isTodayWithinEventRanges.includes(true)) {
+      console.log(`Event ${event} date is defined and today is within it.`);
       return true;
     }
+    console.log(`Event ${event} date is defined and today is not within it.`);
     return false;
   }
 

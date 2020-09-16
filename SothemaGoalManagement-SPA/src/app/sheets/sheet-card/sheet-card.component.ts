@@ -63,7 +63,7 @@ export class SheetCardComponent implements OnInit {
   }
 
   showSheetDetail(tab: number) {
-    const data = { tab, sheet: this.sheetToValidate, canDoFinalEvaluation: this.canDoFinalEvaluation };
+    const data = { tab, sheet: this.sheetToValidate, canDoFinalEvaluation: this.canDoFinalEvaluation, canEvaluate: this.canEvaluate };
     this.showSheetDetailEvent.emit(data);
   }
 
