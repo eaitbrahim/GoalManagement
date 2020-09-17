@@ -118,9 +118,10 @@ export class SheetsPanelComponent implements OnInit {
 
       const from = new Date(sheetToValidate.parameters[eventDateIdx].startEvent);
       const to = new Date(sheetToValidate.parameters[eventDateIdx].endEvent);
+      to.setDate(to.getDate() + 1);
       const dateCheck = new Date();
 
-      return dateCheck >= from && dateCheck <= to;
+      return dateCheck >= from && dateCheck < to;
     }
 
     if (event === 'Change Axis Weight') {

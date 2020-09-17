@@ -533,10 +533,9 @@ export class SheetDetailComponent implements OnInit {
     }
 
     for (const param of eventRange) {
-      if (
-        new Date(param.startEvent) <= today &&
-        today <= new Date(param.endEvent)
-      ) {
+      const endDate = new Date(param.endEvent);
+      endDate.setDate(endDate.getDate() + 1);
+      if (new Date(param.startEvent) <= today && today < endDate) {
         isTodayWithinEventRanges.push(true);
       } else {
         isTodayWithinEventRanges.push(false);
