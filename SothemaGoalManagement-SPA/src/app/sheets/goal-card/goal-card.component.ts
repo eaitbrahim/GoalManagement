@@ -39,6 +39,7 @@ export class GoalCardComponent implements OnInit {
 
   ngOnInit() {
     this.isCollapsed = true;
+    console.log('areGoalsReadOnly in goal card:', this.areGoalsReadOnly);
   }
 
   editGoalModal(goal: Goal) {

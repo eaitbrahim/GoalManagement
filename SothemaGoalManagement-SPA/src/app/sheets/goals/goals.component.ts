@@ -35,6 +35,7 @@ export class GoalsComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log('areGoalsReadOnly in goals:', this.areGoalsReadOnly);
   }
 
   handleCreateGoal(newGoal: any) {
