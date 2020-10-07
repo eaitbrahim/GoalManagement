@@ -18,9 +18,21 @@ namespace SothemaGoalManagement.API.Repositories
         public async Task<IEnumerable<EvaluationFileInstance>> GetEvaluationFileInstancesByEvaluationFileId(int evaluationFileId)
         {
             return await RepositoryContext.EvaluationFileInstances.Include(efi => efi.AxisInstances)
-                                                        .Include(efi => efi.Owner).Include(efi => efi.Owner)
-                                                        .ThenInclude(u => u.Department).ThenInclude(d => d.Pole)
-                                                        .Where(efi => efi.EvaluationFileId == evaluationFileId).ToListAsync();
+                                                        .Include(efi => efi.Owner)
+                                                        .ThenInclude(u => u.Department)
+                                                        .ThenInclude(d => d.Pole)
+                                                        .Where(efi => efi.EvaluationFileId == evaluationFileId).
+                                                        ToListAsync();
+        }
+
+        public async Task<IEnumerable<EvaluationFileInstance>> GetEvaluationFileInstances()
+        {
+            return await RepositoryContext.EvaluationFileInstances.Include(efi => efi.AxisInstances)
+                                                        .ThenInclude(ai => ai.Goals)
+                                                        .Include(efi => efi.Owner)
+                                                        .ThenInclude(u => u.Department)
+                                                        .ThenInclude(d => d.Pole)
+                                                        .ToListAsync();
         }
 
         public async Task<IEnumerable<User>> GetUsersWithInstanceFileEvaluation(int evaluationFileId, IEnumerable<int> userIds)

@@ -121,6 +121,24 @@ namespace SothemaGoalManagement.API.Helpers
                 opt.MapFrom(src => src.EvaluationFile.Parameters);
             });
 
+            CreateMap<EvaluationFileInstance, EvaluationSheetToReturnDto>().ForMember(dest => dest.PoleName, opt =>
+            {
+                opt.ResolveUsing(u => u.AxisInstances.First().PoleName);
+            }).ForMember(dest => dest.Email, opt =>
+            {
+                opt.ResolveUsing(u => u.Owner.Email);
+            }).ForMember(dest => dest.GoalsStatus, opt =>
+            {
+                opt.ResolveUsing(u => {
+                    var firstAxisInstance = u.AxisInstances.FirstOrDefault();
+                    var firstGoal = firstAxisInstance.Goals.FirstOrDefault();
+                    return firstGoal != null ? firstGoal.Status : null;
+                });
+            }).ForMember(dest => dest.EvaluationDateTime, opt =>
+            {
+                opt.ResolveUsing(u => u.);
+            });
+
             CreateMap<GoalType, GoalTypeToReturnDto>();
             CreateMap<Project, ProjectToReturnDto>();
 

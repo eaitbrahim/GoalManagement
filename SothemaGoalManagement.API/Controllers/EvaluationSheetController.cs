@@ -46,6 +46,23 @@ namespace SothemaGoalManagement.API.Controllers
             }
         }
 
+        [HttpGet()]
+        public async Task<IActionResult> GetEvaluationSheetList()
+        {
+            try
+            {
+                var evaluationFilesInstanceFromRepo = await _repo.EvaluationFileInstance.GetEvaluationFileInstances();
+                var evaluationSheetsToReturn = _mapper.Map<IEnumerable<EvaluationSheetToReturnDto>>(evaluationFilesInstanceFromRepo);
+
+                return Ok(evaluationSheetsToReturn);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong inside GetEvaluationSheetList endpoint: {ex.Message}");
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
         [HttpGet("logs")]
         public async Task<IActionResult> GetEvaluationSheetlogs([FromQuery]string sheetTitle)
         {
