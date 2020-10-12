@@ -2,6 +2,27 @@
   <ngx-loading [show]="loading"></ngx-loading>
 
   <div class="tab-panel">
+    <div class="mb-3">
+      <form #form="ngForm" (ngSubmit)="loadData()" class="form-inline" novalidate>
+        <div class="form-group">
+          <label for="year" class="mr-2">Année:</label>
+          <select [(ngModel)]="filters.year" class="form-control" style="width: 160px" id="years" name="years">
+            <option value="0">Toutes les Années</option>
+            <option *ngFor="let year of yearList" [value]="year">
+              {{ year }}
+            </option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="margin-left:10px">
+          Appliquer Filtre
+        </button>
+        <button type="button" class="btn btn-info" style="margin-left:10px" (click)="resetFilters()">
+          Réinitialiser Filtre
+        </button>
+      </form>
+    </div>
+    
     <tabset class="member-tabset mt-2" #tabset>
       <tab heading="Fiches d'évaluation">
         <div class="container">

@@ -14,7 +14,6 @@ export class ReportsSheetsComponent implements OnInit {
   @Output() pageChangedEvent = new EventEmitter<any>();
 
   constructor() {
-    console.log('sheets:', this.sheets);
   }
 
   ngOnInit() {

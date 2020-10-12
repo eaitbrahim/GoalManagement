@@ -10,26 +10,36 @@ import { AlertifyService } from './../../_services/alertify.service';
 @Component({
   selector: 'app-reports-panel',
   templateUrl: './reports-panel.component.html',
-  styleUrls: ['./reports-panel.component.css']
+  styleUrls: ['./reports-panel.component.css'],
 })
 export class ReportsPanelComponent implements OnInit {
-
   @ViewChild('tabset') tabset: TabsetComponent;
   pagination: Pagination;
   tabIndex = 0;
   public loading = false;
   sheets: ReportSheet[];
+  filters: any = {};
+  yearList: number[] = [];
 
-  constructor(private route: ActivatedRoute, private hrService: HrService, private alertify: AlertifyService) { }
-
+  constructor(
+    private route: ActivatedRoute,
+    private hrService: HrService,
+    private alertify: AlertifyService
+  ) {}
 
   ngOnInit() {
+    this.filters.year = '0';
     this.route.data.subscribe((data) => {
       const resolvedData = data['resolvedData'];
       this.sheets = resolvedData['sheets'].result;
       // this.notes = resolvedData['notes'].result;
       this.pagination = resolvedData['sheets'].pagination;
-      console.log('sheets in panel:', this.sheets);
+
+      for (const sheet of this.sheets) {
+        if (!this.yearList.includes(sheet.year)) {
+          this.yearList.push(sheet.year);
+        }
+      }
     });
   }
 
@@ -43,7 +53,8 @@ export class ReportsPanelComponent implements OnInit {
     this.hrService
       .getReportSheets(
         this.pagination.currentPage,
-        this.pagination.itemsPerPage
+        this.pagination.itemsPerPage,
+        this.filters
       )
       .subscribe(
         (res: PaginatedResult<ReportSheet[]>) => {
@@ -56,5 +67,15 @@ export class ReportsPanelComponent implements OnInit {
           this.alertify.error(error);
         }
       );
+  }
+
+  loadData() {
+    this.loadSheets();
+    // this.loadSheetsToValidate();
+  }
+
+  resetFilters() {
+    this.filters.year = '0';
+    this.loadData();
   }
 }

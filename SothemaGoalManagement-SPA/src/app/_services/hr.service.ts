@@ -209,7 +209,8 @@ export class HrService {
 
   getReportSheets(
     page?,
-    itemsPerPage?
+    itemsPerPage?,
+    filters?
   ): Observable<PaginatedResult<ReportSheet[]>> {
     const paginatedResult: PaginatedResult<ReportSheet[]> = new PaginatedResult<
     ReportSheet[]
@@ -218,6 +219,10 @@ export class HrService {
     if (page != null && itemsPerPage != null) {
       params = params.append('pageNumber', page);
       params = params.append('pageSize', itemsPerPage);
+    }
+
+    if (filters != null) {
+      params = params.append('year', filters.year);
     }
 
     return this.http

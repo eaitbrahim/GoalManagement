@@ -33,7 +33,12 @@ namespace SothemaGoalManagement.API.Repositories
                                                         .ThenInclude(u => u.Department)
                                                         .ThenInclude(d => d.Pole)
                                                         .AsQueryable();
-                                                        
+            
+            if( communParams.Year != 0)
+            {
+                sheets = sheets.Where(s => s.Year == communParams.Year);
+            }
+
             return await PagedList<EvaluationFileInstance>.CreateAsync(sheets, communParams.PageNumber, communParams.PageSize);
         }
 
