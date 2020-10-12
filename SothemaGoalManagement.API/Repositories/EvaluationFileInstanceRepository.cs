@@ -25,14 +25,16 @@ namespace SothemaGoalManagement.API.Repositories
                                                         ToListAsync();
         }
 
-        public async Task<IEnumerable<EvaluationFileInstance>> GetEvaluationFileInstances()
+        public async Task<PagedList<EvaluationFileInstance>> GetEvaluationFileInstances(CommunParams communParams)
         {
-            return await RepositoryContext.EvaluationFileInstances.Include(efi => efi.AxisInstances)
+            var sheets = RepositoryContext.EvaluationFileInstances.Include(efi => efi.AxisInstances)
                                                         .ThenInclude(ai => ai.Goals)
                                                         .Include(efi => efi.Owner)
                                                         .ThenInclude(u => u.Department)
                                                         .ThenInclude(d => d.Pole)
-                                                        .ToListAsync();
+                                                        .AsQueryable();
+                                                        
+            return await PagedList<EvaluationFileInstance>.CreateAsync(sheets, communParams.PageNumber, communParams.PageSize);
         }
 
         public async Task<IEnumerable<User>> GetUsersWithInstanceFileEvaluation(int evaluationFileId, IEnumerable<int> userIds)

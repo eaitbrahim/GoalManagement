@@ -134,9 +134,6 @@ namespace SothemaGoalManagement.API.Helpers
                     var firstGoal = firstAxisInstance.Goals.FirstOrDefault();
                     return firstGoal != null ? firstGoal.Status : null;
                 });
-            }).ForMember(dest => dest.EvaluationDateTime, opt =>
-            {
-                opt.ResolveUsing(u => u.);
             });
 
             CreateMap<GoalType, GoalTypeToReturnDto>();

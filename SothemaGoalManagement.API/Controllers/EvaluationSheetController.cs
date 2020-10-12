@@ -46,13 +46,16 @@ namespace SothemaGoalManagement.API.Controllers
             }
         }
 
+        [Authorize(Policy = "RequireHRHRDRoles")]
         [HttpGet()]
-        public async Task<IActionResult> GetEvaluationSheetList()
+        public async Task<IActionResult> GetEvaluationSheetList([FromQuery] CommunParams communParams)
         {
             try
             {
-                var evaluationFilesInstanceFromRepo = await _repo.EvaluationFileInstance.GetEvaluationFileInstances();
-                var evaluationSheetsToReturn = _mapper.Map<IEnumerable<EvaluationSheetToReturnDto>>(evaluationFilesInstanceFromRepo);
+                var sheetsFromRepo = await _repo.EvaluationFileInstance.GetEvaluationFileInstances(communParams);
+                var evaluationSheetsToReturn = _mapper.Map<IEnumerable<EvaluationSheetToReturnDto>>(sheetsFromRepo);
+
+                Response.AddPagination(sheetsFromRepo.CurrentPage, sheetsFromRepo.PageSize, sheetsFromRepo.TotalCount, sheetsFromRepo.TotalPages);
 
                 return Ok(evaluationSheetsToReturn);
             }
@@ -64,7 +67,7 @@ namespace SothemaGoalManagement.API.Controllers
         }
 
         [HttpGet("logs")]
-        public async Task<IActionResult> GetEvaluationSheetlogs([FromQuery]string sheetTitle)
+        public async Task<IActionResult> GetEvaluationSheetlogs([FromQuery] string sheetTitle)
         {
             try
             {

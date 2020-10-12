@@ -24,7 +24,7 @@ export class NavComponent implements OnInit {
 
 
   constructor(
-    private authService: AuthService,
+    public authService: AuthService,
     private alertify: AlertifyService,
     private router: Router,
     private userService: UserService,

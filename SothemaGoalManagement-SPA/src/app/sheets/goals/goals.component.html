@@ -1,6 +1,6 @@
 <div class="container mt-2">
   <div class="card border-primary">
-    <div class="card-header " *ngIf="areGoalsReadOnly">
+    <div class="card-header " *ngIf="!areGoalsReadOnly">
       <div class="row">
         <div class="col-md-7 text-primary">
           <h4>
@@ -20,7 +20,7 @@
         </div>
         <div class="col-md-3">
           <div class="float-left">
-            <button class="btn btn-primary w-70 mr-1" [disabled]="!areGoalsCompleted" (click)="validateGoals()" *ngIf="areGoalsReadOnly">
+            <button class="btn btn-primary w-70 mr-1" [disabled]="!areGoalsCompleted" (click)="validateGoals()">
               <fa-icon [icon]="faCheck"></fa-icon> Demander l'approbation
             </button>
           </div>

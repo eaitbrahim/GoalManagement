@@ -18,6 +18,10 @@
           <a class="nav-link" [routerLink]="['/sheets']">Fiches d'évaluation</a>
         </li>
 
+        <li class="nav-item" routerLinkActive="active" *appHasRole="['HR', 'HRD']">
+          <a class="nav-link" [routerLink]="['/reports']">Etats</a>
+        </li>
+
         <li class="nav-item" routerLinkActive="active">
           <a class="nav-link" [routerLink]="['/messages']">
             Messages

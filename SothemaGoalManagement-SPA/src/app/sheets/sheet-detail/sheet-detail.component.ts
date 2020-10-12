@@ -141,7 +141,7 @@ export class SheetDetailComponent implements OnInit {
       (g) => g.goalsStatus === 'Pas encore créé' || g.goalsStatus === 'Rédaction'
     );
 
-    if (goalsInInitialStatus.length === 0) {
+    if (goalsInInitialStatus.length !== 0) {
       this.areGoalsReadOnly = true;
       console.log(
         '(goalsInInitialStatus) areGoalsReadOnly:',

@@ -14,6 +14,7 @@ import { EvaluationFile } from '../_models/evaluationFile';
 import { EvaluationFileInstance } from '../_models/evaluationFileInstance';
 import { EvaluationFileInstanceLog } from '../_models/evaluationFileInstanceLog';
 import { Parameters } from '../_models/parameters';
+import { ReportSheet } from '../_models/reportSheet';
 
 @Injectable({
   providedIn: 'root'
@@ -204,5 +205,33 @@ export class HrService {
 
   deleteEvaluationFileInstance(id: number, userId: number) {
     return this.http.delete(`${this.baseUrl}hr/evaluationSheet/${id}/delete/${userId}`);
+  }
+
+  getReportSheets(
+    page?,
+    itemsPerPage?
+  ): Observable<PaginatedResult<ReportSheet[]>> {
+    const paginatedResult: PaginatedResult<ReportSheet[]> = new PaginatedResult<
+    ReportSheet[]
+      >();
+    let params = new HttpParams();
+    if (page != null && itemsPerPage != null) {
+      params = params.append('pageNumber', page);
+      params = params.append('pageSize', itemsPerPage);
+    }
+
+    return this.http
+      .get<ReportSheet[]>(this.baseUrl + 'hr/EvaluationSheet', { observe: 'response', params })
+      .pipe(
+        map(response => {
+          paginatedResult.result = response.body;
+          if (response.headers.get('Pagination') != null) {
+            paginatedResult.pagination = JSON.parse(
+              response.headers.get('Pagination')
+            );
+          }
+          return paginatedResult;
+        })
+      );
   }
 }

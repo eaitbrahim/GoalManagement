@@ -112,6 +112,9 @@ import { EvaluationHrParametersComponent } from './hr/evaluations/evaluation-hr-
 import { SheetMetaDataComponent } from './sheets/sheet-meta-data/sheet-meta-data.component';
 import { FinalValidationComponent } from './sheets/final-validation/final-validation.component';
 import { TruncateTextPipe } from './_pipes/truncate-text.pipe';
+import { ReportsSheetsComponent } from './reports/reports-sheets/reports-sheets.component';
+import { ReportsPanelComponent } from './reports/reports-panel/reports-panel.component';
+import { ReportSheetsResolver } from './_resolvers/report-sheets.resolver';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -190,7 +193,9 @@ export function tokenGetter() {
     CascadeMyGoalsModalComponent,
     BehavioralSkillListEvaluationComponent,
     FinalValidationComponent,
-    TruncateTextPipe
+    TruncateTextPipe,
+    ReportsPanelComponent,
+    ReportsSheetsComponent
   ],
   imports: [
     BrowserModule,
@@ -241,7 +246,8 @@ export function tokenGetter() {
     HrService,
     LayoutService,
     SheetsResolver,
-    SheetDetailResolver
+    SheetDetailResolver,
+    ReportSheetsResolver
   ],
   entryComponents: [
     RolesModalComponent,

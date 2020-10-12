@@ -26,7 +26,7 @@
       <tab heading="Mes fiches d'évaluation">
         <div class="container">
           <div class="alert alert-info mt-3" role="info" *ngIf="sheets && sheets.length === 0">
-            <p>Aucune fiche d'évaluation n'est disponible pour le statut sélectionné...</p>
+            <p>Aucune fiche d'évaluation n'est disponible...</p>
           </div>
           <app-my-sheets-list [sheets]="sheets" [pagination]="pagination"></app-my-sheets-list>
         </div>
