@@ -29,6 +29,7 @@ namespace SothemaGoalManagement.API.Repositories
         {
             var sheets = RepositoryContext.EvaluationFileInstances.Include(efi => efi.AxisInstances)
                                                         .ThenInclude(ai => ai.Goals)
+                                                        .ThenInclude(g => g.GoalEvaluations)
                                                         .Include(efi => efi.Owner)
                                                         .ThenInclude(u => u.Department)
                                                         .ThenInclude(d => d.Pole)

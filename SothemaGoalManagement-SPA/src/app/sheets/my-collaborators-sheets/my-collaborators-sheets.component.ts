@@ -27,7 +27,8 @@ export class MyCollaboratorsSheetsComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   handleUpdateUserWeight(data: any) {
     this.updateUserWeightEvent.emit(data);

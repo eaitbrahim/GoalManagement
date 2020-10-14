@@ -59,7 +59,26 @@ namespace SothemaGoalManagement.API.Controllers
 
                 return Ok(evaluationSheetsToReturn);
             }
-            catch (Exception ex)
+            catch (Exception ex) 
+            {
+                _logger.LogError($"Something went wrong inside GetEvaluationSheetList endpoint: {ex.Message}");
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
+        [HttpGet("{getGrades}")]
+        public async Task<IActionResult> GetGrades([FromQuery] CommunParams communParams)
+        {
+            try
+            {
+                var sheetsFromRepo = await _repo.EvaluationFileInstance.GetEvaluationFileInstances(communParams);
+                var evaluationSheetsToReturn = _mapper.Map<IEnumerable<EvaluationSheetToReturnDto>>(sheetsFromRepo);
+
+                Response.AddPagination(sheetsFromRepo.CurrentPage, sheetsFromRepo.PageSize, sheetsFromRepo.TotalCount, sheetsFromRepo.TotalPages);
+
+                return Ok(evaluationSheetsToReturn);
+            }
+            catch (Exception ex) 
             {
                 _logger.LogError($"Something went wrong inside GetEvaluationSheetList endpoint: {ex.Message}");
                 return StatusCode(500, "Internal server error: " + ex.Message);

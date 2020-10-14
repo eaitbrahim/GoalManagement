@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using AutoMapper;
 using SothemaGoalManagement.API.Dtos;
@@ -129,10 +130,25 @@ namespace SothemaGoalManagement.API.Helpers
                 opt.ResolveUsing(u => u.Owner.Email);
             }).ForMember(dest => dest.GoalsStatus, opt =>
             {
-                opt.ResolveUsing(u => {
+                opt.ResolveUsing(u =>
+                {
                     var firstAxisInstance = u.AxisInstances.FirstOrDefault();
                     var firstGoal = firstAxisInstance.Goals.FirstOrDefault();
                     return firstGoal != null ? firstGoal.Status : null;
+                });
+            }).ForMember(dest => dest.ValidatorValidationDateTime, opt =>
+            {
+                opt.ResolveUsing(src =>
+                {
+                    var firstAxisInstance = src.AxisInstances.FirstOrDefault();
+                    var firstGoal = firstAxisInstance.Goals.FirstOrDefault();
+                    DateTime? latestGoalEvalDateTime = DateTime.MinValue;
+                    if (firstGoal != null)
+                    {
+                        var latestGoalEval = firstGoal.GoalEvaluations.LastOrDefault();
+                        if (latestGoalEval != null) latestGoalEvalDateTime = latestGoalEval.Created;
+                    }
+                    return latestGoalEvalDateTime;
                 });
             });
 

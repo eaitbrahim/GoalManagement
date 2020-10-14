@@ -57,7 +57,6 @@ export class SheetDetailComponent implements OnInit {
   evaluators: Evaluator[] = [];
   parameters: Parameters[] = [];
   validatorFullName: string;
-  isFinalValidationActive = false;
   toggleChangeAxisWeight: boolean;
 
   constructor(
@@ -171,13 +170,11 @@ export class SheetDetailComponent implements OnInit {
     }
 
     if (this.parameters.length > 0) {
-      if (!this.isTodayWithinEventsRange('objectifs')) {
-        this.areGoalsReadOnly = true;
+        this.areGoalsReadOnly = this.checkEvents(`Plage de dates de validation des objectifs`);
         console.log(
           '(Validation date) areGoalsReadOnly:',
           this.areGoalsReadOnly
         );
-      }
     }
 
     if (this.authService.roleMatch(['HRD'])) {
@@ -263,9 +260,7 @@ export class SheetDetailComponent implements OnInit {
     }
 
     if (this.parameters.length > 0) {
-      if (!this.isTodayWithinEventsRange('évaluation')) {
-        this.areGoalsCompleted = true;
-      }
+        this.areGoalsCompleted = this.checkEvents(`Plage de dates d'évaluation`);
     }
 
     if (this.sheetDetail.status === 'Publiée') {
@@ -310,11 +305,7 @@ export class SheetDetailComponent implements OnInit {
     }
 
     if (this.parameters.length > 0) {
-      if (this.isTodayWithinEventsRange('évaluation')) {
-        this.areBehavioralSkillsEvaluable = true;
-      } else {
-        this.areBehavioralSkillsEvaluable = false;
-      }
+        this.areBehavioralSkillsEvaluable = this.checkEvents(`Plage de dates d'évaluation`);
     }
 
     if (this.sheetDetail.status === 'Publiée') {
@@ -501,17 +492,13 @@ export class SheetDetailComponent implements OnInit {
         this.loading = false;
         this.parameters = result;
         if (this.parameters.length > 0) {
-          if (this.isTodayWithinEventsRange('finale')){
-            this.isFinalValidationActive = true;
-          }
-          const changeAxisWeightIdx = this.parameters.findIndex((p) =>
-            p.event.includes('Change Axis Weight')
-          );
-          if (changeAxisWeightIdx > -1) {
-            this.toggleChangeAxisWeight = this.parameters[
-              changeAxisWeightIdx
-            ].toggleChangeAxisWeight;
-          }
+          this.toggleChangeAxisWeight = this.checkEvents('Change Axis Weight');
+          // Check user can evaluate goals
+            this.canEvaluate = this.checkEvents(`Plage de dates d'évaluation`);
+
+          // Check user can do final evaluation
+          this.canDoFinalEvaluation = this.checkEvents(`Plage de dates de validation finale de la fiche`);
+          console.log('this.canDoFinalEvaluation:', this.canDoFinalEvaluation);
         }
       },
       (error) => {
@@ -522,32 +509,27 @@ export class SheetDetailComponent implements OnInit {
     );
   }
 
-  isTodayWithinEventsRange(event: string) {
-    const today = new Date();
-    const isTodayWithinEventRanges = [];
-    const eventRange = this.parameters.filter((p) => p.event.includes(event));
+  checkEvents(event) {
+    const eventDateIdx = this.parameters.findIndex((p) => p.event.includes(event));
 
-    if (eventRange.length === 0) {
-      console.log(`Event ${event} date is not defined.`);
-      return true;
-    }
-
-    for (const param of eventRange) {
-      const endDate = new Date(param.endEvent);
-      endDate.setDate(endDate.getDate() + 1);
-      if (new Date(param.startEvent) <= today && today < endDate) {
-        isTodayWithinEventRanges.push(true);
-      } else {
-        isTodayWithinEventRanges.push(false);
+    if (eventDateIdx > -1) {
+      if (event === 'Change Axis Weight') {
+        return this.parameters[eventDateIdx].toggleChangeAxisWeight;
       }
+
+      const from = new Date(this.parameters[eventDateIdx].startEvent);
+      const to = new Date(this.parameters[eventDateIdx].endEvent);
+      to.setDate(to.getDate() + 1);
+      const dateCheck = new Date();
+
+      return dateCheck >= from && dateCheck < to;
     }
 
-    if (isTodayWithinEventRanges.includes(true)) {
-      console.log(`Event ${event} date is defined and today is within it.`);
+    if (event === 'Change Axis Weight') {
+      return false;
+    } else {
       return true;
     }
-    console.log(`Event ${event} date is defined and today is not within it.`);
-    return false;
   }
 
   handleAddFinalEvaluation(comment: string) {
