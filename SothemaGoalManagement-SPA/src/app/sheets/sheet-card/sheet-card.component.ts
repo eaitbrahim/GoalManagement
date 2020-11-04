@@ -23,6 +23,7 @@ export class SheetCardComponent implements OnInit {
   @Input() canValidate: boolean;
   @Input() canEvaluate: boolean;
   @Input() canDoFinalEvaluation: boolean;
+  @Input() refreshWeight: boolean;
   @Output() updateUserWeightEvent = new EventEmitter<any>();
   @Output() loadGoalsEvent = new EventEmitter<any>();
   @Output() showSheetDetailEvent = new EventEmitter<any>();
@@ -41,6 +42,10 @@ export class SheetCardComponent implements OnInit {
 
   ngOnInit() {
     this.axisInstanceList = this.sheetToValidate.axisInstances;
+    console.log('this.refreshWeight=', this.refreshWeight);
+    if (this.refreshWeight) {
+      this.tallyUserWeights();
+    }
   }
 
   handleUpdateUserWeight(data) {

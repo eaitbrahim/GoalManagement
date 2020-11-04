@@ -20,7 +20,6 @@ import { AdminService } from '../../_services/admin.service';
 import { AuthService } from '../../_services/auth.service';
 import { AlertifyService } from '../../_services/alertify.service';
 import { GoalByAxisInstance } from '../../_models/goalsByAxisInstance';
-import { GoalEvaluation } from '../../_models/goalEvaluation';
 import { BehavioralSkillInstance } from '../../_models/behavioralSkillInstance';
 import { Project } from '../../_models/project';
 import { Evaluator } from '../../_models/evaluator';

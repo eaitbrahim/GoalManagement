@@ -41,6 +41,7 @@ export class SheetsPanelComponent implements OnInit {
   canValidate = true;
   canEvaluate = true;
   canDoFinalEvaluation = true;
+  refreshWeight = false;
 
   public behavioralSkillEvaluationUpdated: boolean;
 
@@ -239,6 +240,7 @@ export class SheetsPanelComponent implements OnInit {
           );
 
           this.sheetToValidate = sheetToValidate;
+          this.refreshWeight = true;
         },
         (error) => {
           this.loading = false;

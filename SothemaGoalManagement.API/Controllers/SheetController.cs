@@ -111,6 +111,11 @@ namespace SothemaGoalManagement.API.Controllers
                     // Validate goal's status
                     IList<int> axisInstanceIds = new List<int>() { axisInstanceId };
                     List<Goal> goals = (List<Goal>)await _repo.Goal.GetGoalsByAxisInstanceIds(axisInstanceIds);
+                    if(goals == null || goals.Count == 0)
+                    {
+                        return BadRequest("Pas d'objectif défini pour cet axe!");
+                    }
+                    
                     if (goals.First().Status == Constants.PUBLISHED)
                     {
                         return BadRequest("Trop tard! Les objectifs sont déjà validés.");
