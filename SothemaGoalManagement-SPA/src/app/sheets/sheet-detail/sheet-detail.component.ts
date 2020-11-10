@@ -46,7 +46,7 @@ export class SheetDetailComponent implements OnInit {
   projectList: Project[];
   public loading = false;
   areGoalsCompleted: boolean;
-  areGoalsReadOnly: boolean;
+  areGoalsReadOnly = true;
   areGoalsEvaluable: boolean;
   areBehavioralSkillsEvaluable: boolean;
   totalGrade: string;
@@ -140,7 +140,6 @@ export class SheetDetailComponent implements OnInit {
     );
 
     if (goalsInInitialStatus.length !== 0) {
-      this.areGoalsReadOnly = true;
       console.log(
         '(goalsInInitialStatus) areGoalsReadOnly:',
         this.areGoalsReadOnly

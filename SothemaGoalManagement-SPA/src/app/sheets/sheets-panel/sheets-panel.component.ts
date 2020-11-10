@@ -223,14 +223,18 @@ export class SheetsPanelComponent implements OnInit {
           this.alertify.success(
             `La pondération de l'employée est modifié avec succès.`
           );
+          this.refreshWeight = true;
+          console.log('refreshWeight:', this.refreshWeight);
           let sheetToValidate: EvaluationFileInstance;
           let found = false;
+
           this.sheetsToValidate.every((sheet) =>
             sheet.axisInstances.every((ai) => {
               if (ai.id === axisInstance.id) {
                 ai.userWeight = axisInstance.userWeight;
                 sheetToValidate = sheet;
                 found = true;
+
                 return false;
               }
               if (found) {
@@ -240,7 +244,6 @@ export class SheetsPanelComponent implements OnInit {
           );
 
           this.sheetToValidate = sheetToValidate;
-          this.refreshWeight = true;
         },
         (error) => {
           this.loading = false;
