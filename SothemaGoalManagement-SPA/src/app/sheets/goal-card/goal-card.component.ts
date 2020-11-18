@@ -17,7 +17,7 @@ import { Project } from '../../_models/project';
 })
 export class GoalCardComponent implements OnInit {
   @Input() goalsByAxisInstance: GoalByAxisInstance;
-  @Input() areGoalsReadOnly: boolean;
+  @Input() golasActions: boolean;
   @Input() sheetId: number;
   @Input() axisInstances: AxisInstance[];
   @Input() goalTypeList: GoalType[];
@@ -39,7 +39,7 @@ export class GoalCardComponent implements OnInit {
 
   ngOnInit() {
     this.isCollapsed = true;
-    console.log('areGoalsReadOnly in goal card:', this.areGoalsReadOnly);
+    console.log('golasActions in goal card:', this.golasActions);
   }
 
   editGoalModal(goal: Goal) {

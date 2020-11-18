@@ -21,7 +21,7 @@
       <tabset class="member-tabset" #sheetTabs>
         <tab heading="Définition des objectifs">
           <div *ngIf="goalsByAxisInstanceList">
-            <app-goals [sheetStatus]="sheetDetail.status" [sheetId]="sheetDetail.id" [areGoalsCompleted]="areGoalsCompleted" [areGoalsReadOnly]="areGoalsReadOnly"
+            <app-goals [sheetStatus]="sheetDetail.status" [sheetId]="sheetDetail.id" [areGoalsCompleted]="areGoalsCompleted" [approbationAction]="approbationAction" [golasActions]="golasActions"
               [goalsByAxisInstanceList]="goalsByAxisInstanceList" [axisInstances]="sheetDetail.axisInstances" [goalTypeList]="goalTypeList"
               [projectList]="projectList" (createGoalEvent)="handleCreateGoal($event)" (editGoalEvent)="handleEditGoal($event)"
               (deleteGoalEvent)="handleDeleteGoal($event)" (validateGoalsEvent)="handleValidateGoals($event)" (cascadeMyGoalEvent)="handleCascadeMyGoal($event)"></app-goals>

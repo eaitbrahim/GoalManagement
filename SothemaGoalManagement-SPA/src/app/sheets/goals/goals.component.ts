@@ -14,7 +14,8 @@ import { Project } from '../../_models/project';
 })
 export class GoalsComponent implements OnInit {
   @Input() axisInstances: AxisInstance[];
-  @Input() areGoalsReadOnly: boolean;
+  @Input() golasActions: boolean;
+  @Input() approbationAction: boolean;
   @Input() sheetId: number;
   @Input() areGoalsCompleted: boolean;
   @Input() goalsByAxisInstanceList: GoalByAxisInstance[];
@@ -35,7 +36,11 @@ export class GoalsComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log('areGoalsReadOnly in goals:', this.areGoalsReadOnly);
+    console.log('golasActions in goals On Init:', this.golasActions);
+  }
+
+  ngOnChanges() {
+    console.log('golasActions in goals On Changes:', this.golasActions);
   }
 
   handleCreateGoal(newGoal: any) {

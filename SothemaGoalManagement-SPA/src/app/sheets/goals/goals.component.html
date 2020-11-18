@@ -1,13 +1,13 @@
 <div class="container mt-2">
   <div class="card border-primary">
-    <div class="card-header " *ngIf="!areGoalsReadOnly">
+    <div class="card-header ">
       <div class="row">
         <div class="col-md-7 text-primary">
           <h4>
             <fa-icon [icon]="faList"></fa-icon> LISTE DES OBJECTIFS</h4>
         </div>
         <div class="col-md-2">
-          <div class=" float-right toggle">
+          <div class=" float-right toggle" *ngIf="golasActions">
             <button class="btn btn-outline-primary" *ngIf="!isCollapsed" (click)="isCollapsed = !isCollapsed">
               <fa-icon [icon]="faPlus"></fa-icon>
               Ajouter
@@ -19,7 +19,7 @@
           </div>
         </div>
         <div class="col-md-3">
-          <div class="float-left">
+          <div class="float-left" *ngIf="approbationAction">
             <button class="btn btn-primary w-70 mr-1" [disabled]="!areGoalsCompleted" (click)="validateGoals()">
               <fa-icon [icon]="faCheck"></fa-icon> Demander l'approbation
             </button>
@@ -37,7 +37,7 @@
 
     <div class="card-body">
       <div *ngFor="let goalsByAxisInstance of goalsByAxisInstanceList">
-        <app-goal-card [sheetStatus]="sheetStatus" [sheetId]="sheetId" [areGoalsReadOnly]="areGoalsReadOnly" [axisInstances]="axisInstances"
+        <app-goal-card [sheetStatus]="sheetStatus" [sheetId]="sheetId" [golasActions]="golasActions" [axisInstances]="axisInstances"
           [goalTypeList]="goalTypeList" [projectList]="projectList" [goalsByAxisInstance]="goalsByAxisInstance" (editGoalEvent)="handleEditGoal($event)"
           (deleteGoalEvent)="handleDeleteGoal($event)" (cascadeMyGoalEvent)="handleCascadeMyGoal($event)"></app-goal-card>
       </div>

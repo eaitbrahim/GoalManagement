@@ -46,7 +46,8 @@ export class SheetDetailComponent implements OnInit {
   projectList: Project[];
   public loading = false;
   areGoalsCompleted: boolean;
-  areGoalsReadOnly = true;
+  golasActions = false;
+  approbationAction = false;
   areGoalsEvaluable: boolean;
   areBehavioralSkillsEvaluable: boolean;
   totalGrade: string;
@@ -69,6 +70,10 @@ export class SheetDetailComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    console.log(
+      '(On Init sheet detail) golasActions:',
+      this.golasActions
+    );
     if (this.sheetToValidate) {
       this.sheetDetail = this.sheetToValidate;
       this.sheetTabs.tabs[this.tabIndex].active = true;
@@ -135,57 +140,31 @@ export class SheetDetailComponent implements OnInit {
   }
 
   CheckReadOnly() {
-    const goalsInInitialStatus = this.goalsByAxisInstanceList.filter(
-      (g) => g.goalsStatus === 'Pas encore créé' || g.goalsStatus === 'Rédaction'
-    );
-
-    if (goalsInInitialStatus.length !== 0) {
-      console.log(
-        '(goalsInInitialStatus) areGoalsReadOnly:',
-        this.areGoalsReadOnly
-      );
-    } else {
-      const indx = this.evaluators.findIndex(
-        (e) => e.id === parseInt(this.authService.decodedToken.nameid, 10)
-      );
-
-      if (
-        this.sheetDetail.ownerId != this.authService.decodedToken.nameid &&
-        indx === -1
-      ) {
-        this.areGoalsReadOnly = true;
-        console.log(
-          '(It is not an evaluator) areGoalsReadOnly:',
-          this.areGoalsReadOnly
+    if (this.checkEvents(`Plage de dates de validation des objectifs`)) {
+      if (this.sheetDetail.ownerId === parseInt(this.authService.decodedToken.nameid, 10)) {
+        console.log('Owner');
+        const goalsInInitialStatus = this.goalsByAxisInstanceList.filter(
+          (g) => g.goalsStatus === 'Pas encore créé' || g.goalsStatus === 'Rédaction'
         );
-      } else if (this.evaluators.length === 0) {
-        this.areGoalsReadOnly = true;
-        console.log('(Evaluator) areGoalsReadOnly:', this.areGoalsReadOnly);
-      } else {
-        this.areGoalsReadOnly = false;
-        console.log('areGoalsReadOnly:', this.areGoalsReadOnly);
+
+        if (goalsInInitialStatus.length !== 0) {
+          this.golasActions = true;
+          console.log(
+            '(Initial Status) golasActions:',
+            this.golasActions
+          );
+        }
       }
     }
 
-    if (this.parameters.length > 0) {
-        this.areGoalsReadOnly = this.checkEvents(`Plage de dates de validation des objectifs`);
-        console.log(
-          '(Validation date) areGoalsReadOnly:',
-          this.areGoalsReadOnly
-        );
-    }
-
+    this.approbationAction = this.golasActions;
     if (this.authService.roleMatch(['HRD'])) {
-      this.areGoalsReadOnly = false;
-      console.log('(HRD) areGoalsReadOnly:', this.areGoalsReadOnly);
+      this.golasActions = true;
+      this.approbationAction = false;
+      console.log('(HRD) golasActions:', this.golasActions);
     }
 
-    if (this.sheetDetail.status === 'Publiée') {
-      this.areGoalsReadOnly = true;
-      console.log('(Published sheet) areGoalsReadOnly:', this.areGoalsReadOnly);
-    }
-
-    return this.areGoalsReadOnly;
+    return this.golasActions;
   }
 
   handleCreateGoal(newGoal: any) {
@@ -253,16 +232,15 @@ export class SheetDetailComponent implements OnInit {
     console.log('this.goalsByAxisInstanceList:', this.goalsByAxisInstanceList);
     if (this.goalsByAxisInstanceList.filter((g) => g.totalGoalWeight !== 100).length === 0) {
       this.areGoalsCompleted = true;
+      if (this.parameters.length > 0) {
+        this.areGoalsCompleted = this.checkEvents(`Plage de dates d'évaluation`);
+      }
+
+      if (this.sheetDetail.status === 'Publiée') {
+        this.areGoalsCompleted = true;
+      }
     } else {
       this.areGoalsCompleted = false;
-    }
-
-    if (this.parameters.length > 0) {
-        this.areGoalsCompleted = this.checkEvents(`Plage de dates d'évaluation`);
-    }
-
-    if (this.sheetDetail.status === 'Publiée') {
-      this.areGoalsCompleted = true;
     }
 
     console.log('areGoalsCompleted:', this.areGoalsCompleted);
@@ -351,7 +329,7 @@ export class SheetDetailComponent implements OnInit {
       .subscribe(
         () => {
           this.loading = false;
-          this.areGoalsReadOnly = true;
+          //this.areGoalsReadOnly = true;
           this.getGoalsForAxis();
           this.alertify.success(
             'Les objectifs ont été envoyées pour validation'
@@ -508,6 +486,7 @@ export class SheetDetailComponent implements OnInit {
   }
 
   checkEvents(event) {
+    console.log('Check event:', event);
     const eventDateIdx = this.parameters.findIndex((p) => p.event.includes(event));
 
     if (eventDateIdx > -1) {
@@ -526,6 +505,7 @@ export class SheetDetailComponent implements OnInit {
     if (event === 'Change Axis Weight') {
       return false;
     } else {
+      console.log('Event not set');
       return true;
     }
   }

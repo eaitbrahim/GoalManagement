@@ -27,7 +27,7 @@
 
     <div class="card-body">
       <div *ngFor="let goalsByAxisInstance of goalsByAxisInstanceList">
-        <app-goal-card [sheetId]="sheetToValidate.id" [areGoalsReadOnly]="areGoalsReadOnly" [goalsByAxisInstance]="goalsByAxisInstance"></app-goal-card>
+        <app-goal-card [sheetId]="sheetToValidate.id" [golasActions]="golasActions" [goalsByAxisInstance]="goalsByAxisInstance"></app-goal-card>
       </div>
     </div>
 

@@ -20,7 +20,7 @@ export class MyCollaboratorGoalsComponent implements OnInit {
   @Output() switchOffGoalsEvent = new EventEmitter<boolean>();
   @Output() rejectGoalsEvent = new EventEmitter<any>();
   @Output() acceptGoalsEvent = new EventEmitter<any>();
-  areGoalsReadOnly = true;
+  golasActions = false;
   canGoalsBeValidated = false;
   bsModalRef: BsModalRef;
   faArrowLeft = faArrowLeft;
@@ -92,37 +92,26 @@ export class MyCollaboratorGoalsComponent implements OnInit {
   }
 
   CheckReadOnly() {
-    const goalsInInitialStatus = this.goalsByAxisInstanceList.filter(
-      (g) => g.goalsStatus === 'Pas encore créé' || g.goalsStatus === 'Rédaction'
-    );
-
-    if (goalsInInitialStatus.length === 0) {
-      this.areGoalsReadOnly = false;
-      console.log(
-        '(goalsInInitialStatus) areGoalsReadOnly:',
-        this.areGoalsReadOnly
+    if (this.checkEvents(`Plage de dates de validation des objectifs`)) {
+      const goalsInInitialStatus = this.goalsByAxisInstanceList.filter(
+        (g) => g.goalsStatus === 'Pas encore créé' || g.goalsStatus === 'Rédaction'
       );
-    }
 
-    if (this.parameters.length > 0) {
-        this.areGoalsReadOnly = this.checkEvents(`Plage de dates de validation des objectifs`);
+      if (goalsInInitialStatus.length !== 0) {
+        this.golasActions = true;
         console.log(
-          '(Validation date) areGoalsReadOnly:',
-          this.areGoalsReadOnly
+          '(Initial Status) golasActions:',
+          this.golasActions
         );
+      }
     }
 
     if (this.authService.roleMatch(['HRD'])) {
-      this.areGoalsReadOnly = false;
-      console.log('(HRD) areGoalsReadOnly:', this.areGoalsReadOnly);
+      this.golasActions = true;
+      console.log('(HRD) golasActions:', this.golasActions);
     }
 
-    if (this.sheetToValidate.status === 'Publiée') {
-      this.areGoalsReadOnly = true;
-      console.log('(Published sheet) areGoalsReadOnly:', this.areGoalsReadOnly);
-    }
-
-    return this.areGoalsReadOnly;
+    return this.golasActions;
   }
 
   loadParameters() {
