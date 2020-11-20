@@ -37,14 +37,27 @@ export class SheetCardComponent implements OnInit {
   isCollapsed = false;
   message = '';
   goalsStatus = '';
+  upadtedAxisInstance: AxisInstance;
 
   constructor(private alertify: AlertifyService) {}
 
   ngOnInit() {
     this.checkParameters();
     this.axisInstanceList = this.sheetToValidate.axisInstances;
-    console.log('this.refreshWeight=', this.refreshWeight);
     if (this.refreshWeight) {
+      this.tallyUserWeights();
+    }
+  }
+
+  ngOnChanges() {
+    if (this.refreshWeight) {
+      this.sheetToValidate.axisInstances.every((ai) => {
+        if (typeof this.upadtedAxisInstance !== 'undefined'  && ai.id === this.upadtedAxisInstance.id) {
+          ai.userWeight = this.upadtedAxisInstance.userWeight;
+          return false;
+        }
+      });
+
       this.tallyUserWeights();
     }
   }
@@ -90,8 +103,8 @@ export class SheetCardComponent implements OnInit {
   }
 
   handleUpdateUserWeight(data) {
+    this.upadtedAxisInstance = data;
     this.updateUserWeightEvent.emit(data);
-    this.tallyUserWeights();
   }
 
   toggleAxis() {
