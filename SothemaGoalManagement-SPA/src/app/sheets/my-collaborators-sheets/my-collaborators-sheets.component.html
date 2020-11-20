@@ -1,6 +1,6 @@
 <div *ngIf="!goalsMode" class="container">
   <div *ngFor="let sheetToValidate of sheetsToValidate">
-    <app-sheet-card [refreshWeight]="refreshWeight" [toggleChangeAxisWeight]="toggleChangeAxisWeight" [canValidate]="canValidate" [canEvaluate]="canEvaluate" [canDoFinalEvaluation]="canDoFinalEvaluation" [sheetToValidate]="sheetToValidate" (updateUserWeightEvent)="handleUpdateUserWeight($event)"
+    <app-sheet-card [refreshWeight]="refreshWeight" [canDoFinalEvaluation]="canDoFinalEvaluation" [sheetToValidate]="sheetToValidate" (updateUserWeightEvent)="handleUpdateUserWeight($event)"
       (loadGoalsEvent)="handleLoadGoals($event)" (showSheetDetailEvent)="handleShowSheetDetail($event)"></app-sheet-card>
   </div>
 </div>

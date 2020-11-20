@@ -37,7 +37,7 @@
           <div class="alert alert-info mt-3" role="info" *ngIf="sheetsToValidate && sheetsToValidate.length === 0">
             Aucune fiche d'évaluation ne vous a été attribuée pour validation...
           </div>
-          <app-my-collaborators-sheets [refreshWeight]="refreshWeight" [toggleChangeAxisWeight]="toggleChangeAxisWeight" [canValidate]="canValidate" [canEvaluate]="canEvaluate" [canDoFinalEvaluation]="canDoFinalEvaluation" [goalsMode]="goalsMode" [goalsByAxisInstanceList]="goalsByAxisInstanceList"
+          <app-my-collaborators-sheets [refreshWeight]="refreshWeight" [canDoFinalEvaluation]="canDoFinalEvaluation" [goalsMode]="goalsMode" [goalsByAxisInstanceList]="goalsByAxisInstanceList"
             [sheetToValidate]="sheetToValidate" [sheetsToValidate]="sheetsToValidate" (updateUserWeightEvent)="handleUpdateUserWeight($event)"
             (rejectGoalsEvent)="handleRejectGoals($event)" (acceptGoalsEvent)="handleAcceptGoals($event)" (loadGoalsEvent)="handleLoadGoals($event)"
             (switchOffGoalsEvent)="switchOffGoalsMode($event)" (showSheetDetailEvent)="handleShowSheetDetail($event)"></app-my-collaborators-sheets>
