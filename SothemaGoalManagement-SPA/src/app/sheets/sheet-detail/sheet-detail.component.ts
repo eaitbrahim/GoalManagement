@@ -321,7 +321,6 @@ export class SheetDetailComponent implements OnInit {
       .subscribe(
         () => {
           this.loading = false;
-          //this.areGoalsReadOnly = true;
           this.getGoalsForAxis();
           this.alertify.success(
             'Les objectifs ont été envoyées pour validation'

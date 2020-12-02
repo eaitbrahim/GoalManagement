@@ -593,16 +593,14 @@ namespace SothemaGoalManagement.API.Controllers
         private int GetCompletionRate(GoalToReturnDto goal, bool goalOwnerSelfEvaluator)
         {
             var lastGoalEvaluation = goal.GoalEvaluations.OrderByDescending(e => e.Created).FirstOrDefault();
-            if (lastGoalEvaluation == null) return 0;
-            else
+            if (lastGoalEvaluation!= null)
             {
-                if (lastGoalEvaluation.SelfEvaluation == false) return lastGoalEvaluation.CompletionRate;
-                else
-                {
-                    if (goalOwnerSelfEvaluator) return lastGoalEvaluation.CompletionRate;
-                }
-                return 0;
+                if (lastGoalEvaluation.SelfEvaluation == false && goalOwnerSelfEvaluator) return lastGoalEvaluation.CompletionRate;
+                
+                return lastGoalEvaluation.CompletionRate;
             }
+            
+            return 0;
         }
 
         private bool IsTotalWeightOfObjectivesOver100(List<AxisInstanceWithGoalsToReturnDto> goalsGroupedByAxisInstanceList, int weight, int goalId = 0)
