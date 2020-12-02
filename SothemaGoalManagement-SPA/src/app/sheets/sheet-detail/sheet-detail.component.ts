@@ -49,7 +49,7 @@ export class SheetDetailComponent implements OnInit {
   golasActions = false;
   approbationAction = false;
   areGoalsEvaluable: boolean;
-  areBehavioralSkillsEvaluable: boolean;
+  areBehavioralSkillsEvaluable = false;
   totalGrade: string;
   behavioralSkillEvaluationUpdated: boolean;
   showDetail: boolean;
@@ -274,18 +274,10 @@ export class SheetDetailComponent implements OnInit {
     const indx = this.evaluators.findIndex(
       (e) => e.id === parseInt(this.authService.decodedToken.nameid, 10)
     );
-    if (indx === -1) {
-      this.areBehavioralSkillsEvaluable = false;
-    } else {
-      this.areBehavioralSkillsEvaluable = true;
-    }
-
-    if (this.parameters.length > 0) {
+    if (indx !== -1) {
+      if (this.parameters.length > 0 && this.sheetDetail.status !== 'Publiée') {
         this.areBehavioralSkillsEvaluable = this.checkEvents(`Plage de dates d'évaluation`);
-    }
-
-    if (this.sheetDetail.status === 'Publiée') {
-      this.areBehavioralSkillsEvaluable = false;
+      }
     }
   }
 
