@@ -592,14 +592,22 @@ namespace SothemaGoalManagement.API.Controllers
 
         private int GetCompletionRate(GoalToReturnDto goal, bool goalOwnerSelfEvaluator)
         {
-            var lastGoalEvaluation = goal.GoalEvaluations.OrderByDescending(e => e.Created).FirstOrDefault();
-            if (lastGoalEvaluation!= null)
+            if (goalOwnerSelfEvaluator)
             {
-                if (lastGoalEvaluation.SelfEvaluation == false && goalOwnerSelfEvaluator) return lastGoalEvaluation.CompletionRate;
-                
-                return lastGoalEvaluation.CompletionRate;
+                var lastGoalEvaluation = goal.GoalEvaluations.OrderByDescending(e => e.Created).FirstOrDefault();
+                if (lastGoalEvaluation != null)
+                {
+                    return lastGoalEvaluation.CompletionRate;
+                }
+                return 0;
             }
-            
+
+            var lastGoalEvaluationByEvaluator = goal.GoalEvaluations.Where(e => !e.SelfEvaluation).OrderByDescending(e => e.Created).FirstOrDefault();
+            if (lastGoalEvaluationByEvaluator != null)
+            {
+                return lastGoalEvaluationByEvaluator.CompletionRate;
+            }
+
             return 0;
         }
 
