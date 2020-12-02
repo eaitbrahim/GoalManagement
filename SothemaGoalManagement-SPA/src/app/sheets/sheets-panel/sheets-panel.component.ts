@@ -41,7 +41,6 @@ export class SheetsPanelComponent implements OnInit {
   canValidate = true;
   canEvaluate = true;
   canDoFinalEvaluation = true;
-  refreshWeight = false;
 
   public behavioralSkillEvaluationUpdated: boolean;
 
@@ -179,7 +178,7 @@ export class SheetsPanelComponent implements OnInit {
           this.alertify.success(
             `La pondération de l'employée est modifié avec succès.`
           );
-          this.refreshWeight = true;
+          this.loadSheetsToValidate();
         },
         (error) => {
           this.loading = false;

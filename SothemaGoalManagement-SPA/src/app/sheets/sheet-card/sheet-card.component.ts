@@ -20,7 +20,6 @@ import { AlertifyService } from '../../_services/alertify.service';
 export class SheetCardComponent implements OnInit {
   @Input() sheetToValidate: EvaluationFileInstance;
   @Input() canDoFinalEvaluation: boolean;
-  @Input() refreshWeight: boolean;
   @Output() updateUserWeightEvent = new EventEmitter<any>();
   @Output() loadGoalsEvent = new EventEmitter<any>();
   @Output() showSheetDetailEvent = new EventEmitter<any>();
@@ -44,22 +43,7 @@ export class SheetCardComponent implements OnInit {
   ngOnInit() {
     this.checkParameters();
     this.axisInstanceList = this.sheetToValidate.axisInstances;
-    if (this.refreshWeight) {
-      this.tallyUserWeights();
-    }
-  }
-
-  ngOnChanges() {
-    if (this.refreshWeight) {
-      this.sheetToValidate.axisInstances.every((ai) => {
-        if (typeof this.upadtedAxisInstance !== 'undefined'  && ai.id === this.upadtedAxisInstance.id) {
-          ai.userWeight = this.upadtedAxisInstance.userWeight;
-          return false;
-        }
-      });
-
-      this.tallyUserWeights();
-    }
+    this.tallyUserWeights();
   }
 
   checkParameters() {
