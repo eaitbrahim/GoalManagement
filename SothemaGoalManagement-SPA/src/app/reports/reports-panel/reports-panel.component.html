@@ -22,9 +22,9 @@
         </button>
       </form>
     </div>
-    
+
     <tabset class="member-tabset mt-2" #tabset>
-      <tab heading="Fiches d'évaluation">
+      <tab heading="Etat SGM">
         <div class="container">
           <div class="alert alert-info mt-3" role="info" *ngIf="sheets && sheets.length === 0">
             <p>Aucune fiche d'évaluation n'est disponible...</p>
@@ -33,10 +33,18 @@
         </div>
       </tab>
 
-      <tab heading="Notes des collaborateurs">
+      <tab heading="Copie d'évaluation">
         <div class="container">
           <div class="alert alert-info mt-3" role="info">
-            Aucune fiche d'évaluation n'est disponible...
+            Aucune évaluation n'est disponible...
+          </div>
+        </div>
+      </tab>
+
+      <tab heading="Objectifs">
+        <div class="container">
+          <div class="alert alert-info mt-3" role="info">
+            Aucun objectif n'est disponible...
           </div>
         </div>
       </tab>

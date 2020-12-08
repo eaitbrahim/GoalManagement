@@ -1,8 +1,7 @@
 export interface ReportSheet {
   id: number;
-  title: string;
+  fullName: string;
   year: number;
-  email: string;
   poleName: string;
   goalsStatus: string;
   validatorValidationDateTime: Date;
