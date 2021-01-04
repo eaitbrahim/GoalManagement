@@ -1,3 +1,5 @@
+import { Goal } from './goal';
+
 export interface ReportSheet {
   id: number;
   fullName: string;
@@ -5,4 +7,5 @@ export interface ReportSheet {
   poleName: string;
   goalsStatus: string;
   validatorValidationDateTime: Date;
+  goals: [Goal]
 }

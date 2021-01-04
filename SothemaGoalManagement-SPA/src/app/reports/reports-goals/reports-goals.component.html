@@ -1,0 +1,28 @@
+<div class="row" *ngIf="flattenedGoals?.length > 0">
+  <table class="table table-hover  mt-2" style="cursor: pointer">
+    <tr>
+      <th style="width: 15%">Nom</th>
+      <th style="width: 15%">Pôle</th>
+      <th style="width: 5%">Année</th>
+      <th style="width: 10%">Axe</th>
+      <th style="width: 20%">Ponduration Axe</th>
+      <th style="width: 5%">Poids</th>
+      <th style="width: 30%">Objectif</th>
+    </tr>
+    <tr *ngFor="let goal of flattenedGoals">
+      <td>{{ goal.fullName }}</td>
+      <td>{{ goal.poleName }}</td>
+      <td>{{ goal.year }}</td>
+      <td>{{ goal.axisTitle }}</td>
+      <td>{{ goal.poleWeight }}</td>
+      <td>{{ goal.weight }}</td>
+      <td>{{ goal.goal }}</td>
+    </tr>
+  </table>
+</div>
+
+<div class="d-flex justify-content-center">
+  <pagination [boundaryLinks]="true" [totalItems]="pagination.totalItems" [itemsPerPage]="pagination.itemsPerPage" [(ngModel)]="pagination.currentPage"
+    previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" (pageChanged)="pageChanged($event)">
+  </pagination>
+</div>

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using SothemaGoalManagement.API.Dtos;
@@ -149,6 +150,17 @@ namespace SothemaGoalManagement.API.Helpers
                         if (latestGoalEval != null) latestGoalEvalDateTime = latestGoalEval.Created;
                     }
                     return latestGoalEvalDateTime;
+                });
+            }).ForMember(dest => dest.Goals, opt => 
+            {
+                opt.ResolveUsing(src => 
+                {
+                    var goals = new List<Goal>();
+                    foreach(var axis in src.AxisInstances)
+                    {
+                        goals.AddRange(axis.Goals);
+                    }
+                    return goals;
                 });
             });
 

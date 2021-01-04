@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using SothemaGoalManagement.API.Models;
 
 namespace SothemaGoalManagement.API.Dtos
 {
@@ -17,6 +19,8 @@ namespace SothemaGoalManagement.API.Dtos
         public string GoalsTotalGrade { get; set; }
 
         public int BehavioralSkillsGrade { get; set; }
+
+        public ICollection<Goal> Goals { get; set; }
 
     }
 }

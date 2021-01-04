@@ -45,6 +45,7 @@ export class ReportsPanelComponent implements OnInit {
           this.yearList.push(sheet.year);
         }
       }
+      console.log('Sheets:', this.sheets);
     });
   }
 

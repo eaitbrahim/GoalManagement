@@ -61,9 +61,10 @@
 
       <tab heading="Objectifs">
         <div class="container">
-          <div class="alert alert-info mt-3" role="info">
+          <div class="alert alert-info mt-3" role="info" *ngIf="sheets && sheets.length === 0">
             Aucun objectif n'est disponible...
           </div>
+          <app-reports-goals [sheets]="sheets" [pagination]="pagination"></app-reports-goals>
         </div>
       </tab>
     </tabset>
