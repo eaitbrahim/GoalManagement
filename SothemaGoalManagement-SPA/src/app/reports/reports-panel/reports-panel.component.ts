@@ -6,6 +6,7 @@ import { Pagination, PaginatedResult } from '../../_models/pagination';
 import { ReportSheet } from './../../_models/reportSheet';
 import { HrService } from './../../_services/hr.service';
 import { AlertifyService } from './../../_services/alertify.service';
+import { Pole } from './../../_models/pole';
 
 @Component({
   selector: 'app-reports-panel',
@@ -20,6 +21,7 @@ export class ReportsPanelComponent implements OnInit {
   sheets: ReportSheet[];
   filters: any = {};
   yearList: number[] = [];
+  poleList: Pole[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -30,9 +32,11 @@ export class ReportsPanelComponent implements OnInit {
   ngOnInit() {
     this.filters.year = '0';
     this.filters.userToSearch = '';
+    this.filters.poleId = 0;
     this.route.data.subscribe((data) => {
       const resolvedData = data['resolvedData'];
       this.sheets = resolvedData['sheets'].result;
+      this.poleList = resolvedData['poleList'];
       // this.notes = resolvedData['notes'].result;
       this.pagination = resolvedData['sheets'].pagination;
 
@@ -78,6 +82,7 @@ export class ReportsPanelComponent implements OnInit {
   resetFilters() {
     this.filters.year = '0';
     this.filters.userToSearch = '';
+    this.filters.poleId = 0;
     this.loadData();
   }
 }

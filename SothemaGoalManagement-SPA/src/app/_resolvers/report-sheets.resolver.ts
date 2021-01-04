@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { Resolve, Router, ActivatedRouteSnapshot } from '@angular/router';
 
 import { HrService } from './../_services/hr.service';
+import { AdminService } from './../_services/admin.service';
 import { AlertifyService } from './../_services/alertify.service';
 
 @Injectable()
@@ -12,11 +13,13 @@ export class ReportSheetsResolver implements Resolve<any> {
   pageSize = 10;
   constructor(
     private hrService: HrService,
+    private adminService: AdminService,
     private router: Router,
     private alertify: AlertifyService
   ) { }
 
   resolve(route: ActivatedRouteSnapshot): Observable<any> {
+
     return forkJoin(
       [
         this.hrService.getReportSheets(this.pageNumber, this.pageSize).pipe(
@@ -25,6 +28,8 @@ export class ReportSheetsResolver implements Resolve<any> {
             this.router.navigate(['/']);
             return of(null);
           })),
+
+          this.adminService.getPoles(),
 
         this.hrService.getReportSheets(this.pageNumber, this.pageSize).pipe(
           catchError(error => {
@@ -35,7 +40,8 @@ export class ReportSheetsResolver implements Resolve<any> {
       ]).pipe(map(result => {
         return {
           sheets: result[0],
-          notes: result[1]
+          poleList: result[1],
+          notes: result[2]
         };
       }));
   }

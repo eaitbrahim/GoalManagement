@@ -224,6 +224,7 @@ export class HrService {
     if (filters != null) {
       params = params.append('year', filters.year);
       params = params.append('userToSearch', filters.userToSearch);
+      params = params.append('poleId', filters.poleId);
     }
 
     return this.http

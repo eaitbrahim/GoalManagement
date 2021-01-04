@@ -98,6 +98,10 @@ export class AdminService {
     return this.http.get(this.baseUrl + 'admin/departments');
   }
 
+  getPoles() {
+    return this.http.get(this.baseUrl + 'admin/poles');
+  }
+
   getUserStatus() {
     return this.http.get(this.baseUrl + 'admin/userStatus');
   }

@@ -166,6 +166,24 @@ namespace SothemaGoalManagement.API.Controllers
         }
 
         [Authorize(Policy = "RequireAdminHRRoles")]
+        [HttpGet("poles")]
+        public async Task<IActionResult> GetPoless()
+        {
+            try
+            {
+                var poleList = await _repo.Pole.GetPoles();
+                var polesToReturn = _mapper.Map<IEnumerable<PoleToReturnDto>>(poleList);
+
+                return Ok(polesToReturn);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong inside GetPoless endpoint: {ex.Message}");
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+
+        [Authorize(Policy = "RequireAdminHRRoles")]
         [HttpGet("userStatus")]
         public async Task<IActionResult> GetUserStatus()
         {

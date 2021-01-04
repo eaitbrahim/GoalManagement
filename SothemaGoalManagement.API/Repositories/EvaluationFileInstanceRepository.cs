@@ -45,6 +45,11 @@ namespace SothemaGoalManagement.API.Repositories
                 sheets = sheets.Where(s => s.Owner.FirstName.ToLower().Contains(communParams.UserToSearch.ToLower()) || s.Owner.LastName.ToLower().Contains(communParams.UserToSearch.ToLower()));
             }
 
+            if (communParams.PoleId != 0)
+            {
+                sheets = sheets.Where(s => s.Owner.Department.Pole.Id == communParams.PoleId);
+            }
+
             return await PagedList<EvaluationFileInstance>.CreateAsync(sheets, communParams.PageNumber, communParams.PageSize);
         }
 

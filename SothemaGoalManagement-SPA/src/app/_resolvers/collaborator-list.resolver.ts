@@ -4,10 +4,8 @@ import { Injectable } from '@angular/core';
 import { Resolve, Router, ActivatedRouteSnapshot } from '@angular/router';
 
 import { User } from '../_models/user';
-import { Department } from './../_models/department';
 import { AdminService } from './../_services/admin.service';
 import { AlertifyService } from './../_services/alertify.service';
-import { UserStatus } from '../_models/userStatus';
 
 @Injectable()
 export class CollaboratorListResolver implements Resolve<any> {

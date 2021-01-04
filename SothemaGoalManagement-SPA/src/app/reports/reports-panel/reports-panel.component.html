@@ -18,6 +18,15 @@
             <input type="text" [(ngModel)]="filters.userToSearch" class="form-control" style="width: 150px" id="userToSearch" name="userToSearch"
               placeholder="Nom à rechercher">
           </div>
+          <div class="col-auto">
+            <label class="sr-only" for="pole">Pole:</label>
+            <select [(ngModel)]="filters.poleId" class="form-control" style="width: 150px" id="pole" name="pole">
+              <option value="0">Tous les pôles</option>
+              <option *ngFor="let pole of poleList" [value]="pole.id">
+                {{ pole.name }}
+              </option>
+            </select>
+          </div>
 
           <div class="col-auto">
             <button type="submit" class="btn btn-primary" style="margin-left:10px">
