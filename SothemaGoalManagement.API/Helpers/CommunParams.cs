@@ -19,5 +19,7 @@ namespace SothemaGoalManagement.API.Helpers
 
         public string OrderBy { get; set; }
 
+        public string UserToSearch { get; set; }
+
     }
 }

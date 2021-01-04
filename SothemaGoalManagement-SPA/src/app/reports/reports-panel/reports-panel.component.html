@@ -2,26 +2,35 @@
   <ngx-loading [show]="loading"></ngx-loading>
 
   <div class="tab-panel">
-    <div class="mb-3">
-      <form #form="ngForm" (ngSubmit)="loadData()" class="form-inline" novalidate>
-        <div class="form-group">
-          <label for="year" class="mr-2">Année:</label>
-          <select [(ngModel)]="filters.year" class="form-control" style="width: 160px" id="years" name="years">
-            <option value="0">Toutes les Années</option>
-            <option *ngFor="let year of yearList" [value]="year">
-              {{ year }}
-            </option>
-          </select>
-        </div>
+    <form #form="ngForm" (ngSubmit)="loadData()" novalidate>
+      <div class="form-row align-items-center">
+          <div class="col-auto">
+            <label for="year" class="sr-only" >Année:</label>
+            <select [(ngModel)]="filters.year" class="form-control" style="width: 160px" id="years" name="years">
+              <option value="0">Toutes les Années</option>
+              <option *ngFor="let year of yearList" [value]="year">
+                {{ year }}
+              </option>
+            </select>
+          </div>
+          <div class="col-auto">
+            <label class="sr-only" for="userToSearch">Nom:</label>
+            <input type="text" [(ngModel)]="filters.userToSearch" class="form-control" style="width: 150px" id="userToSearch" name="userToSearch"
+              placeholder="Nom à rechercher">
+          </div>
 
-        <button type="submit" class="btn btn-primary" style="margin-left:10px">
-          Appliquer Filtre
-        </button>
-        <button type="button" class="btn btn-info" style="margin-left:10px" (click)="resetFilters()">
-          Réinitialiser Filtre
-        </button>
-      </form>
-    </div>
+          <div class="col-auto">
+            <button type="submit" class="btn btn-primary" style="margin-left:10px">
+              Appliquer Filtre
+            </button>
+          </div>
+          <div class="col-auto">
+            <button type="button" class="btn btn-info" style="margin-left:10px" (click)="resetFilters()">
+              Réinitialiser Filtre
+            </button>
+        </div>
+      </div>
+    </form>
 
     <tabset class="member-tabset mt-2" #tabset>
       <tab heading="Etat SGM">
@@ -33,7 +42,7 @@
         </div>
       </tab>
 
-      <tab heading="Copie d'évaluation">
+      <tab heading="Evaluations">
         <div class="container">
           <div class="alert alert-info mt-3" role="info">
             Aucune évaluation n'est disponible...

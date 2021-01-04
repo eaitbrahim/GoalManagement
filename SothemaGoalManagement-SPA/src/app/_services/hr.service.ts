@@ -223,6 +223,75 @@ export class HrService {
 
     if (filters != null) {
       params = params.append('year', filters.year);
+      params = params.append('userToSearch', filters.userToSearch);
+    }
+
+    return this.http
+      .get<ReportSheet[]>(this.baseUrl + 'hr/EvaluationSheet', { observe: 'response', params })
+      .pipe(
+        map(response => {
+          paginatedResult.result = response.body;
+          if (response.headers.get('Pagination') != null) {
+            paginatedResult.pagination = JSON.parse(
+              response.headers.get('Pagination')
+            );
+          }
+          return paginatedResult;
+        })
+      );
+  }
+
+  getReportEvaluations(
+    page?,
+    itemsPerPage?,
+    filters?
+  ): Observable<PaginatedResult<ReportSheet[]>> {
+    const paginatedResult: PaginatedResult<ReportSheet[]> = new PaginatedResult<
+    ReportSheet[]
+      >();
+    let params = new HttpParams();
+    if (page != null && itemsPerPage != null) {
+      params = params.append('pageNumber', page);
+      params = params.append('pageSize', itemsPerPage);
+    }
+
+    if (filters != null) {
+      params = params.append('year', filters.year);
+      params = params.append('userToSearch', filters.userToSearch);
+    }
+
+    return this.http
+      .get<ReportSheet[]>(this.baseUrl + 'hr/EvaluationSheet/getGrades', { observe: 'response', params })
+      .pipe(
+        map(response => {
+          paginatedResult.result = response.body;
+          if (response.headers.get('Pagination') != null) {
+            paginatedResult.pagination = JSON.parse(
+              response.headers.get('Pagination')
+            );
+          }
+          return paginatedResult;
+        })
+      );
+  }
+
+  getReportGoals(
+    page?,
+    itemsPerPage?,
+    filters?
+  ): Observable<PaginatedResult<ReportSheet[]>> {
+    const paginatedResult: PaginatedResult<ReportSheet[]> = new PaginatedResult<
+    ReportSheet[]
+      >();
+    let params = new HttpParams();
+    if (page != null && itemsPerPage != null) {
+      params = params.append('pageNumber', page);
+      params = params.append('pageSize', itemsPerPage);
+    }
+
+    if (filters != null) {
+      params = params.append('year', filters.year);
+      params = params.append('userToSearch', filters.userToSearch);
     }
 
     return this.http

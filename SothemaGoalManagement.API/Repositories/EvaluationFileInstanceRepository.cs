@@ -34,10 +34,15 @@ namespace SothemaGoalManagement.API.Repositories
                                                         .ThenInclude(u => u.Department)
                                                         .ThenInclude(d => d.Pole)
                                                         .AsQueryable();
-            
-            if( communParams.Year != 0)
+
+            if (communParams.Year != 0)
             {
                 sheets = sheets.Where(s => s.Year == communParams.Year);
+            }
+
+            if (communParams.UserToSearch != null && communParams.UserToSearch != "")
+            {
+                sheets = sheets.Where(s => s.Owner.FirstName.ToLower().Contains(communParams.UserToSearch.ToLower()) || s.Owner.LastName.ToLower().Contains(communParams.UserToSearch.ToLower()));
             }
 
             return await PagedList<EvaluationFileInstance>.CreateAsync(sheets, communParams.PageNumber, communParams.PageSize);
@@ -66,7 +71,7 @@ namespace SothemaGoalManagement.API.Repositories
         {
             var sheets = FindByCondition(s => s.OwnerId == communParams.OwnerId).Include(s => s.Owner).AsQueryable();
             sheets = sheets.OrderByDescending(d => d.Created);
-            if( communParams.Year != 0)
+            if (communParams.Year != 0)
             {
                 sheets = sheets.Where(s => s.Year == communParams.Year);
             }
@@ -85,7 +90,7 @@ namespace SothemaGoalManagement.API.Repositories
                                                                 .Where(efi => evaluateeIds.Contains(efi.OwnerId))
                                                                 .AsQueryable();
 
-            if( communParams.Year != 0)
+            if (communParams.Year != 0)
             {
                 sheets = sheets.Where(s => s.Year == communParams.Year);
             }
