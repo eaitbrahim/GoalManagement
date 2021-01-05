@@ -22,6 +22,15 @@ export class ReportsPanelComponent implements OnInit {
   filters: any = {};
   yearList: number[] = [];
   poleList: Pole[] = [];
+  flattenedGoals: {
+    goal: string,
+    weight: number,
+    axisTitle: string,
+    poleName: string,
+    poleWeight: number,
+    year: number,
+    fullName: string
+}[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -36,6 +45,7 @@ export class ReportsPanelComponent implements OnInit {
     this.route.data.subscribe((data) => {
       const resolvedData = data['resolvedData'];
       this.sheets = resolvedData['sheets'].result;
+      this.buildGoals();
       this.poleList = resolvedData['poleList'];
       // this.notes = resolvedData['notes'].result;
       this.pagination = resolvedData['sheets'].pagination;
@@ -45,8 +55,23 @@ export class ReportsPanelComponent implements OnInit {
           this.yearList.push(sheet.year);
         }
       }
-      console.log('Sheets:', this.sheets);
     });
+  }
+
+  buildGoals(){
+    this.flattenedGoals = [];
+    const goals = this.sheets.map(sheet => sheet.goals.map(goal => {
+      return {
+        goal: goal.description,
+        weight: goal.weight,
+        axisTitle: goal.axisInstance.title,
+        poleName: goal.axisInstance.poleName,
+        poleWeight: goal.axisInstance.poleWeight,
+        year: sheet.year,
+        fullName: sheet.fullName
+      }
+    }));
+    this.flattenedGoals = [].concat.apply([],goals);
   }
 
   handlePageChanged(event: any): void {
@@ -66,6 +91,7 @@ export class ReportsPanelComponent implements OnInit {
         (res: PaginatedResult<ReportSheet[]>) => {
           this.loading = false;
           this.sheets = res.result;
+          this.buildGoals();
           this.pagination = res.pagination;
         },
         (error) => {
