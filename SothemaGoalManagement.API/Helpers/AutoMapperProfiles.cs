@@ -151,18 +151,14 @@ namespace SothemaGoalManagement.API.Helpers
                     }
                     return latestGoalEvalDateTime;
                 });
-            }).ForMember(dest => dest.Goals, opt => 
+            }).ForMember(dest => dest.AxisInstances, opt => 
             {
                 opt.ResolveUsing(src => 
                 {
-                    var goals = new List<Goal>();
-                    foreach(var axis in src.AxisInstances)
-                    {
-                        goals.AddRange(axis.Goals);
-                    }
-                    return goals;
+                    return src.AxisInstances;
                 });
             });
+        
 
             CreateMap<GoalType, GoalTypeToReturnDto>();
             CreateMap<Project, ProjectToReturnDto>();

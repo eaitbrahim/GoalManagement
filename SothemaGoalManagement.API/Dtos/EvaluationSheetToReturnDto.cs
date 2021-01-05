@@ -20,7 +20,7 @@ namespace SothemaGoalManagement.API.Dtos
 
         public int BehavioralSkillsGrade { get; set; }
 
-        public ICollection<Goal> Goals { get; set; }
+        public ICollection<AxisInstance> AxisInstances { get; set; }
 
     }
 }

@@ -45,6 +45,7 @@ export class ReportsPanelComponent implements OnInit {
     this.route.data.subscribe((data) => {
       const resolvedData = data['resolvedData'];
       this.sheets = resolvedData['sheets'].result;
+
       this.buildGoals();
       this.poleList = resolvedData['poleList'];
       // this.notes = resolvedData['notes'].result;
@@ -60,18 +61,37 @@ export class ReportsPanelComponent implements OnInit {
 
   buildGoals(){
     this.flattenedGoals = [];
-    const goals = this.sheets.map(sheet => sheet.goals.map(goal => {
-      return {
-        goal: goal.description,
-        weight: goal.weight,
-        axisTitle: goal.axisInstance.title,
-        poleName: goal.axisInstance.poleName,
-        poleWeight: goal.axisInstance.poleWeight,
-        year: sheet.year,
-        fullName: sheet.fullName
-      }
-    }));
-    this.flattenedGoals = [].concat.apply([],goals);
+    // console.log('Building golas');
+    // this.sheets.forEach(sheet => {
+    //   sheet.axisInstances.forEach(axis => {
+    //     axis.goals.forEach(goal => {
+    //       this.flattenedGoals.push(
+    //         {
+    //           goal: goal.description,
+    //           weight: goal.weight,
+    //           axisTitle: goal.axisInstance.title,
+    //           poleName: goal.axisInstance.poleName,
+    //           poleWeight: goal.axisInstance.poleWeight,
+    //           year: sheet.year,
+    //           fullName: sheet.fullName
+    //         }
+    //       );
+    //     });
+    //   });
+    // });
+    // const goals = this.sheets.map(sheet => sheet.axisInstances.map(axis => axis.goals.map(goal =>{
+    //   return {
+    //     goal: goal.description,
+    //     weight: goal.weight,
+    //     axisTitle: goal.axisInstance.title,
+    //     poleName: goal.axisInstance.poleName,
+    //     poleWeight: goal.axisInstance.poleWeight,
+    //     year: sheet.year,
+    //     fullName: sheet.fullName
+    //   }
+    // })));
+    // console.log('Golas:', goals);
+    //this.flattenedGoals = [].concat.apply([],goals);
   }
 
   handlePageChanged(event: any): void {
