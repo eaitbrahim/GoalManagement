@@ -278,4 +278,9 @@ export class UserService {
       finalEvaluation
     );
   }
+
+  getYears() {
+    return this.http.get<number[]>(`${this.baseUrl}hr/EvaluationSheet/getYears`);
+  }
+
 }

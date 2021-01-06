@@ -7,6 +7,8 @@ namespace SothemaGoalManagement.API.Interfaces
 {
     public interface IEvaluationFileInstanceRepository
     {
+        Task<IEnumerable<int>> GetYears();
+        
         Task<IEnumerable<EvaluationFileInstance>> GetEvaluationFileInstancesByEvaluationFileId(int evaluationFileId);
 
         Task<PagedList<EvaluationFileInstance>> GetEvaluationFileInstances(CommunParams communParams);

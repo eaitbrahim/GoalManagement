@@ -15,6 +15,12 @@ namespace SothemaGoalManagement.API.Repositories
         {
 
         }
+
+        public async Task<IEnumerable<int>> GetYears()
+        {
+            return await RepositoryContext.EvaluationFileInstances.Select(efi => efi.Year).Distinct().ToListAsync();
+        }
+        
         public async Task<IEnumerable<EvaluationFileInstance>> GetEvaluationFileInstancesByEvaluationFileId(int evaluationFileId)
         {
             return await RepositoryContext.EvaluationFileInstances.Include(efi => efi.AxisInstances)

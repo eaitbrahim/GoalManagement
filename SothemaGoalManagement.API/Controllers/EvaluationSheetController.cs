@@ -66,21 +66,17 @@ namespace SothemaGoalManagement.API.Controllers
             }
         }
 
-        [HttpGet("{getGrades}")]
-        public async Task<IActionResult> GetGrades([FromQuery] CommunParams communParams)
+        [HttpGet("getYears")]
+        public async Task<IActionResult> GetYears()
         {
             try
             {
-                var sheetsFromRepo = await _repo.EvaluationFileInstance.GetEvaluationFileInstances(communParams);
-                var evaluationSheetsToReturn = _mapper.Map<IEnumerable<EvaluationSheetToReturnDto>>(sheetsFromRepo);
-
-                Response.AddPagination(sheetsFromRepo.CurrentPage, sheetsFromRepo.PageSize, sheetsFromRepo.TotalCount, sheetsFromRepo.TotalPages);
-
-                return Ok(evaluationSheetsToReturn);
+                var yearsToReturn = await _repo.EvaluationFileInstance.GetYears();
+                return Ok(yearsToReturn);
             }
             catch (Exception ex) 
             {
-                _logger.LogError($"Something went wrong inside GetEvaluationSheetList endpoint: {ex.Message}");
+                _logger.LogError($"Something went wrong inside GetYears endpoint: {ex.Message}");
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }

@@ -19,9 +19,15 @@ export class ReportsPanelComponent implements OnInit {
   tabIndex = 0;
   public loading = false;
   sheets: ReportSheet[];
-  filters: any = {};
+  filters: {
+    year: string,
+    userToSearch: string,
+    poleId: number,
+    pageSize: number
+  } = {year: '0', userToSearch: '', poleId: 0, pageSize: 5};
   yearList: number[] = [];
   poleList: Pole[] = [];
+  pageSizeList: number[] = [1];
   flattenedGoals: {
     goal: string,
     weight: number,
@@ -39,21 +45,15 @@ export class ReportsPanelComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.filters.year = '0';
-    this.filters.userToSearch = '';
-    this.filters.poleId = 0;
+    this.setFilters();
     this.route.data.subscribe((data) => {
       const resolvedData = data['resolvedData'];
       this.sheets = resolvedData['sheets'].result;
       this.buildGoals();
       this.poleList = resolvedData['poleList'];
+      this.yearList = resolvedData['yearList'];
+      this.pageSizeList = [10, 20, 30, 40, 50, 100];
       this.pagination = resolvedData['sheets'].pagination;
-
-      for (const sheet of this.sheets) {
-        if (!this.yearList.includes(sheet.year)) {
-          this.yearList.push(sheet.year);
-        }
-      }
     });
   }
 
@@ -76,6 +76,7 @@ export class ReportsPanelComponent implements OnInit {
 
   handlePageChanged(event: any): void {
     this.pagination.currentPage = event.currentPage;
+    console.log('this.pagination.currentPage:', this.pagination.currentPage);
     this.loadSheets();
   }
 
@@ -107,9 +108,14 @@ export class ReportsPanelComponent implements OnInit {
   }
 
   resetFilters() {
+    this.setFilters();
+    this.loadData();
+  }
+
+  setFilters(){
     this.filters.year = '0';
     this.filters.userToSearch = '';
     this.filters.poleId = 0;
-    this.loadData();
+    this.filters.pageSize = 5;
   }
 }

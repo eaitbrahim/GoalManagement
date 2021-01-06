@@ -33,11 +33,13 @@ export class SheetsResolver implements Resolve<any> {
             this.alertify.error(`Problème lors de la récupération des données de votre fiches d\'évaluation: ${error}`);
             this.router.navigate(['/']);
             return of(null);
-          }))
+          })),
+          this.userService.getYears(),
       ]).pipe(map(result => {
         return {
           sheetsToValidate: result[0],
-          sheets: result[1]
+          sheets: result[1],
+          yearList: result[2]
         };
       }));
   }

@@ -1,5 +1,5 @@
 import { BehavioralSkill } from './../_models/behavioralSkill';
-import { map } from 'rxjs/operators';
+import { map, filter } from 'rxjs/operators';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
@@ -216,83 +216,18 @@ export class HrService {
     ReportSheet[]
       >();
     let params = new HttpParams();
-    if (page != null && itemsPerPage != null) {
-      params = params.append('pageNumber', page);
-      params = params.append('pageSize', itemsPerPage);
-    }
-
+    let pageSize = 0;
     if (filters != null) {
       params = params.append('year', filters.year);
       params = params.append('userToSearch', filters.userToSearch);
       params = params.append('poleId', filters.poleId);
+      pageSize = filters.pageSize;
     }
 
-    return this.http
-      .get<ReportSheet[]>(this.baseUrl + 'hr/EvaluationSheet', { observe: 'response', params })
-      .pipe(
-        map(response => {
-          paginatedResult.result = response.body;
-          if (response.headers.get('Pagination') != null) {
-            paginatedResult.pagination = JSON.parse(
-              response.headers.get('Pagination')
-            );
-          }
-          return paginatedResult;
-        })
-      );
-  }
-
-  getReportEvaluations(
-    page?,
-    itemsPerPage?,
-    filters?
-  ): Observable<PaginatedResult<ReportSheet[]>> {
-    const paginatedResult: PaginatedResult<ReportSheet[]> = new PaginatedResult<
-    ReportSheet[]
-      >();
-    let params = new HttpParams();
     if (page != null && itemsPerPage != null) {
+      if(pageSize != 0) itemsPerPage = pageSize;
       params = params.append('pageNumber', page);
       params = params.append('pageSize', itemsPerPage);
-    }
-
-    if (filters != null) {
-      params = params.append('year', filters.year);
-      params = params.append('userToSearch', filters.userToSearch);
-    }
-
-    return this.http
-      .get<ReportSheet[]>(this.baseUrl + 'hr/EvaluationSheet/getGrades', { observe: 'response', params })
-      .pipe(
-        map(response => {
-          paginatedResult.result = response.body;
-          if (response.headers.get('Pagination') != null) {
-            paginatedResult.pagination = JSON.parse(
-              response.headers.get('Pagination')
-            );
-          }
-          return paginatedResult;
-        })
-      );
-  }
-
-  getReportGoals(
-    page?,
-    itemsPerPage?,
-    filters?
-  ): Observable<PaginatedResult<ReportSheet[]>> {
-    const paginatedResult: PaginatedResult<ReportSheet[]> = new PaginatedResult<
-    ReportSheet[]
-      >();
-    let params = new HttpParams();
-    if (page != null && itemsPerPage != null) {
-      params = params.append('pageNumber', page);
-      params = params.append('pageSize', itemsPerPage);
-    }
-
-    if (filters != null) {
-      params = params.append('year', filters.year);
-      params = params.append('userToSearch', filters.userToSearch);
     }
 
     return this.http

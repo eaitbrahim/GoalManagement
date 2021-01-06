@@ -59,10 +59,7 @@ export class SheetsPanelComponent implements OnInit {
       this.sheetsToValidate = resolvedData['sheetsToValidate'];
       this.sheets = resolvedData['sheets'].result;
       this.pagination = resolvedData['sheets'].pagination;
-
-      for (const sheet of this.sheets) {
-        this.yearList.push(sheet.year);
-      }
+      this.yearList = resolvedData['yearList'];
     });
   }
 
