@@ -45,10 +45,8 @@ export class ReportsPanelComponent implements OnInit {
     this.route.data.subscribe((data) => {
       const resolvedData = data['resolvedData'];
       this.sheets = resolvedData['sheets'].result;
-
       this.buildGoals();
       this.poleList = resolvedData['poleList'];
-      // this.notes = resolvedData['notes'].result;
       this.pagination = resolvedData['sheets'].pagination;
 
       for (const sheet of this.sheets) {
@@ -61,37 +59,19 @@ export class ReportsPanelComponent implements OnInit {
 
   buildGoals(){
     this.flattenedGoals = [];
-    // console.log('Building golas');
-    // this.sheets.forEach(sheet => {
-    //   sheet.axisInstances.forEach(axis => {
-    //     axis.goals.forEach(goal => {
-    //       this.flattenedGoals.push(
-    //         {
-    //           goal: goal.description,
-    //           weight: goal.weight,
-    //           axisTitle: goal.axisInstance.title,
-    //           poleName: goal.axisInstance.poleName,
-    //           poleWeight: goal.axisInstance.poleWeight,
-    //           year: sheet.year,
-    //           fullName: sheet.fullName
-    //         }
-    //       );
-    //     });
-    //   });
-    // });
-    // const goals = this.sheets.map(sheet => sheet.axisInstances.map(axis => axis.goals.map(goal =>{
-    //   return {
-    //     goal: goal.description,
-    //     weight: goal.weight,
-    //     axisTitle: goal.axisInstance.title,
-    //     poleName: goal.axisInstance.poleName,
-    //     poleWeight: goal.axisInstance.poleWeight,
-    //     year: sheet.year,
-    //     fullName: sheet.fullName
-    //   }
-    // })));
-    // console.log('Golas:', goals);
-    //this.flattenedGoals = [].concat.apply([],goals);
+
+    const goals = this.sheets.map(sheet => sheet.extraInfoList.map(extraInfo => {
+      return {
+        goal: extraInfo.goal,
+        weight: extraInfo.weight,
+        axisTitle: extraInfo.axisTitle,
+        poleName: sheet.poleName,
+        poleWeight: extraInfo.poleWeight,
+        year: sheet.year,
+        fullName: sheet.fullName
+      }
+    }));
+    this.flattenedGoals = [].concat.apply([],goals);
   }
 
   handlePageChanged(event: any): void {

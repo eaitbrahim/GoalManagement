@@ -24,24 +24,17 @@ export class ReportSheetsResolver implements Resolve<any> {
       [
         this.hrService.getReportSheets(this.pageNumber, this.pageSize).pipe(
           catchError(error => {
-            this.alertify.error('Problème lors de la récupération des données des\'étas');
+            this.alertify.error('Problème lors de la récupération des données des étas');
             this.router.navigate(['/']);
             return of(null);
           })),
 
           this.adminService.getPoles(),
 
-        this.hrService.getReportSheets(this.pageNumber, this.pageSize).pipe(
-          catchError(error => {
-            this.alertify.error(`Problème lors de la récupération des données ds\'étas: ${error}`);
-            this.router.navigate(['/']);
-            return of(null);
-          }))
       ]).pipe(map(result => {
         return {
           sheets: result[0],
           poleList: result[1],
-          notes: result[2]
         };
       }));
   }

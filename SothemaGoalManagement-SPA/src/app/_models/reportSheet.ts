@@ -1,4 +1,3 @@
-import { AxisInstance } from './axisInstance';
 
 export interface ReportSheet {
   id: number;
@@ -7,5 +6,12 @@ export interface ReportSheet {
   poleName: string;
   goalsStatus: string;
   validatorValidationDateTime: Date;
-  axisInstances: [AxisInstance]
+  extraInfoList: [ExtraInfo]
+}
+
+interface ExtraInfo {
+  weight: number;
+  poleWeight: number;
+  goal: string;
+  axisTitle: string;
 }

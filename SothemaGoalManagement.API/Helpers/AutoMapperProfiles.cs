@@ -151,11 +151,22 @@ namespace SothemaGoalManagement.API.Helpers
                     }
                     return latestGoalEvalDateTime;
                 });
-            }).ForMember(dest => dest.AxisInstances, opt => 
+            }).ForMember(dest => dest.ExtraInfoList, opt => 
             {
                 opt.ResolveUsing(src => 
                 {
-                    return src.AxisInstances;
+                    var extraInfoList = new List<ExtraInfo>();
+                    foreach(var axis in src.AxisInstances)
+                    {
+                        var extraInfo = new ExtraInfo(){AxisTitle = axis.Title, PoleWeight = axis.PoleWeight};
+                        foreach(var goal in axis.Goals)
+                        {
+                            extraInfo.Goal = goal.Description;
+                            extraInfo.Weight = goal.Weight;
+                        }
+                        extraInfoList.Add(extraInfo);
+                    }
+                    return extraInfoList;
                 });
             });
         

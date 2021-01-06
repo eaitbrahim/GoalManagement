@@ -1,5 +1,3 @@
-import { Goal } from './goal';
-
 export interface AxisInstance {
   id: number;
   title: string;
@@ -7,5 +5,4 @@ export interface AxisInstance {
   poleName: string;
   poleWeight: number;
   userWeight: number;
-  goals: [Goal];
 }
