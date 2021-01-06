@@ -30,7 +30,7 @@
           <div class="col-auto">
             <label for="pageSize" class="sr-only" >Taille:</label>
             <select [(ngModel)]="filters.pageSize" class="form-control" style="width: 160px" id="pageSize" name="pageSize">
-              <option value="5">Taille de la page</option>
+              <option value="10">Taille de la page</option>
               <option *ngFor="let pageSize of pageSizeList" [value]="pageSize">
                 {{ pageSize }}
               </option>
@@ -56,7 +56,7 @@
           <div class="alert alert-info mt-3" role="info" *ngIf="sheets && sheets.length === 0">
             <p>Aucune fiche d'évaluation n'est disponible...</p>
           </div>
-          <app-reports-sheets [sheets]="sheets" [pagination]="pagination" (pageChangedEvent)="handlePageChanged($event)"></app-reports-sheets>
+          <app-reports-sheets [sheets]="sheets" [pagination]="sheetsPagination" (pageChangedEvent)="handlePageChangedForSheets($event)"></app-reports-sheets>
         </div>
       </tab>
 
@@ -73,7 +73,7 @@
           <div class="alert alert-info mt-3" role="info" *ngIf="sheets && sheets.length === 0">
             Aucun objectif n'est disponible...
           </div>
-          <app-reports-goals [flattenedGoals]="flattenedGoals" [pagination]="pagination"></app-reports-goals>
+          <app-reports-goals [goals]="goals" [pagination]="goalsPagination" (pageChangedEvent)="handlePageChangedForGoals($event)"></app-reports-goals>
         </div>
       </tab>
     </tabset>

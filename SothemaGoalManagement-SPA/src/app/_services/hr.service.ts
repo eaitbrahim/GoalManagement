@@ -14,14 +14,15 @@ import { EvaluationFile } from '../_models/evaluationFile';
 import { EvaluationFileInstance } from '../_models/evaluationFileInstance';
 import { EvaluationFileInstanceLog } from '../_models/evaluationFileInstanceLog';
 import { Parameters } from '../_models/parameters';
-import { ReportSheet } from '../_models/reportSheet';
+import { ReportGoal, ReportSheet } from '../_models/report';
+import { AuthService } from './../_services/auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HrService {
   baseUrl = environment.apiUrl;
-  constructor(private http: HttpClient) { }
+  constructor(private authService: AuthService, private http: HttpClient) { }
 
   getStrategy(id: number, ownerId) {
     let params = new HttpParams();
@@ -244,4 +245,47 @@ export class HrService {
         })
       );
   }
+
+  getReportGoals(
+
+    page?,
+    itemsPerPage?,
+    filters?
+  ): Observable<PaginatedResult<ReportGoal[]>> {
+    const paginatedResult: PaginatedResult<ReportGoal[]> = new PaginatedResult<
+    ReportGoal[]
+      >();
+    let params = new HttpParams();
+    let pageSize = 0;
+    if (filters != null) {
+      params = params.append('year', filters.year);
+      params = params.append('userToSearch', filters.userToSearch);
+      params = params.append('poleId', filters.poleId);
+      pageSize = filters.pageSize;
+    }
+
+    if (page != null && itemsPerPage != null) {
+      if(pageSize != 0) itemsPerPage = pageSize;
+      params = params.append('pageNumber', page);
+      params = params.append('pageSize', itemsPerPage);
+    }
+
+    let userId: number = this.authService.decodedToken.nameid;
+
+    return this.http
+      .get<ReportGoal[]>( `${this.baseUrl}users/${userId}/goal/getGoalsForReport`, { observe: 'response', params })
+      .pipe(
+        map(response => {
+          paginatedResult.result = response.body;
+          if (response.headers.get('Pagination') != null) {
+            paginatedResult.pagination = JSON.parse(
+              response.headers.get('Pagination')
+            );
+          }
+          return paginatedResult;
+        })
+      );
+  }
 }
+
+

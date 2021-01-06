@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using SothemaGoalManagement.API.Helpers;
 using SothemaGoalManagement.API.Models;
 
 namespace SothemaGoalManagement.API.Interfaces
@@ -15,6 +16,8 @@ namespace SothemaGoalManagement.API.Interfaces
         Task<IEnumerable<Goal>> GetGoalsByIds(IEnumerable<int> ids);
 
         Task<User> GetGoalOwner(int goalId);
+
+        Task<PagedList<Goal>> GetGoalsForReport(CommunParams communParams);
 
         void AddGoal(Goal goal);
 

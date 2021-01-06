@@ -6,12 +6,14 @@ export interface ReportSheet {
   poleName: string;
   goalsStatus: string;
   validatorValidationDateTime: Date;
-  extraInfoList: [ExtraInfo]
 }
 
-interface ExtraInfo {
+export interface ReportGoal {
   weight: number;
   poleWeight: number;
   goal: string;
   axisTitle: string;
+  fullName: string;
+  poleName: string;
+  year: number;
 }

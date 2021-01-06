@@ -8,27 +8,12 @@ namespace SothemaGoalManagement.API.Dtos
     {
         public int Id { get; set; }
         public string FullName { get; set; }
-        public string EmployeeNumber { get; set; }
 
         public int Year { get; set; }
 
         public string PoleName { get; set; }
         public string GoalsStatus { get; set; }
         public DateTime ValidatorValidationDateTime { get; set; }
-
-        public string GoalsTotalGrade { get; set; }
-
-        public int BehavioralSkillsGrade { get; set; }
-
-        public ICollection<ExtraInfo> ExtraInfoList { get; set; }
-
     }
 
-    public class ExtraInfo
-    {
-        public string Goal { get; set; }
-        public int Weight { get; set; }
-        public int PoleWeight { get; set; }
-        public string AxisTitle { get; set; }
-    }
 }

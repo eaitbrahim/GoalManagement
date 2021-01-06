@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import { ReportGoal } from 'src/app/_models/report';
 
 import { Pagination } from '../../_models/pagination';
 
@@ -9,15 +10,7 @@ import { Pagination } from '../../_models/pagination';
 })
 export class ReportsGoalsComponent implements OnInit {
 
-  @Input() flattenedGoals: {
-    goal: string,
-    weight: number,
-    axisTitle: string,
-    poleName: string,
-    poleWeight: number,
-    year: number,
-    fullName: string
-  }[];
+  @Input() goals: ReportGoal[];
 
   @Input() pagination: Pagination;
   @Output() pageChangedEvent = new EventEmitter<any>();

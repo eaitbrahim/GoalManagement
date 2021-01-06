@@ -151,25 +151,27 @@ namespace SothemaGoalManagement.API.Helpers
                     }
                     return latestGoalEvalDateTime;
                 });
-            }).ForMember(dest => dest.ExtraInfoList, opt => 
-            {
-                opt.ResolveUsing(src => 
-                {
-                    var extraInfoList = new List<ExtraInfo>();
-                    foreach(var axis in src.AxisInstances)
-                    {
-                        var extraInfo = new ExtraInfo(){AxisTitle = axis.Title, PoleWeight = axis.PoleWeight};
-                        foreach(var goal in axis.Goals)
-                        {
-                            extraInfo.Goal = goal.Description;
-                            extraInfo.Weight = goal.Weight;
-                        }
-                        extraInfoList.Add(extraInfo);
-                    }
-                    return extraInfoList;
-                });
             });
         
+            CreateMap<Goal, GoalForReportToReturnDto>().ForMember(dest => dest.Goal, opt =>
+            {
+                opt.ResolveUsing(g => g.Description);
+            }).ForMember(dest => dest.AxisTitle, opt =>
+            {
+                opt.ResolveUsing(g => g.AxisInstance.Title);
+            }).ForMember(dest => dest.FullName, opt =>
+            {
+                opt.ResolveUsing(g => g.AxisInstance.EvaluationFileInstance.Owner.FirstName + " " + g.AxisInstance.EvaluationFileInstance.Owner.LastName);
+            }).ForMember(dest => dest.Year, opt =>
+            {
+                opt.ResolveUsing(g => g.AxisInstance.EvaluationFileInstance.Year);
+            }).ForMember(dest => dest.PoleName, opt =>
+            {
+                opt.ResolveUsing(g => g.AxisInstance.PoleName);
+            }).ForMember(dest => dest.PoleWeight, opt =>
+            {
+                opt.ResolveUsing(g => g.AxisInstance.PoleWeight);
+            });
 
             CreateMap<GoalType, GoalTypeToReturnDto>();
             CreateMap<Project, ProjectToReturnDto>();

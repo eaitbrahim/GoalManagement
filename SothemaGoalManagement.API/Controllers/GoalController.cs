@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SothemaGoalManagement.API.Dtos;
@@ -428,6 +429,26 @@ namespace SothemaGoalManagement.API.Controllers
             }
         }
 
+        [Authorize(Policy = "RequireHRHRDRoles")]
+        [HttpGet("getGoalsForReport")]
+        public async Task<IActionResult> GetGoalsForReport([FromQuery] CommunParams communParams)
+        {
+            try
+            {
+                var goalsForReportsFromRepo = await _repo.Goal.GetGoalsForReport(communParams);
+                var goalsForReportsToReturn = _mapper.Map<IEnumerable<GoalForReportToReturnDto>>(goalsForReportsFromRepo);
+
+                Response.AddPagination(goalsForReportsFromRepo.CurrentPage, goalsForReportsFromRepo.PageSize, goalsForReportsFromRepo.TotalCount, goalsForReportsFromRepo.TotalPages);
+
+                return Ok(goalsForReportsToReturn);
+            }
+            catch (Exception ex) 
+            {
+                _logger.LogError($"Something went wrong inside GetGoalsForReport endpoint: {ex.Message}");
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
+        }
+        
         private async Task ProcessGolas(IEnumerable<GoalForUpdateDto> goalsToUpdateDto, int sheetId, int userId)
         {
             // Get main data

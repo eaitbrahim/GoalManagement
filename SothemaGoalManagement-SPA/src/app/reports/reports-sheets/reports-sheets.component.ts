@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ReportSheet } from 'src/app/_models/reportSheet';
+import { ReportSheet } from 'src/app/_models/report';
 
 import { Pagination } from '../../_models/pagination';
 

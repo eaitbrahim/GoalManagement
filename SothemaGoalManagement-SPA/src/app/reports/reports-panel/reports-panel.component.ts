@@ -3,7 +3,8 @@ import { TabsetComponent } from 'ngx-bootstrap';
 import { ActivatedRoute } from '@angular/router';
 
 import { Pagination, PaginatedResult } from '../../_models/pagination';
-import { ReportSheet } from './../../_models/reportSheet';
+import { ReportSheet } from '../../_models/report';
+import { ReportGoal } from '../../_models/report';
 import { HrService } from './../../_services/hr.service';
 import { AlertifyService } from './../../_services/alertify.service';
 import { Pole } from './../../_models/pole';
@@ -15,10 +16,12 @@ import { Pole } from './../../_models/pole';
 })
 export class ReportsPanelComponent implements OnInit {
   @ViewChild('tabset') tabset: TabsetComponent;
-  pagination: Pagination;
+  sheetsPagination: Pagination;
+  goalsPagination: Pagination;
   tabIndex = 0;
   public loading = false;
   sheets: ReportSheet[];
+  goals: ReportGoal[];
   filters: {
     year: string,
     userToSearch: string,
@@ -27,16 +30,7 @@ export class ReportsPanelComponent implements OnInit {
   } = {year: '0', userToSearch: '', poleId: 0, pageSize: 5};
   yearList: number[] = [];
   poleList: Pole[] = [];
-  pageSizeList: number[] = [1];
-  flattenedGoals: {
-    goal: string,
-    weight: number,
-    axisTitle: string,
-    poleName: string,
-    poleWeight: number,
-    year: number,
-    fullName: string
-}[] = [];
+  pageSizeList: number[] = [10, 20, 30, 40, 50, 100];
 
   constructor(
     private route: ActivatedRoute,
@@ -49,51 +43,58 @@ export class ReportsPanelComponent implements OnInit {
     this.route.data.subscribe((data) => {
       const resolvedData = data['resolvedData'];
       this.sheets = resolvedData['sheets'].result;
-      this.buildGoals();
+      this.goals = resolvedData['goals'].result;
       this.poleList = resolvedData['poleList'];
       this.yearList = resolvedData['yearList'];
-      this.pageSizeList = [10, 20, 30, 40, 50, 100];
-      this.pagination = resolvedData['sheets'].pagination;
+      this.sheetsPagination = resolvedData['sheets'].pagination;
+      this.goalsPagination = resolvedData['goals'].pagination;
     });
   }
 
-  buildGoals(){
-    this.flattenedGoals = [];
-
-    const goals = this.sheets.map(sheet => sheet.extraInfoList.map(extraInfo => {
-      return {
-        goal: extraInfo.goal,
-        weight: extraInfo.weight,
-        axisTitle: extraInfo.axisTitle,
-        poleName: sheet.poleName,
-        poleWeight: extraInfo.poleWeight,
-        year: sheet.year,
-        fullName: sheet.fullName
-      }
-    }));
-    this.flattenedGoals = [].concat.apply([],goals);
+  handlePageChangedForSheets(event: any): void {
+    this.sheetsPagination.currentPage = event.currentPage;
+    this.loadSheets();
   }
 
-  handlePageChanged(event: any): void {
-    this.pagination.currentPage = event.currentPage;
-    console.log('this.pagination.currentPage:', this.pagination.currentPage);
-    this.loadSheets();
+  handlePageChangedForGoals(event: any): void {
+    this.goalsPagination.currentPage = event.currentPage;
+    this.loadGoals();
   }
 
   loadSheets() {
     this.loading = true;
     this.hrService
       .getReportSheets(
-        this.pagination.currentPage,
-        this.pagination.itemsPerPage,
+        this.sheetsPagination.currentPage,
+        this.sheetsPagination.itemsPerPage,
         this.filters
       )
       .subscribe(
         (res: PaginatedResult<ReportSheet[]>) => {
           this.loading = false;
           this.sheets = res.result;
-          this.buildGoals();
-          this.pagination = res.pagination;
+          this.sheetsPagination = res.pagination;
+        },
+        (error) => {
+          this.loading = false;
+          this.alertify.error(error);
+        }
+      );
+  }
+
+  loadGoals() {
+    this.loading = true;
+    this.hrService
+      .getReportGoals(
+        this.goalsPagination.currentPage,
+        this.goalsPagination.itemsPerPage,
+        this.filters
+      )
+      .subscribe(
+        (res: PaginatedResult<ReportGoal[]>) => {
+          this.loading = false;
+          this.goals = res.result;
+          this.goalsPagination = res.pagination;
         },
         (error) => {
           this.loading = false;
@@ -104,7 +105,7 @@ export class ReportsPanelComponent implements OnInit {
 
   loadData() {
     this.loadSheets();
-    // this.loadSheetsToValidate();
+    this.loadGoals();
   }
 
   resetFilters() {
@@ -116,6 +117,6 @@ export class ReportsPanelComponent implements OnInit {
     this.filters.year = '0';
     this.filters.userToSearch = '';
     this.filters.poleId = 0;
-    this.filters.pageSize = 5;
+    this.filters.pageSize = 10;
   }
 }

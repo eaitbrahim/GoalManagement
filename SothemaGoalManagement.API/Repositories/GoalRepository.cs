@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SothemaGoalManagement.API.Data;
+using SothemaGoalManagement.API.Helpers;
 using SothemaGoalManagement.API.Interfaces;
 using SothemaGoalManagement.API.Models;
 
@@ -65,6 +66,34 @@ namespace SothemaGoalManagement.API.Repositories
                                 .Include(a => a.AxisInstance).ToListAsync();
         }
 
+    public async Task<PagedList<Goal>> GetGoalsForReport(CommunParams communParams)
+    {
+        var goals = RepositoryContext.Goals.Include(g => g.AxisInstance)
+                                            .ThenInclude(a => a.EvaluationFileInstance)
+                                            .ThenInclude(s => s.Owner)
+                                            .ThenInclude(o => o.Department)
+                                            .ThenInclude(d => d.Pole)
+                                            .AsQueryable();
+
+        if (communParams.Year != 0)
+        {
+            goals = goals.Where(g => g.AxisInstance.EvaluationFileInstance.Year == communParams.Year);
+        }
+
+        if (communParams.UserToSearch != null && communParams.UserToSearch != "")
+        {
+            goals = goals.Where(g => g.AxisInstance.EvaluationFileInstance.Owner.FirstName.ToLower().Contains(communParams.UserToSearch.ToLower()) 
+                                                || g.AxisInstance.EvaluationFileInstance.Owner.LastName.ToLower().Contains(communParams.UserToSearch.ToLower()));
+        }
+
+        if (communParams.PoleId != 0)
+        {
+            goals = goals.Where(s => s.AxisInstance.EvaluationFileInstance.Owner.Department.Pole.Id == communParams.PoleId);
+        }
+
+
+        return await PagedList<Goal>.CreateAsync(goals, communParams.PageNumber, communParams.PageSize);
+    }
         public void AddGoal(Goal goal)
         {
             Add(goal);
