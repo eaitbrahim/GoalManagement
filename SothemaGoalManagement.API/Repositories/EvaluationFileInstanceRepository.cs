@@ -18,7 +18,7 @@ namespace SothemaGoalManagement.API.Repositories
 
         public async Task<IEnumerable<int>> GetYears()
         {
-            return await RepositoryContext.EvaluationFileInstances.Select(efi => efi.Year).Distinct().ToListAsync();
+            return await RepositoryContext.EvaluationFileInstances.Select(efi => efi.Year).OrderByDescending(y => y).Distinct().ToListAsync();
         }
         
         public async Task<IEnumerable<EvaluationFileInstance>> GetEvaluationFileInstancesByEvaluationFileId(int evaluationFileId)
@@ -39,6 +39,9 @@ namespace SothemaGoalManagement.API.Repositories
                                                         .Include(efi => efi.Owner)
                                                         .ThenInclude(u => u.Department)
                                                         .ThenInclude(d => d.Pole)
+                                                        .Include(efi => efi.BehavioralSkillInstances)
+                                                        .ThenInclude(efibsi => efibsi.BehavioralSkillInstance)
+                                                        .ThenInclude(bsi => bsi.BehavioralSkillEvaluations)
                                                         .AsQueryable();
 
             if (communParams.Year != 0)
