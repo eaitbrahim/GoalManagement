@@ -6,6 +6,9 @@ export interface ReportSheet {
   poleName: string;
   goalsStatus: string;
   validatorValidationDateTime: Date;
+  employeeNumber: string;
+  goalsTotalGrade: number;
+  behavioralSkillsGrade: number;
 }
 
 export interface ReportGoal {

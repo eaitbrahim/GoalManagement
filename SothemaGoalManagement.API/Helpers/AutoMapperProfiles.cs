@@ -151,6 +151,44 @@ namespace SothemaGoalManagement.API.Helpers
                     }
                     return latestGoalEvalDateTime;
                 });
+            }).ForMember(dest => dest.EmployeeNumber, opt =>
+            {
+                opt.ResolveUsing(u => u.Owner.EmployeeNumber);
+            }).ForMember(dest => dest.GoalsTotalGrade, opt =>
+            {
+                opt.ResolveUsing(s => 
+                {
+                    Decimal percentTotalGrade = 0.00m;
+                    foreach(var axis in s.AxisInstances)
+                    {
+                        Decimal axisGrade = axis.Goals.Select(g =>
+                        {
+                            var CompletionRate = GetCompletionRate(g, false);
+                            return g.Weight * axis.UserWeight * CompletionRate;
+                        }).Sum();
+                        Decimal percentAxisGrade = axisGrade / 10000.00m;
+                        percentTotalGrade += percentAxisGrade;
+                    }
+                    
+                    return percentTotalGrade;
+                });
+            }).ForMember(dest => dest.BehavioralSkillsGrade, opt =>
+            {
+                opt.ResolveUsing(s => 
+                {
+                    Decimal percentTotalGrade = 0.00m;
+                    foreach(var bsi in s.BehavioralSkillInstances)
+                    {
+                        foreach(var bsie in bsi.BehavioralSkillInstance.BehavioralSkillEvaluations.OrderByDescending(e => e.Created).Where(e => e.EvaluationFileInstanceId == s.Id))
+                        {
+                            percentTotalGrade = bsie.Grade;
+                            break;
+                        }
+                        break;
+                    }
+                    
+                    return percentTotalGrade;
+                });
             });
         
             CreateMap<Goal, GoalForReportToReturnDto>().ForMember(dest => dest.Goal, opt =>
@@ -217,6 +255,27 @@ namespace SothemaGoalManagement.API.Helpers
             });
 
             CreateMap<FinalEvaluationDto, EvaluationFileInstance>();
+        }
+
+        private int GetCompletionRate(Goal goal, bool goalOwnerSelfEvaluator = false)
+        {
+            if (goalOwnerSelfEvaluator)
+            {
+                var lastGoalEvaluation = goal.GoalEvaluations.OrderByDescending(e => e.Created).FirstOrDefault();
+                if (lastGoalEvaluation != null)
+                {
+                    return lastGoalEvaluation.CompletionRate;
+                }
+                return 0;
+            }
+
+            var lastGoalEvaluationByEvaluator = goal.GoalEvaluations.Where(e => !e.SelfEvaluation).OrderByDescending(e => e.Created).FirstOrDefault();
+            if (lastGoalEvaluationByEvaluator != null)
+            {
+                return lastGoalEvaluationByEvaluator.CompletionRate;
+            }
+
+            return 0;
         }
     }
 }

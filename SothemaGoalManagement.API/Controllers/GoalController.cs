@@ -611,7 +611,7 @@ namespace SothemaGoalManagement.API.Controllers
             return goalToReturn;
         }
 
-        private int GetCompletionRate(GoalToReturnDto goal, bool goalOwnerSelfEvaluator)
+        private int GetCompletionRate(GoalToReturnDto goal, bool goalOwnerSelfEvaluator = false)
         {
             if (goalOwnerSelfEvaluator)
             {

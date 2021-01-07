@@ -14,6 +14,11 @@ namespace SothemaGoalManagement.API.Dtos
         public string PoleName { get; set; }
         public string GoalsStatus { get; set; }
         public DateTime ValidatorValidationDateTime { get; set; }
+
+        public string EmployeeNumber { get; set; }
+        public string GoalsTotalGrade { get; set; }
+
+        public string BehavioralSkillsGrade { get; set; }
     }
 
 }

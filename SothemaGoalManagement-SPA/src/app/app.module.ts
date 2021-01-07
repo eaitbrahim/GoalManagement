@@ -116,6 +116,7 @@ import { ReportsSheetsComponent } from './reports/reports-sheets/reports-sheets.
 import { ReportsPanelComponent } from './reports/reports-panel/reports-panel.component';
 import { ReportSheetsResolver } from './_resolvers/report-sheets.resolver';
 import { ReportsGoalsComponent } from './reports/reports-goals/reports-goals.component';
+import { ReportsEvaluationsComponent } from './reports/reports-evaluations/reports-evaluations.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -197,7 +198,8 @@ export function tokenGetter() {
     TruncateTextPipe,
     ReportsPanelComponent,
     ReportsSheetsComponent,
-    ReportsGoalsComponent
+    ReportsGoalsComponent,
+    ReportsEvaluationsComponent
   ],
   imports: [
     BrowserModule,
