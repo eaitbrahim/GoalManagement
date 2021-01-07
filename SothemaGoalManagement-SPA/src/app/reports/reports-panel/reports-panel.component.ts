@@ -30,7 +30,7 @@ export class ReportsPanelComponent implements OnInit {
   } = {year: '0', userToSearch: '', poleId: 0, pageSize: 5};
   yearList: number[] = [];
   poleList: Pole[] = [];
-  pageSizeList: number[] = [10, 20, 30, 40, 50, 100];
+  pageSizeList: number[] = [10, 50, 100, 500];
 
   constructor(
     private route: ActivatedRoute,
