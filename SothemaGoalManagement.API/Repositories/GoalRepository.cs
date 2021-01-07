@@ -91,6 +91,11 @@ namespace SothemaGoalManagement.API.Repositories
             goals = goals.Where(s => s.AxisInstance.EvaluationFileInstance.Owner.Department.Pole.Id == communParams.PoleId);
         }
 
+        if (communParams.UserStatusId != 0)
+            {
+                goals = goals.Where(s => s.AxisInstance.EvaluationFileInstance.Owner.UserStatusId == communParams.UserStatusId);
+            }
+
 
         return await PagedList<Goal>.CreateAsync(goals, communParams.PageNumber, communParams.PageSize);
     }

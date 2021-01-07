@@ -6,7 +6,7 @@
       <div class="form-row align-items-center">
           <div class="col-auto">
             <label for="year" class="sr-only" >Année:</label>
-            <select [(ngModel)]="filters.year" class="form-control" style="width: 160px" id="years" name="years">
+            <select [(ngModel)]="filters.year" class="form-control" style="width: 150px" id="years" name="years">
               <option value="0">Toutes les Années</option>
               <option *ngFor="let year of yearList" [value]="year">
                 {{ year }}
@@ -15,12 +15,21 @@
           </div>
           <div class="col-auto">
             <label class="sr-only" for="userToSearch">Nom:</label>
-            <input type="text" [(ngModel)]="filters.userToSearch" class="form-control" style="width: 150px" id="userToSearch" name="userToSearch"
+            <input type="text" [(ngModel)]="filters.userToSearch" class="form-control" style="width: 137px" id="userToSearch" name="userToSearch"
               placeholder="Nom à rechercher">
           </div>
           <div class="col-auto">
+            <label class="sr-only" for="pole">Statut d'utilisateur:</label>
+            <select [(ngModel)]="filters.userStatusId" class="form-control" style="width: 150px" id="userStatus" name="userStatus">
+              <option value="0">Tous les statuts</option>
+              <option *ngFor="let userStatus of userStatusList" [value]="userStatus.id">
+                {{ userStatus.name }}
+              </option>
+            </select>
+          </div>
+          <div class="col-auto">
             <label class="sr-only" for="pole">Pole:</label>
-            <select [(ngModel)]="filters.poleId" class="form-control" style="width: 150px" id="pole" name="pole">
+            <select [(ngModel)]="filters.poleId" class="form-control" style="width: 140px" id="pole" name="pole">
               <option value="0">Tous les pôles</option>
               <option *ngFor="let pole of poleList" [value]="pole.id">
                 {{ pole.name }}
@@ -29,7 +38,7 @@
           </div>
           <div class="col-auto">
             <label for="pageSize" class="sr-only" >Taille:</label>
-            <select [(ngModel)]="filters.pageSize" class="form-control" style="width: 160px" id="pageSize" name="pageSize">
+            <select [(ngModel)]="filters.pageSize" class="form-control" style="width: 100px" id="pageSize" name="pageSize">
               <option value="10">Taille de la page</option>
               <option *ngFor="let pageSize of pageSizeList" [value]="pageSize">
                 {{ pageSize }}

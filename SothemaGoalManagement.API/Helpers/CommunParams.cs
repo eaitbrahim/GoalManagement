@@ -21,6 +21,7 @@ namespace SothemaGoalManagement.API.Helpers
 
         public string UserToSearch { get; set; }
         public int PoleId { get; set; } = 0;
+        public int UserStatusId { get; set; } = 0;
 
     }
 }

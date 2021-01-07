@@ -5,7 +5,7 @@ import { Resolve, Router, ActivatedRouteSnapshot } from '@angular/router';
 
 import { HrService } from './../_services/hr.service';
 import { UserService } from './../_services/user.service';
-import { AdminService } from './../_services/admin.service';  
+import { AdminService } from './../_services/admin.service';
 import { AlertifyService } from './../_services/alertify.service';
 
 @Injectable()
@@ -39,13 +39,15 @@ export class ReportSheetsResolver implements Resolve<any> {
               this.router.navigate(['/']);
               return of(null);
             })),
+          this.adminService.getUserStatus(),
 
       ]).pipe(map(result => {
         return {
           sheets: result[0],
           poleList: result[1],
           yearList: result[2],
-          goals: result[3]
+          goals: result[3],
+          userStatusList: result[4],
         };
       }));
   }

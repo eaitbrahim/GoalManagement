@@ -8,6 +8,7 @@ import { ReportGoal } from '../../_models/report';
 import { HrService } from './../../_services/hr.service';
 import { AlertifyService } from './../../_services/alertify.service';
 import { Pole } from './../../_models/pole';
+import { UserStatus } from 'src/app/_models/userStatus';
 
 @Component({
   selector: 'app-reports-panel',
@@ -26,10 +27,12 @@ export class ReportsPanelComponent implements OnInit {
     year: string,
     userToSearch: string,
     poleId: number,
-    pageSize: number
-  } = {year: '0', userToSearch: '', poleId: 0, pageSize: 5};
+    pageSize: number,
+    userStatusId: number
+  } = {year: '0', userToSearch: '', poleId: 0, pageSize: 5, userStatusId: 0};
   yearList: number[] = [];
   poleList: Pole[] = [];
+  userStatusList: UserStatus[];
   pageSizeList: number[] = [10, 50, 100, 500];
 
   constructor(
@@ -45,6 +48,7 @@ export class ReportsPanelComponent implements OnInit {
       this.sheets = resolvedData['sheets'].result;
       this.goals = resolvedData['goals'].result;
       this.poleList = resolvedData['poleList'];
+      this.userStatusList = resolvedData['userStatusList'];
       this.yearList = resolvedData['yearList'];
       this.sheetsPagination = resolvedData['sheets'].pagination;
       this.goalsPagination = resolvedData['goals'].pagination;
@@ -118,5 +122,6 @@ export class ReportsPanelComponent implements OnInit {
     this.filters.userToSearch = '';
     this.filters.poleId = 0;
     this.filters.pageSize = 10;
+    this.filters.userStatusId = 0;
   }
 }

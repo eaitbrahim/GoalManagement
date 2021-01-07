@@ -222,6 +222,7 @@ export class HrService {
       params = params.append('year', filters.year);
       params = params.append('userToSearch', filters.userToSearch);
       params = params.append('poleId', filters.poleId);
+      params = params.append('userStatusId', filters.userStatusId);
       pageSize = filters.pageSize;
     }
 
@@ -261,6 +262,7 @@ export class HrService {
       params = params.append('year', filters.year);
       params = params.append('userToSearch', filters.userToSearch);
       params = params.append('poleId', filters.poleId);
+      params = params.append('userStatusId', filters.userStatusId);
       pageSize = filters.pageSize;
     }
 

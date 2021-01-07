@@ -56,6 +56,11 @@ namespace SothemaGoalManagement.API.Repositories
                 sheets = sheets.Where(s => s.Owner.Department.Pole.Id == communParams.PoleId);
             }
 
+            if (communParams.UserStatusId != 0)
+            {
+                sheets = sheets.Where(s => s.Owner.UserStatusId == communParams.UserStatusId);
+            }
+
             return await PagedList<EvaluationFileInstance>.CreateAsync(sheets, communParams.PageNumber, communParams.PageSize);
         }
 
