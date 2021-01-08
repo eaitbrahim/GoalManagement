@@ -3,7 +3,7 @@ import { TabsetComponent } from 'ngx-bootstrap';
 import { ActivatedRoute } from '@angular/router';
 
 import { Pagination, PaginatedResult } from '../../_models/pagination';
-import { ReportSheet } from '../../_models/report';
+import { ReportEvaluation, ReportSheet } from '../../_models/report';
 import { ReportGoal } from '../../_models/report';
 import { HrService } from './../../_services/hr.service';
 import { AlertifyService } from './../../_services/alertify.service';
@@ -23,6 +23,7 @@ export class ReportsPanelComponent implements OnInit {
   public loading = false;
   sheets: ReportSheet[];
   goals: ReportGoal[];
+  evaluations: ReportEvaluation[];
   filters: {
     year: string,
     userToSearch: string,
@@ -52,6 +53,20 @@ export class ReportsPanelComponent implements OnInit {
       this.yearList = resolvedData['yearList'];
       this.sheetsPagination = resolvedData['sheets'].pagination;
       this.goalsPagination = resolvedData['goals'].pagination;
+      this.buildEvaluations();
+    });
+  }
+
+  buildEvaluations(){
+    this.evaluations = [];
+    this.evaluations = this.sheets.map(s => {
+      return {
+        fullName: s.fullName,
+        employeeNumber: s.employeeNumber,
+        year: s.year,
+        goalsTotalGrade: s.goalsTotalGrade,
+        behavioralSkillsGrade: Number(s.behavioralSkillsGrade).toFixed(2)
+      };
     });
   }
 
@@ -77,6 +92,7 @@ export class ReportsPanelComponent implements OnInit {
         (res: PaginatedResult<ReportSheet[]>) => {
           this.loading = false;
           this.sheets = res.result;
+          this.buildEvaluations();
           this.sheetsPagination = res.pagination;
         },
         (error) => {

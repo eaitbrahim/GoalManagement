@@ -20,3 +20,11 @@ export interface ReportGoal {
   poleName: string;
   year: number;
 }
+
+export interface ReportEvaluation {
+    fullName: string;
+    employeeNumber: string;
+    year: number;
+    goalsTotalGrade: number;
+    behavioralSkillsGrade: string;
+}

@@ -74,7 +74,7 @@
           <div class="alert alert-info mt-3" role="info" *ngIf="sheets && sheets.length === 0">
             Aucune évaluation n'est disponible...
           </div>
-          <app-reports-evaluations [sheets]="sheets" [pagination]="sheetsPagination" (pageChangedEvent)="handlePageChangedForSheets($event)"></app-reports-evaluations>
+          <app-reports-evaluations [evaluations]="evaluations" [pagination]="sheetsPagination" (pageChangedEvent)="handlePageChangedForSheets($event)"></app-reports-evaluations>
         </div>
       </tab>
 
