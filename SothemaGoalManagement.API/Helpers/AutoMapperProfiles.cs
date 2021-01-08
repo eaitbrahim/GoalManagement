@@ -177,17 +177,33 @@ namespace SothemaGoalManagement.API.Helpers
                 opt.ResolveUsing(s => 
                 {
                     Decimal percentTotalGrade = 0.00m;
+                    var count = 1.00m;
+                    var result = "";
+                    try
+                    {
                     foreach(var bsi in s.BehavioralSkillInstances)
                     {
-                        foreach(var bsie in bsi.BehavioralSkillInstance.BehavioralSkillEvaluations.OrderByDescending(e => e.Created).Where(e => e.EvaluationFileInstanceId == s.Id))
+                        count = bsi.BehavioralSkillInstance.BehavioralSkillEvaluations.Where(e => e.EvaluationFileInstanceId == s.Id).Count();
+                        if(count == 0)
                         {
-                            percentTotalGrade = bsie.Grade;
-                            break;
+                            continue;
                         }
-                        break;
+                        else
+                        {
+                           foreach(var bsie in bsi.BehavioralSkillInstance.BehavioralSkillEvaluations.OrderByDescending(e => e.Created).Where(e => e.EvaluationFileInstanceId == s.Id))
+                            {
+                                percentTotalGrade += bsie.Grade;
+                            }
+                        }
                     }
                     
-                    return percentTotalGrade;
+                    result = (percentTotalGrade / count).ToString("#.##");
+                    }
+                    catch(Exception ex)
+                    {
+
+                    }
+                    return result;
                 });
             });
         
