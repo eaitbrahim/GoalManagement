@@ -65,7 +65,7 @@ export class ReportsPanelComponent implements OnInit {
         employeeNumber: s.employeeNumber,
         year: s.year,
         goalsTotalGrade: s.goalsTotalGrade,
-        behavioralSkillsGrade: Number(s.behavioralSkillsGrade).toFixed(2)
+        behavioralSkillsGrade: Number(s.behavioralSkillsGrade) ? Number(s.behavioralSkillsGrade).toFixed(2) : '0.00'
       };
     });
   }
