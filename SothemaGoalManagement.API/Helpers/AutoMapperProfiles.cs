@@ -177,7 +177,7 @@ namespace SothemaGoalManagement.API.Helpers
                 opt.ResolveUsing(s => 
                 {
                     Decimal percentTotalGrade = 0.00m;
-                    var count = 1.00m;
+                    var count = 0.00m;
                     var result = "";
                     
                     foreach(var bsi in s.BehavioralSkillInstances)
@@ -189,7 +189,7 @@ namespace SothemaGoalManagement.API.Helpers
                         }
                     }
                     
-                    result = (percentTotalGrade / count).ToString("#.##");
+                    result = count == 0.00m ? "0.00" : (percentTotalGrade / count).ToString("#.##");
                     return result;
                 });
             });
