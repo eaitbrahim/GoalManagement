@@ -156,10 +156,10 @@ namespace SothemaGoalManagement.API.Helpers
                 opt.ResolveUsing(u => u.Owner.EmployeeNumber);
             }).ForMember(dest => dest.GoalsTotalGrade, opt =>
             {
-                opt.ResolveUsing(s => 
+                opt.ResolveUsing(s =>
                 {
                     Decimal percentTotalGrade = 0.00m;
-                    foreach(var axis in s.AxisInstances)
+                    foreach (var axis in s.AxisInstances)
                     {
                         Decimal axisGrade = axis.Goals.Select(g =>
                         {
@@ -169,35 +169,35 @@ namespace SothemaGoalManagement.API.Helpers
                         Decimal percentAxisGrade = axisGrade / 10000.00m;
                         percentTotalGrade += percentAxisGrade;
                     }
-                    
+
                     return percentTotalGrade;
                 });
             }).ForMember(dest => dest.BehavioralSkillsGrade, opt =>
             {
-                opt.ResolveUsing(s => 
+                opt.ResolveUsing(s =>
                 {
                     Decimal percentTotalGrade = 0.00m;
                     var result = "";
                     var bsiIds = new HashSet<int>();
-                    
-                    foreach(var efibsi in s.BehavioralSkillInstances.Where(e => e.EvaluationFileInstanceId == s.Id))
+
+                    foreach (var efibsi in s.BehavioralSkillInstances.Where(e => e.EvaluationFileInstanceId == s.Id))
                     {
-                        if(!bsiIds.Contains(efibsi.BehavioralSkillInstance.Id))
+                        if (!bsiIds.Contains(efibsi.BehavioralSkillInstance.Id))
                         {
                             bsiIds.Add(efibsi.BehavioralSkillInstance.Id);
                             var bsie = efibsi.BehavioralSkillInstance.BehavioralSkillEvaluations.OrderByDescending(e => e.Created).Where(e => e.EvaluationFileInstanceId == s.Id).FirstOrDefault();
-                            if(bsie != null)
+                            if (bsie != null)
                             {
                                 percentTotalGrade += bsie.Grade;
                             }
                         }
                     }
-                    
-                    result = bsiIds.Count == 0 ? "0.00" : (percentTotalGrade / bsiIds.Count).ToString("#.##");
+
+                    result = bsiIds.Count == 0 ? "0.00" : Math.Round(Decimal.Divide(percentTotalGrade, bsiIds.Count), 2).ToString();
                     return result;
                 });
             });
-        
+
             CreateMap<Goal, GoalForReportToReturnDto>().ForMember(dest => dest.Goal, opt =>
             {
                 opt.ResolveUsing(g => g.Description);

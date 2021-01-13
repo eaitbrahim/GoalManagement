@@ -7,8 +7,8 @@ export interface ReportSheet {
   goalsStatus: string;
   validatorValidationDateTime: Date;
   employeeNumber: string;
-  goalsTotalGrade: number;
-  behavioralSkillsGrade: number;
+  goalsTotalGrade: string;
+  behavioralSkillsGrade: string;
 }
 
 export interface ReportGoal {
@@ -25,6 +25,6 @@ export interface ReportEvaluation {
     fullName: string;
     employeeNumber: string;
     year: number;
-    goalsTotalGrade: number;
+    goalsTotalGrade: string;
     behavioralSkillsGrade: string;
 }
