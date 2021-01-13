@@ -177,19 +177,23 @@ namespace SothemaGoalManagement.API.Helpers
                 opt.ResolveUsing(s => 
                 {
                     Decimal percentTotalGrade = 0.00m;
-                    var count = 0.00m;
                     var result = "";
+                    var bsiIds = new HashSet<int>();
                     
-                    foreach(var bsi in s.BehavioralSkillInstances)
+                    foreach(var efibsi in s.BehavioralSkillInstances.Where(e => e.EvaluationFileInstanceId == s.Id))
                     {
-                        foreach(var bsie in bsi.BehavioralSkillInstance.BehavioralSkillEvaluations.OrderByDescending(e => e.Created).Where(e => e.EvaluationFileInstanceId == s.Id))
+                        if(!bsiIds.Contains(efibsi.BehavioralSkillInstance.Id))
                         {
-                            percentTotalGrade += bsie.Grade;
-                            count++;
+                            bsiIds.Add(efibsi.BehavioralSkillInstance.Id);
+                            var bsie = efibsi.BehavioralSkillInstance.BehavioralSkillEvaluations.OrderByDescending(e => e.Created).Where(e => e.EvaluationFileInstanceId == s.Id).FirstOrDefault();
+                            if(bsie != null)
+                            {
+                                percentTotalGrade += bsie.Grade;
+                            }
                         }
                     }
                     
-                    result = count == 0.00m ? "0.00" : (percentTotalGrade / count).ToString("#.##");
+                    result = bsiIds.Count == 0 ? "0.00" : (percentTotalGrade / bsiIds.Count).ToString("#.##");
                     return result;
                 });
             });
